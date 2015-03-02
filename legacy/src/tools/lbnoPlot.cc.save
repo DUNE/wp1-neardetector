@@ -1,0 +1,663 @@
+#include <iostream>
+
+#include <TTree.h>
+#include<TH1.h>
+#include<TH2.h>
+#include<TH3F.h>
+#include <TFile.h>
+#include <TChain.h>
+
+#include "LbnoPlotter.hh"
+
+class myPlotter : public LbnoPlotter {
+ public:
+  myPlotter() {}
+  virtual ~myPlotter() {}
+
+  void plot();
+
+ private:
+  TFile file_;
+
+  TTree* nuHitTree;
+  TTree* nuEventTree;
+  TTree* detectorHitsTree;
+
+  int nuHits_nEntries;
+  int nuEvents_nEntries;
+  int detHits_nEntries;
+
+  TH1F fluxE_h1d_;
+  TH1F nuEventE_h1d_;
+  TH1F nuEventChargedE_CC_h1d_;
+  TH1F nuEventNeutronE_CC_h1d_;
+  TH1F nuEventPhotonE_CC_h1d_;
+  TH1F nuEventChargedE_NC_h1d_;
+  TH1F nuEventNeutronE_NC_h1d_;
+  TH1F nuEventPhotonE_NC_h1d_;
+  TH1F nuEventNeutrinoE_NC_h1d_;
+  TH1F range_h1d_;
+  TH1F nuHitZ_h1d_;
+  TH2F nuHitXY_h2d_;
+  TH1F nuEventZ_h1d_;
+  TH2F nuEventXY_h2d_;
+  TH2F rangeVE_h2d_;
+  TH3F nuHits_h3d_;
+  TH3F nuEvents_h3d_;
+  TH3F detHits_h3d_;
+  TH2F detHits_h2d_Hor;
+  TH2F detHits_h2d_Ver;
+
+  TH2F range_h2d_Hor;
+  TH2F range_h2d_Ver;
+
+  double range;
+
+};
+
+void myPlotter::plot() {
+
+  //declare histograms
+  fluxE_h1d_.SetNameTitle("nuFluxE", "nu flux energy");
+  fluxE_h1d_.SetBins(100, 0., 10.);
+
+  nuEventE_h1d_.SetNameTitle("nuEventE", "nu event energy");
+  nuEventE_h1d_.SetBins(100, 0., 10.);
+
+  nuEventChargedE_CC_h1d_.SetNameTitle("nuEventChargedE_CC", "nu event charged particle energy");
+  nuEventChargedE_CC_h1d_.SetBins(100, 0., 1.);
+
+  nuEventNeutronE_CC_h1d_.SetNameTitle("nuEventNeutronE_CC", "nu event neutron energy");
+  nuEventNeutronE_CC_h1d_.SetBins(100, 0., 1.);
+
+  nuEventPhotonE_CC_h1d_.SetNameTitle("nuEventPhotonE_CC", "nu event photon energy");
+  nuEventPhotonE_CC_h1d_.SetBins(100, 0., 1.);
+
+  nuEventChargedE_NC_h1d_.SetNameTitle("nuEventChargedE_NC", "nu event charged particle energy");
+  nuEventChargedE_NC_h1d_.SetBins(100, 0., 1.);
+
+  nuEventNeutronE_NC_h1d_.SetNameTitle("nuEventNeutronE_NC", "nu event neutron energy");
+  nuEventNeutronE_NC_h1d_.SetBins(100, 0., 1.);
+
+  nuEventPhotonE_NC_h1d_.SetNameTitle("nuEventPhotonE_NC", "nu event photon energy");
+  nuEventPhotonE_NC_h1d_.SetBins(100, 0.,1.);
+
+  nuEventNeutrinoE_NC_h1d_.SetNameTitle("nuEventNeutrinoE_NC", "nu event neutrino energy");
+  nuEventNeutrinoE_NC_h1d_.SetBins(100, 0.,1.);
+
+  range_h1d_.SetNameTitle("muRange", "mu range");
+  range_h1d_.SetBins(300, 0., 10.);
+
+  nuHitZ_h1d_.SetNameTitle("nuHitZ", "nu Hit Z pos");
+  nuHitZ_h1d_.SetBins(100, 0., 10.);
+
+  nuHitXY_h2d_.SetNameTitle("nuHitXY", "nu Hit XY pos");
+  nuHitXY_h2d_.SetBins(100, -5., 5.,100, -5., 5.);
+
+  nuEventZ_h1d_.SetNameTitle("nuEventZ", "nu Event Z pos");
+  nuEventZ_h1d_.SetBins(100, 0., 10.);
+
+  nuEventXY_h2d_.SetNameTitle("nuEventXY", "nu Event XY pos");
+  nuEventXY_h2d_.SetBins(100, -5., 5.,100, -5., 5.);
+
+  rangeVE_h2d_.SetNameTitle("muRangeE", "mu range vs. mu energy");
+  rangeVE_h2d_.SetBins(400, 0., 20., 400, 0., 20.);
+
+  nuHits_h3d_.SetNameTitle("nuHits", "nu hits");
+  nuHits_h3d_.SetBins(400, -1., 39., 400, -20., 20., 400, -20., 20.);
+
+  //nuEvents_h1d_.SetNameTitle("nuEvents", "nu events");
+
+  nuEvents_h3d_.SetNameTitle("nuEvents", "nu events");
+  nuEvents_h3d_.SetBins(400, -1., 39., 400, -20., 20., 400, -20., 20.);
+
+  detHits_h3d_.SetNameTitle("detHits", "detector hits");
+  detHits_h3d_.SetBins(400, -1., 39., 400, -20., 20., 400, -20., 20.);
+
+  detHits_h2d_Hor.SetNameTitle("detHits_h", "detector hits");
+  detHits_h2d_Hor.SetBins(700, -25., 45., 600, -30., 30.);
+
+  detHits_h2d_Ver.SetNameTitle("detHits_v", "detector hits");
+  detHits_h2d_Ver.SetBins(800, -30., 50., 600, -30., 30.);
+ 
+  range_h2d_Hor.SetNameTitle("range_h", "range");
+  range_h2d_Hor.SetBins(700, -25., 45., 600, -30., 30.);
+
+  range_h2d_Ver.SetNameTitle("range_v", "range");
+  range_h2d_Ver.SetBins(800, -30., 50., 600, -30., 30.);
+
+  //nodes
+  int tpcFidCount = 0;
+  int vesselCount = 0;
+  int innerVesselCount = 0;
+  int scintCount = 0;
+  int rockCount = 0;
+  int otherCount = 0;
+  
+  //***loop over runs***
+  //define number of runs
+  int runs = 2000;
+
+  //std::string filename = "/scratch/stainer/lbno/outputs/";//"040613/process_v1r1_run";
+  //filename =+ date_ + "/batch" + batchnumber_ + "/process_v1r2_run" + runnumber_; 
+  std::string filename = inputFileName_;
+  std::stringstream ss;
+
+  int totalNuEvents = 0;
+
+  for(int i = 0;i<runs;i++){
+
+    ss << i;
+
+    std::string filename_run = filename + ss.str() + ".root";
+    std::cout << "\nFilename being added: "
+	      << filename_run;
+
+    TFile datafile(filename_run.c_str());
+
+    //clear stringstream 
+    ss.str("");
+
+    //set data addresses
+    //TTree* piDecayTree = (TTree*)datafile.Get("PiDecays");
+    if(datafile.Get("NuHits")){
+      nuHitTree = (TTree*)datafile.Get("NuHits");
+      this->setDataAddress<NeutrinoHit>(nuHit_, nuHitTree);
+      nuHits_nEntries = nuHitTree->GetEntries();
+    }
+    else {
+      nuHitTree = NULL;
+      nuHits_nEntries = 0;
+    }
+
+    if(datafile.Get("NuInteractions")){
+      nuEventTree = (TTree*)datafile.Get("NuInteractions");
+      this->setDataAddress<NeutrinoEvent>(nuEvent_, nuEventTree);
+      nuEvents_nEntries = nuEventTree->GetEntries();
+      totalNuEvents +=nuEvents_nEntries;
+    }
+    else{
+      nuEventTree = NULL;
+      nuEvents_nEntries = 0;
+    }
+    
+    if(datafile.Get("MCHits")){
+      detectorHitsTree = (TTree*)datafile.Get("MCHits");
+      this->setDataAddress<SimulData>(mcHits_, detectorHitsTree);
+      detHits_nEntries = detectorHitsTree->GetEntries();
+    }
+    else{
+      detectorHitsTree = NULL;
+      detHits_nEntries = 0;
+    }
+    
+    //TTree* muRangeTree = (TTree*)datafile.Get("MuRange");
+    
+    //this->setDataAddress<PionDecayEvent>(piDecay_, piDecayTree);
+    //this->setDataAddress<MuonRange>(range_, muRangeTree);
+    if(nuEventTree)this->setBackTracer(nuEventTree);
+    
+    double phy = TMath::Pi()/18.;
+    //std::cout << phy << " " << cos(phy) << " " << sin(phy) << std::endl;
+    
+    int i=0;
+    
+    std::cout << "\nnuHits Entries: "<< nuHits_nEntries;
+    std::cout << "\nnuEvents Entries: "<< nuEvents_nEntries;
+    std::cout << "\ndetHits Entries: "<< detHits_nEntries << std::endl;
+    
+    std::cout << "\n----------------------------------"
+	      << "\n    Looping over entries...   "
+	      << "\n----------------------------------\n";
+    
+    if(nuHitTree){
+      
+      //int count =0;
+      
+      //loop over nuHit tree
+      while(i<nuHits_nEntries) {
+    	nuHitTree->GetEntry(i);
+	
+    	double nuE = nuHit_->getP4().E() * (1./CLHEP::GeV);
+    	fluxE_h1d_.Fill(nuE);
+	
+	TLorentzVector nuHitPos = nuHit_->getPosition() * (1./ CLHEP::m);
+	//if(nuHitPos.X() ==0 && nuHitPos.Y() ==0 && nuHitPos.Z()==0)count++;
+	//std::cout << "\nEnergy " << nuE << " GeV "<<std::endl;
+	
+    	i++;
+      }
+      
+    }
+
+    i=0;
+
+    //set the mass of each particle type in GeV/c2
+    double muonMass = 0.105658;
+    double protonMass = 0.938272;
+    double neutronMass = 0.939565;
+    double electronMass = 0.000511;
+    double pipMass = 0.139570;
+    double pimMass = pipMass;
+    double pi0Mass = 0.134977;
+    
+    if(nuEventTree){
+      this->setBackTracer(nuEventTree);
+
+      bool cc;
+      
+      //loop over nuEvent tree
+      while(i<nuEvents_nEntries) {
+	
+    	nuEventTree->GetEntry(i);
+	
+    	nuHitTree->GetEntry(backTracer_[0]);
+    	nuEventTree->GetEntry(backTracer_[1]);
+    	//detectorHitsTree->GetEntry(backTracer_[2]);
+	
+    	double nuE = nuEvent_->getNuEnergy();// * (1./CLHEP::GeV);
+    	nuEventE_h1d_.Fill(nuE);
+	
+   	int nuEvFsplPDG = nuEvent_->getFspl().getPDG();
+    	double nuEvFsplE = nuEvent_->getFspl().getP4().E() * (1./CLHEP::GeV);
+    	double nuEvFsplMomX = nuEvent_->getFspl().getP4().X() * (1./CLHEP::GeV);
+    	double nuEvFsplMomY = nuEvent_->getFspl().getP4().Y() * (1./CLHEP::GeV);
+    	double nuEvFsplMomZ = nuEvent_->getFspl().getP4().Z() * (1./CLHEP::GeV);
+	double nuEvFsplMom = TMath::Power( (nuEvFsplMomX*nuEvFsplMomX 
+					    + nuEvFsplMomY*nuEvFsplMomY + nuEvFsplMomZ*nuEvFsplMomZ) ,0.5);
+	
+    	int nuEvNuclPDG = nuEvent_->getHitNucleon().getPDG();
+    	double nuEvNuclE = nuEvent_->getHitNucleon().getP4().E() * (1./CLHEP::GeV);
+	
+	//node names
+	std::string nodeName = nuEvent_->getNodeName();
+	
+	if (nuEvFsplPDG==13 || nuEvFsplPDG==-13 )cc = true;
+	else cc = false;
+	
+	double nuEvFsplMass = TMath::Power( (nuEvFsplE *nuEvFsplE - nuEvFsplMom*nuEvFsplMom), 0.5); 
+	//kinetic energy
+	double nuEvFsplT = 0.0;
+	if(cc)nuEvFsplT = nuEvFsplE - nuEvFsplMass;
+	if(!cc)nuEvFsplT = nuEvFsplE;
+	
+    	double nuEvFssChargedE_CC = 0.0;
+    	double nuEvFssChargedE_NC = 0.0;
+    	double nuEvFssNeutronE_CC = 0.0;
+    	double nuEvFssNeutronE_NC = 0.0;
+    	double nuEvFssGammaE_CC = 0.0;
+    	double nuEvFssGammaE_NC = 0.0;
+    	double nuEvNeutrinoE_NC = 0.0;
+	
+    	double nuEvFinalNuE = 0.0;
+	
+	double totKinEnergy = nuEvFsplT;
+	
+	std::vector<ParticleDescrShortRecord> vector = nuEvent_->getFssVector();
+
+    	for(int index=0;index<vector.size(); index++){
+	  
+      	  int nuEvFssPDG = vector.at(index).getPDG();
+	  double nuEvFssE = vector.at(index).getP4().E() * (1./CLHEP::GeV);
+    	  double nuEvFssMomX = vector.at(index).getP4().X() * (1./CLHEP::GeV);
+    	  double nuEvFssMomY = vector.at(index).getP4().Y() * (1./CLHEP::GeV);
+    	  double nuEvFssMomZ = vector.at(index).getP4().Z() * (1./CLHEP::GeV);
+	  
+	  double nuEvFssMom = TMath::Power( ( (nuEvFssMomX*nuEvFssMomX) 
+					      + (nuEvFssMomY*nuEvFssMomY) + (nuEvFssMomZ*nuEvFssMomZ) ) ,0.5);
+	  double nuEvFssMass = TMath::Power( ((nuEvFssE *nuEvFssE) - (nuEvFssMom*nuEvFssMom)), 0.5); 
+	  
+	  //kinetic energy
+	  double nuEvFssT = nuEvFssE - nuEvFssMass;
+	  
+	  if(nuEvFssPDG < 10000)totKinEnergy += nuEvFssT;
+	  
+          //CC events
+          if (cc){
+	    
+	    //add the muon energy as it is charged
+	    if(index==0) nuEvFssChargedE_CC +=nuEvFsplT;
+	    
+	    if( (nuEvFssPDG == 13) || (nuEvFssPDG == -13)){
+	      
+	      //if(nuEvFssE!=0) nuEvFssT = nuEvFssE - muonMass;
+	      nuEvFssChargedE_CC += nuEvFssT;
+	    }
+	    
+	    if((nuEvFssPDG == 11)|| (nuEvFssPDG == -11)){
+	      
+	      //if(nuEvFssE!=0)nuEvFssT = nuEvFssE - electronMass;
+	      nuEvFssChargedE_CC += nuEvFssT;
+	    }
+	    
+	    if(nuEvFssPDG == 2212){
+	      
+	      //if(nuEvFssE!=0)nuEvFssT = nuEvFssE - protonMass;
+	      nuEvFssChargedE_CC += nuEvFssT;
+	    }
+	    
+	    if( (nuEvFssPDG == 211) || (nuEvFssPDG == -211) ){
+	      
+	      //if(nuEvFssE!=0)nuEvFssT = nuEvFssE - pipMass;
+	      nuEvFssChargedE_CC += nuEvFssT;
+	    }
+	    
+	    if( nuEvFssPDG == 2112 ){
+	      
+	      //if(nuEvFssE!=0)nuEvFssT = nuEvFssE - neutronMass;
+	      nuEvFssNeutronE_CC += nuEvFssT;
+	    }
+	    
+	    if( nuEvFssPDG == 22 ){
+	      
+	      //if(nuEvFssE!=0)nuEvFssT = nuEvFssE;
+	      nuEvFssGammaE_CC += nuEvFssT;
+	    }
+	    
+	    if( nuEvFssPDG == 111 ){
+	      
+	      //if(nuEvFssE!=0)nuEvFssT = nuEvFssE - pi0Mass;
+	      nuEvFssGammaE_CC += nuEvFssT;
+	    }
+	    
+          }
+	  
+          //NC events
+          if (!cc){
+	    
+	    //count the neutino energy as it is charged
+	    if(index==0) nuEvNeutrinoE_NC =nuEvFsplT;
+	    
+	    if( (nuEvFssPDG == 13) || (nuEvFssPDG == -13) ){
+	      
+	      if(nuEvFssE!=0)nuEvFssT = nuEvFssE - muonMass;
+	      nuEvFssChargedE_NC += nuEvFssT;
+	    }
+	    
+	    if((nuEvFssPDG == 11)|| (nuEvFssPDG == -11)){
+	      
+	      if(nuEvFssE!=0)nuEvFssT = nuEvFssE - electronMass;
+	      nuEvFssChargedE_NC += nuEvFssT;
+	    }
+	    
+	    if(nuEvFssPDG == 2212){
+	      
+	      if(nuEvFssE!=0)nuEvFssT = nuEvFssE - protonMass;
+	      nuEvFssChargedE_NC += nuEvFssT;
+	    }
+	    
+	    if((nuEvFssPDG == 211)|| (nuEvFssPDG == -211)){
+	      
+	      if(nuEvFssE!=0)nuEvFssT = nuEvFssE - pipMass;
+	      nuEvFssChargedE_NC += nuEvFssT;
+	    }
+	    
+	    if( nuEvFssPDG == 2112 ){
+	      
+	      if(nuEvFssE!=0)nuEvFssT = nuEvFssE - neutronMass;
+	      nuEvFssNeutronE_NC += nuEvFssT;
+	    }
+	    
+	    if ( nuEvFssPDG == 22 ){
+	      
+	      if(nuEvFssE!=0)nuEvFssT = nuEvFssE;
+	      nuEvFssGammaE_NC += nuEvFssT;
+	    }
+	    
+	    if(nuEvFssPDG == 111){
+	      
+	      if(nuEvFssE!=0)nuEvFssT = nuEvFssE - pi0Mass;
+	      nuEvFssGammaE_NC += nuEvFssT;
+	    }
+          }
+	  if(verbose_>1){
+	    std::cout << "\nParticle: " <<nuEvFssPDG 
+		      << ", Mass: "<< nuEvFssMass << " GeV/c2"
+		      << ", Energy: "<< nuEvFssE << " GeV"
+		      << ", KineticEnergy: "<< nuEvFssT << " GeV"
+		      << ", In Node: " << nodeName.c_str();
+	  }
+	}
+	
+	//double totEnergy = nuEvFssChargedE_CC + nuEvFssNeutronE_CC + nuEvFssGammaE_CC 
+	//			+ nuEvFssChargedE_NC + nuEvFssNeutronE_NC + nuEvFssGammaE_NC + nuEvFinalNuE;
+	
+	//add the hit nucleon energy to give the total primary energy at interaction vertex
+	
+	if(verbose_>0){
+	  std::cout << "\n-----------------------------------"
+		    << "\nCharged Current Interaction? = " << cc 
+		    << "\nNeutrino Energy = " << nuE << " GeV"
+		    << "\nNucleon Energy = " << nuEvNuclE << " GeV"
+		    << "\nFspl Kinetic Energy = " << nuEvFsplT << " GeV"
+		    << "\nFspl Mass = " << nuEvFsplMass << " GeV/c2";
+
+	  if(cc)std::cout << "\nCharged Energy = " << nuEvFssChargedE_CC << " GeV" <<std::endl;
+	  if(!cc)std::cout << "\nCharged Energy = " << nuEvFssChargedE_NC << " GeV" <<std::endl;
+	  if(cc)std::cout << "\nNeutron Energy = " << nuEvFssNeutronE_CC << " GeV" <<std::endl;
+	  if(!cc)std::cout << "\nNeutron Energy = " << nuEvFssNeutronE_NC << " GeV" <<std::endl;
+	  if(cc)std::cout << "\nGamma Energy = " << nuEvFssGammaE_CC << " GeV" <<std::endl;
+	  if(!cc)std::cout << "\nGamma Energy = " << nuEvFssGammaE_NC << " GeV" <<std::endl;
+	  
+	  
+	  //std::cout << "\nTotal Energy from sum of GENIE primaries = " << nuE << " GeV" <<std::endl;
+	  std::cout << "\nTotal Kinetic Energy = " << totKinEnergy << " GeV" <<std::endl;
+	}
+    	//nuE += nuEvNuclE;
+	
+    	double chargedE_CC = nuEvFssChargedE_CC/totKinEnergy;
+    	double neutronE_CC = nuEvFssNeutronE_CC/totKinEnergy;
+    	double gammaE_CC = nuEvFssGammaE_CC/totKinEnergy;
+    	double chargedE_NC = nuEvFssChargedE_NC/totKinEnergy;
+    	double neutronE_NC = nuEvFssNeutronE_NC/totKinEnergy;
+    	double gammaE_NC = nuEvFssGammaE_NC/totKinEnergy;
+    	double neutrinoE_NC = nuEvNeutrinoE_NC/totKinEnergy;
+	
+	if(verbose_>0){
+	  if (cc)std::cout << "\nCharged CC Energy ratio = " << chargedE_CC;
+	  if (cc)std::cout << "\nNeutron CC Energy ratio = " << neutronE_CC;
+	  if (cc)std::cout << "\nGamma CC Energy ratio = " << gammaE_CC;
+	  if (!cc)std::cout << "\nCharged NC Energy ratio = " << chargedE_NC;
+	  if (!cc)std::cout << "\nNeutron NC Energy ratio = " << neutronE_NC;
+	  if (!cc)std::cout << "\nGamma NC Energy ratio = " << gammaE_NC;
+	  if (!cc)std::cout << "\nNeutrino NC Energy ratio = " << neutrinoE_NC;
+	  std::cout << "\nRatio Sum = " 
+		    << chargedE_CC+neutronE_CC+gammaE_CC+chargedE_NC+neutronE_NC+gammaE_NC+neutrinoE_NC
+		    << " \n----------------" <<std::endl;
+	}
+    	
+	//fill hists
+	if (chargedE_CC>0)nuEventChargedE_CC_h1d_.Fill(chargedE_CC);
+    	if (chargedE_NC>0)nuEventChargedE_NC_h1d_.Fill(chargedE_NC);
+    	if (neutronE_CC>0)nuEventNeutronE_CC_h1d_.Fill(neutronE_CC);
+    	if (neutronE_NC>0)nuEventNeutronE_NC_h1d_.Fill(neutronE_NC);
+    	if (gammaE_CC>0)nuEventPhotonE_CC_h1d_.Fill(gammaE_CC);
+    	if (gammaE_NC>0)nuEventPhotonE_NC_h1d_.Fill(gammaE_NC);
+	if (neutrinoE_NC>0)nuEventNeutrinoE_NC_h1d_.Fill(neutrinoE_NC);
+	
+    	TLorentzVector nuHitPos = nuHit_->getPosition() * (1./ CLHEP::m);
+    	TLorentzVector nuEvPos = nuEvent_->getPosition() * (1./ CLHEP::m);
+	
+    	nuHitZ_h1d_.Fill(nuHitPos.Z());
+    	nuHitXY_h2d_.Fill(nuHitPos.X(), nuHitPos.Y());
+	
+    	nuEventZ_h1d_.Fill(nuEvPos.Z());
+    	nuEventXY_h2d_.Fill(nuEvPos.X(), nuEvPos.Y());
+	
+	//volume counts
+	if(nodeName.compare( 0,6, "tpcFid" ) ==0)tpcFidCount++;
+	else if(nodeName.compare( 0,11, "innerVessel" ) ==0)innerVesselCount++;
+	else if(nodeName.compare( 0,6, "vessel" ) ==0)vesselCount++;
+	else if(nodeName.compare( 0,5, "scint" ) ==0)scintCount++;
+	else if(nodeName.compare( 0,6, "mother" ) ==0)innerVesselCount++;
+	else if(nodeName.compare( 0,4, "rock" ) ==0)rockCount++;
+	else otherCount++;
+        std::cout << "\n********************"
+                  <<"\nVolume Counts"
+                  << "\n\tTpcFidVolume: " << tpcFidCount
+                  << "\n\tVesselVolume: " << vesselCount
+                  << "\n\tInnerVesselVolume: " << innerVesselCount
+                  << "\n\tScintVolume: " << scintCount
+        //        << "\n\tMotherVolume: " << motherCount
+                  << "\n\tRockVolume: " << rockCount
+                  << "\n\tNo Volume found: " << otherCount
+                  << "\n********************\n";
+
+    	i++;
+      }
+    }	
+    
+    i=0;
+    
+    if(detectorHitsTree){
+      this->setBackTracer(detectorHitsTree);
+      
+      /*
+      //loop over detector tree
+      while(i<detHits_nEntries) {
+      detectorHitsTree->GetEntry(i);
+      
+      //piDecayTree->GetEntry(backTracer_[0]);
+      nuHitTree->GetEntry(backTracer_[0]);
+      nuEventTree->GetEntry(backTracer_[1]);
+      detectorHitsTree->GetEntry(backTracer_[2]);
+      
+      TLorentzVector nuEvPos = nuEvent_->getPosition() * (1./ CLHEP::m);
+      TLorentzVector nuHitPos = nuHit_->getPosition() * (1./ CLHEP::m);
+      //TLorentzVector tankHitsPos = mcHits_->getTankHit().getPosition() * (1./ CLHEP::m);
+      //TLorentzVector stopPos = range_->getPosition() * (1./ CLHEP::m);
+      
+      //double nuE = nuHit_->getP4().E() * (1./CLHEP::GeV);
+      //fluxE_h1d_.Fill(nuE);
+      //double muE = mcHits_->getTankHit().getMuon().getP4().E() * (1./CLHEP::GeV);
+      
+      double r = range_->getRange() * (1./CLHEP::m);
+      range_h1d_.Fill(r);
+      
+      //rangeVE_h2d_.Fill(muE, r);
+      nuHits_h3d_.Fill(nuHitPos.Z(), nuHitPos.X(), nuHitPos.Y());
+      nuEvents_h3d_.Fill(nuEvPos.Z(), nuEvPos.X(), nuEvPos.Y());
+      //detHits_h3d_.Fill(tankHitsPos.Z(), tankHitsPos.X(), tankHitsPos.Y());
+      
+      //double x = (tankHitsPos.Z()-20.);
+      //double y = -tankHitsPos.Y();
+      //double z = tankHitsPos.X();
+      //double x_ = x*cos(phy) + -y*sin(phy);
+      //double y_ = x*sin(phy) + y*cos(phy);
+      
+      //detHits_h2d_Ver.Fill(x_, y_);
+      //detHits_h2d_Hor.Fill(x_, z);
+      
+      double xr = (stopPos.Z()-20.);
+      double yr = -stopPos.Y();
+      double zr = stopPos.X();
+      double xr_ = xr*cos(phy) + -yr*sin(phy);
+      double yr_ = xr*sin(phy) + yr*cos(phy);
+      range_h2d_Ver.Fill(xr_, yr_);
+      range_h2d_Hor.Fill(xr_, zr);
+      
+      if (1) {
+      std::cout<<backTracer_[0]<<" "<<backTracer_[1]<<" "<<backTracer_[2]<<" "<<std::endl;
+      //piDecay_->printToStream(std::cout);
+      nuHit_->printToStream(std::cout);
+      nuEvent_->printToStream(std::cout);
+      //mcHits_->printToStream(std::cout);
+      //range_->printToStream(std::cout);
+      std::cout << std::endl;
+      } 
+      
+      i++;
+      }
+      */
+    }
+    
+    datafile.Close();
+
+  } //end loop over files
+
+  std::cout << "\n------------------------"
+		<< "\nTotal number of neutrino interactions in geometry: "
+		<< totalNuEvents
+		<< "\n------------------------\n";
+
+  if(verbose_>=0){
+        std::cout << "\n********************"
+                  <<"\nVolume Counts"
+                  << "\n\tTpcFidVolume: " << tpcFidCount
+                  << "\n\tVesselVolume: " << vesselCount
+                  << "\n\tInnerVesselVolume: " << innerVesselCount
+                  << "\n\tScintVolume: " << scintCount
+        //        << "\n\tMotherVolume: " << motherCount
+                  << "\n\tRockVolume: " << rockCount
+                  << "\n\tNo Volume found: " << otherCount
+                  << "\n********************\n";
+
+  }
+
+  std::cout << "\n----------------------------------"
+	    << "\n  Writing to file: " << outputFileName_.c_str()
+	    << "\n----------------------------------\n";
+
+  TFile histofile(outputFileName_.c_str(),"recreate");
+
+  nuHits_h3d_.SetMarkerColor(kGreen);
+  nuHits_h3d_.Write();
+
+  nuEvents_h3d_.SetMarkerColor(kBlue);
+  nuEvents_h3d_.Write();
+
+  detHits_h3d_.SetMarkerColor(kRed);
+  detHits_h3d_.Write();
+
+  detHits_h2d_Ver.SetMarkerColor(kRed);
+  detHits_h2d_Ver.Write();
+  detHits_h2d_Hor.Write();
+
+  range_h2d_Ver.Write();
+  range_h2d_Hor.Write();
+
+  fluxE_h1d_.Write();
+
+  nuHitZ_h1d_.Write();
+  nuHitXY_h2d_.SetDrawOption("COLZ");
+  nuHitXY_h2d_.Write();
+
+  nuEventZ_h1d_.Write();
+  nuEventXY_h2d_.Write();
+
+  nuEventE_h1d_.Write();
+
+  nuEventChargedE_CC_h1d_.Write();
+  nuEventChargedE_NC_h1d_.Write();
+  nuEventNeutronE_CC_h1d_.Write();
+  nuEventNeutronE_NC_h1d_.Write();
+  nuEventPhotonE_CC_h1d_.Write();
+  nuEventPhotonE_NC_h1d_.Write();
+  nuEventNeutrinoE_NC_h1d_.Write();
+  range_h1d_.Write();
+  rangeVE_h2d_.Write();
+
+  std::cout << "\n----------------------------------"
+	    << "\n             Closing...           "
+	    << "\n----------------------------------\n";
+
+  histofile.Close();
+}
+
+int main(int argc, char ** argv) {
+  try {
+    myPlotter plotter;
+    plotter.getRunTimeArguments(argc, argv);
+    plotter.loadDataCards();
+    plotter.plot();
+
+  } catch (LbnoException e) {
+    std::cout << e.GetLocation() << std::endl;
+    std::cout << e.GetDescription() << std::endl;
+    return 1;
+  }
+
+  return 0;
+}
+
+

@@ -1,0 +1,119 @@
+Installing lbno-nd for the first time:
+--------------------------------------------------
+ 1. As root do:
+
+   IF using "Yum" then follow:
+
+      yum -y groupinstall "Development Tools" 
+
+      yum -y groupinstall "Development Libraries" 
+
+      yum -y install cmake libxml2 log4cpp log4cpp-devel mysql mysql-devel
+
+      yum -y install libX11-devel libXpm-devel libXmu-devel libXt-devel libXft-devel
+
+      yum -y install mesa-libGL mesa-libGL-devel mesa-libGLU-devel
+
+   For others using "Apt-get" (Ubuntu users and must have root access):
+
+      sudo apt-get install  subversion
+   
+      sudo apt-get install dpkg-dev
+
+      sudo apt-get install make
+
+      sudo apt-get install g++
+
+      sudo apt-get install gcc
+   
+      sudo apt-get install gfortran
+
+      sudo apt-get install binutils
+
+      sudo apt-get install libx11-dev
+
+      sudo apt-get install libxpm-dev
+
+      sudo apt-get install libxft-dev
+
+      sudo apt-get install libxext-dev
+
+      sudo apt-get install liblog4cpp5-dev
+
+   optional packages can be found at: http://root.cern.ch/drupal/content/build-prerequisites
+
+ 2. Check the version of cmake:
+
+      cmake --version
+
+    if your versions is older than 2.8.8 in a separate terminal do as root:
+
+      yum -y remove cmake
+
+      export THIRD_PARTY_DIR=$PWD/third_party
+
+      source third_party/install_scripts/install_env.sh
+
+      source third_party/install_scripts/install_cmake.sh
+
+      chown -R <yourUserName>:<yourGroup> cmake*
+
+      cd ../
+
+    --------------------------------------------------
+
+    or using apt-get simply:
+
+      sudo apt-get install cmake
+
+ 3. Validate the certificate for https://genie.hepforge.org manually:
+
+      svn info https://genie.hepforge.org 
+
+    then, if asked, answer "p" for permanently.
+
+
+
+ 4. Run the installation script:
+
+      source install.sh
+
+
+
+
+ Installing a new branch of the code using already existing 3rd Party:
+---------------------------------------------------------------------------
+
+ 1. Get a new branch of the code:
+
+      bzr branch lp:something
+
+      cd lbno-nd/
+
+
+
+ 2. Edit line 5 in setup.sh:
+
+      source $LBNO/third_party/install_scripts/install_env.sh
+
+    to
+
+      source path_to_existing_3rd_party/install_scripts/install_env.sh
+
+
+
+ 3. Load the environment:
+
+      unset LBNO
+
+      source setup.sh
+
+
+
+ 4. Build:
+
+      cd build/
+
+      cmake ../src/
+
+      make
