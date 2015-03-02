@@ -1,0 +1,1540 @@
+<?xml version="1.0"?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+  <define>
+    <position name="scintVolumeZ_0inmotherVolumepos" x="0.000000" y="0.000000" z="150.500000" unit="cm"/>
+    <position name="scintVolumeZ_31inmotherVolumepos" x="0.000000" y="0.000000" z="-150.500000" unit="cm"/>
+    <position name="scintVolumeZ_1inmotherVolumepos" x="0.000000" y="0.000000" z="151.500000" unit="cm"/>
+    <position name="scintVolumeZ_32inmotherVolumepos" x="0.000000" y="0.000000" z="-151.500000" unit="cm"/>
+    <position name="scintVolumeZ_2inmotherVolumepos" x="0.000000" y="0.000000" z="152.500000" unit="cm"/>
+    <position name="scintVolumeZ_33inmotherVolumepos" x="0.000000" y="0.000000" z="-152.500000" unit="cm"/>
+    <position name="scintVolumeZ_3inmotherVolumepos" x="0.000000" y="0.000000" z="153.500000" unit="cm"/>
+    <position name="scintVolumeZ_34inmotherVolumepos" x="0.000000" y="0.000000" z="-153.500000" unit="cm"/>
+    <position name="scintVolumeZ_4inmotherVolumepos" x="0.000000" y="0.000000" z="154.500000" unit="cm"/>
+    <position name="scintVolumeZ_35inmotherVolumepos" x="0.000000" y="0.000000" z="-154.500000" unit="cm"/>
+    <position name="scintVolumeZ_5inmotherVolumepos" x="0.000000" y="0.000000" z="155.500000" unit="cm"/>
+    <position name="scintVolumeZ_36inmotherVolumepos" x="0.000000" y="0.000000" z="-155.500000" unit="cm"/>
+    <position name="scintVolumeZ_6inmotherVolumepos" x="0.000000" y="0.000000" z="156.500000" unit="cm"/>
+    <position name="scintVolumeZ_37inmotherVolumepos" x="0.000000" y="0.000000" z="-156.500000" unit="cm"/>
+    <position name="scintVolumeZ_7inmotherVolumepos" x="0.000000" y="0.000000" z="157.500000" unit="cm"/>
+    <position name="scintVolumeZ_38inmotherVolumepos" x="0.000000" y="0.000000" z="-157.500000" unit="cm"/>
+    <position name="scintVolumeZ_8inmotherVolumepos" x="0.000000" y="0.000000" z="158.500000" unit="cm"/>
+    <position name="scintVolumeZ_39inmotherVolumepos" x="0.000000" y="0.000000" z="-158.500000" unit="cm"/>
+    <position name="scintVolumeZ_9inmotherVolumepos" x="0.000000" y="0.000000" z="159.500000" unit="cm"/>
+    <position name="scintVolumeZ_40inmotherVolumepos" x="0.000000" y="0.000000" z="-159.500000" unit="cm"/>
+    <position name="scintVolumeZ_10inmotherVolumepos" x="0.000000" y="0.000000" z="160.500000" unit="cm"/>
+    <position name="scintVolumeZ_41inmotherVolumepos" x="0.000000" y="0.000000" z="-160.500000" unit="cm"/>
+    <position name="scintVolumeZ_11inmotherVolumepos" x="0.000000" y="0.000000" z="161.500000" unit="cm"/>
+    <position name="scintVolumeZ_42inmotherVolumepos" x="0.000000" y="0.000000" z="-161.500000" unit="cm"/>
+    <position name="scintVolumeZ_12inmotherVolumepos" x="0.000000" y="0.000000" z="162.500000" unit="cm"/>
+    <position name="scintVolumeZ_43inmotherVolumepos" x="0.000000" y="0.000000" z="-162.500000" unit="cm"/>
+    <position name="scintVolumeZ_13inmotherVolumepos" x="0.000000" y="0.000000" z="163.500000" unit="cm"/>
+    <position name="scintVolumeZ_44inmotherVolumepos" x="0.000000" y="0.000000" z="-163.500000" unit="cm"/>
+    <position name="scintVolumeZ_14inmotherVolumepos" x="0.000000" y="0.000000" z="164.500000" unit="cm"/>
+    <position name="scintVolumeZ_45inmotherVolumepos" x="0.000000" y="0.000000" z="-164.500000" unit="cm"/>
+    <position name="scintVolumeZ_15inmotherVolumepos" x="0.000000" y="0.000000" z="165.500000" unit="cm"/>
+    <position name="scintVolumeZ_46inmotherVolumepos" x="0.000000" y="0.000000" z="-165.500000" unit="cm"/>
+    <position name="scintVolumeZ_16inmotherVolumepos" x="0.000000" y="0.000000" z="166.500000" unit="cm"/>
+    <position name="scintVolumeZ_47inmotherVolumepos" x="0.000000" y="0.000000" z="-166.500000" unit="cm"/>
+    <position name="scintVolumeZ_17inmotherVolumepos" x="0.000000" y="0.000000" z="167.500000" unit="cm"/>
+    <position name="scintVolumeZ_48inmotherVolumepos" x="0.000000" y="0.000000" z="-167.500000" unit="cm"/>
+    <position name="scintVolumeZ_18inmotherVolumepos" x="0.000000" y="0.000000" z="168.500000" unit="cm"/>
+    <position name="scintVolumeZ_49inmotherVolumepos" x="0.000000" y="0.000000" z="-168.500000" unit="cm"/>
+    <position name="scintVolumeZ_19inmotherVolumepos" x="0.000000" y="0.000000" z="169.500000" unit="cm"/>
+    <position name="scintVolumeZ_50inmotherVolumepos" x="0.000000" y="0.000000" z="-169.500000" unit="cm"/>
+    <position name="scintVolumeZ_20inmotherVolumepos" x="0.000000" y="0.000000" z="170.500000" unit="cm"/>
+    <position name="scintVolumeZ_51inmotherVolumepos" x="0.000000" y="0.000000" z="-170.500000" unit="cm"/>
+    <position name="scintVolumeZ_21inmotherVolumepos" x="0.000000" y="0.000000" z="171.500000" unit="cm"/>
+    <position name="scintVolumeZ_52inmotherVolumepos" x="0.000000" y="0.000000" z="-171.500000" unit="cm"/>
+    <position name="scintVolumeZ_22inmotherVolumepos" x="0.000000" y="0.000000" z="172.500000" unit="cm"/>
+    <position name="scintVolumeZ_53inmotherVolumepos" x="0.000000" y="0.000000" z="-172.500000" unit="cm"/>
+    <position name="scintVolumeZ_23inmotherVolumepos" x="0.000000" y="0.000000" z="173.500000" unit="cm"/>
+    <position name="scintVolumeZ_54inmotherVolumepos" x="0.000000" y="0.000000" z="-173.500000" unit="cm"/>
+    <position name="scintVolumeZ_24inmotherVolumepos" x="0.000000" y="0.000000" z="174.500000" unit="cm"/>
+    <position name="scintVolumeZ_55inmotherVolumepos" x="0.000000" y="0.000000" z="-174.500000" unit="cm"/>
+    <position name="scintVolumeZ_25inmotherVolumepos" x="0.000000" y="0.000000" z="175.500000" unit="cm"/>
+    <position name="scintVolumeZ_56inmotherVolumepos" x="0.000000" y="0.000000" z="-175.500000" unit="cm"/>
+    <position name="scintVolumeZ_26inmotherVolumepos" x="0.000000" y="0.000000" z="176.500000" unit="cm"/>
+    <position name="scintVolumeZ_57inmotherVolumepos" x="0.000000" y="0.000000" z="-176.500000" unit="cm"/>
+    <position name="scintVolumeZ_27inmotherVolumepos" x="0.000000" y="0.000000" z="177.500000" unit="cm"/>
+    <position name="scintVolumeZ_58inmotherVolumepos" x="0.000000" y="0.000000" z="-177.500000" unit="cm"/>
+    <position name="scintVolumeZ_28inmotherVolumepos" x="0.000000" y="0.000000" z="178.500000" unit="cm"/>
+    <position name="scintVolumeZ_59inmotherVolumepos" x="0.000000" y="0.000000" z="-178.500000" unit="cm"/>
+    <position name="scintVolumeZ_29inmotherVolumepos" x="0.000000" y="0.000000" z="179.500000" unit="cm"/>
+    <position name="scintVolumeZ_60inmotherVolumepos" x="0.000000" y="0.000000" z="-179.500000" unit="cm"/>
+    <position name="scintVolumeZ_30inmotherVolumepos" x="0.000000" y="0.000000" z="180.500000" unit="cm"/>
+    <position name="scintVolumeZ_61inmotherVolumepos" x="0.000000" y="0.000000" z="-180.500000" unit="cm"/>
+    <position name="scintVolumeY_0inmotherVolumepos" x="0.000000" y="120.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_31inmotherVolumepos" x="0.000000" y="-120.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_1inmotherVolumepos" x="0.000000" y="121.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_32inmotherVolumepos" x="0.000000" y="-121.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_2inmotherVolumepos" x="0.000000" y="122.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_33inmotherVolumepos" x="0.000000" y="-122.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_3inmotherVolumepos" x="0.000000" y="123.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_34inmotherVolumepos" x="0.000000" y="-123.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_4inmotherVolumepos" x="0.000000" y="124.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_35inmotherVolumepos" x="0.000000" y="-124.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_5inmotherVolumepos" x="0.000000" y="125.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_36inmotherVolumepos" x="0.000000" y="-125.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_6inmotherVolumepos" x="0.000000" y="126.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_37inmotherVolumepos" x="0.000000" y="-126.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_7inmotherVolumepos" x="0.000000" y="127.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_38inmotherVolumepos" x="0.000000" y="-127.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_8inmotherVolumepos" x="0.000000" y="128.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_39inmotherVolumepos" x="0.000000" y="-128.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_9inmotherVolumepos" x="0.000000" y="129.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_40inmotherVolumepos" x="0.000000" y="-129.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_10inmotherVolumepos" x="0.000000" y="130.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_41inmotherVolumepos" x="0.000000" y="-130.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_11inmotherVolumepos" x="0.000000" y="131.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_42inmotherVolumepos" x="0.000000" y="-131.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_12inmotherVolumepos" x="0.000000" y="132.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_43inmotherVolumepos" x="0.000000" y="-132.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_13inmotherVolumepos" x="0.000000" y="133.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_44inmotherVolumepos" x="0.000000" y="-133.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_14inmotherVolumepos" x="0.000000" y="134.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_45inmotherVolumepos" x="0.000000" y="-134.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_15inmotherVolumepos" x="0.000000" y="135.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_46inmotherVolumepos" x="0.000000" y="-135.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_16inmotherVolumepos" x="0.000000" y="136.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_47inmotherVolumepos" x="0.000000" y="-136.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_17inmotherVolumepos" x="0.000000" y="137.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_48inmotherVolumepos" x="0.000000" y="-137.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_18inmotherVolumepos" x="0.000000" y="138.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_49inmotherVolumepos" x="0.000000" y="-138.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_19inmotherVolumepos" x="0.000000" y="139.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_50inmotherVolumepos" x="0.000000" y="-139.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_20inmotherVolumepos" x="0.000000" y="140.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_51inmotherVolumepos" x="0.000000" y="-140.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_21inmotherVolumepos" x="0.000000" y="141.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_52inmotherVolumepos" x="0.000000" y="-141.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_22inmotherVolumepos" x="0.000000" y="142.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_53inmotherVolumepos" x="0.000000" y="-142.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_23inmotherVolumepos" x="0.000000" y="143.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_54inmotherVolumepos" x="0.000000" y="-143.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_24inmotherVolumepos" x="0.000000" y="144.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_55inmotherVolumepos" x="0.000000" y="-144.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_25inmotherVolumepos" x="0.000000" y="145.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_56inmotherVolumepos" x="0.000000" y="-145.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_26inmotherVolumepos" x="0.000000" y="146.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_57inmotherVolumepos" x="0.000000" y="-146.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_27inmotherVolumepos" x="0.000000" y="147.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_58inmotherVolumepos" x="0.000000" y="-147.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_28inmotherVolumepos" x="0.000000" y="148.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_59inmotherVolumepos" x="0.000000" y="-148.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_29inmotherVolumepos" x="0.000000" y="149.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_60inmotherVolumepos" x="0.000000" y="-149.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_30inmotherVolumepos" x="0.000000" y="150.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeY_61inmotherVolumepos" x="0.000000" y="-150.500000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_0inmotherVolumepos" x="120.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_31inmotherVolumepos" x="-120.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_1inmotherVolumepos" x="121.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_32inmotherVolumepos" x="-121.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_2inmotherVolumepos" x="122.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_33inmotherVolumepos" x="-122.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_3inmotherVolumepos" x="123.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_34inmotherVolumepos" x="-123.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_4inmotherVolumepos" x="124.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_35inmotherVolumepos" x="-124.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_5inmotherVolumepos" x="125.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_36inmotherVolumepos" x="-125.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_6inmotherVolumepos" x="126.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_37inmotherVolumepos" x="-126.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_7inmotherVolumepos" x="127.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_38inmotherVolumepos" x="-127.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_8inmotherVolumepos" x="128.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_39inmotherVolumepos" x="-128.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_9inmotherVolumepos" x="129.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_40inmotherVolumepos" x="-129.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_10inmotherVolumepos" x="130.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_41inmotherVolumepos" x="-130.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_11inmotherVolumepos" x="131.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_42inmotherVolumepos" x="-131.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_12inmotherVolumepos" x="132.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_43inmotherVolumepos" x="-132.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_13inmotherVolumepos" x="133.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_44inmotherVolumepos" x="-133.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_14inmotherVolumepos" x="134.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_45inmotherVolumepos" x="-134.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_15inmotherVolumepos" x="135.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_46inmotherVolumepos" x="-135.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_16inmotherVolumepos" x="136.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_47inmotherVolumepos" x="-136.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_17inmotherVolumepos" x="137.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_48inmotherVolumepos" x="-137.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_18inmotherVolumepos" x="138.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_49inmotherVolumepos" x="-138.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_19inmotherVolumepos" x="139.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_50inmotherVolumepos" x="-139.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_20inmotherVolumepos" x="140.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_51inmotherVolumepos" x="-140.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_21inmotherVolumepos" x="141.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_52inmotherVolumepos" x="-141.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_22inmotherVolumepos" x="142.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_53inmotherVolumepos" x="-142.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_23inmotherVolumepos" x="143.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_54inmotherVolumepos" x="-143.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_24inmotherVolumepos" x="144.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_55inmotherVolumepos" x="-144.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_25inmotherVolumepos" x="145.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_56inmotherVolumepos" x="-145.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_26inmotherVolumepos" x="146.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_57inmotherVolumepos" x="-146.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_27inmotherVolumepos" x="147.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_58inmotherVolumepos" x="-147.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_28inmotherVolumepos" x="148.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_59inmotherVolumepos" x="-148.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_29inmotherVolumepos" x="149.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_60inmotherVolumepos" x="-149.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_30inmotherVolumepos" x="150.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="scintVolumeX_61inmotherVolumepos" x="-150.500000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="tpcFidVolume_5inmotherVolumepos" x="0.000000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="motherVolume_4ininnerVesselVolumepos" x="0.000000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="innerVesselVolume_1invesselVolumepos" x="0.000000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="vesselVolume_3inmagnetVolumepos" x="0.000000" y="0.000000" z="0.000000" unit="cm"/>
+    <position name="magnetVolume_2incavityVolumepos" x="0.000000" y="0.000000" z="825.000000" unit="cm"/>
+    <rotation name="magnetVolume_2incavityVolumerot" x="90.000000" y="0.000000" z="-0.000000" unit="deg"/>
+    <position name="cavityVolume_1inrockVolumepos" x="0.000000" y="825.000000" z="0.000000" unit="cm"/>
+    <rotation name="cavityVolume_1inrockVolumerot" x="-90.000000" y="-0.000000" z="-0.000000" unit="deg"/>
+  </define>
+  <materials>
+    <element name="OXYGEN_elm" formula="O" Z="8">
+      <atom unit="g/mole" value="15.999400"/>
+    </element>
+    <element name="SILICON_elm" formula="SI" Z="14">
+      <atom unit="g/mole" value="28.085500"/>
+    </element>
+    <material name="Sandstone">
+      <D unit="g/cm3" value="2.320000"/>
+      <fraction n="0.533300" ref="OXYGEN_elm"/>
+      <fraction n="0.466700" ref="SILICON_elm"/>
+    </material>
+    <material name="matArgon" Z="18.000000">
+      <D unit="g/cm3" value="0.035000"/>
+      <atom unit="g/mole" value="39.950000"/>
+    </material>
+    <material name="Iron" Z="26.000000">
+      <D unit="g/cm3" value="7.870000"/>
+      <atom unit="g/mole" value="55.850000"/>
+    </material>
+    <element name="NITROGEN_elm" formula="N" Z="7">
+      <atom unit="g/mole" value="14.006740"/>
+    </element>
+    <material name="Air">
+      <D unit="g/cm3" value="0.001290"/>
+      <fraction n="0.760000" ref="NITROGEN_elm"/>
+      <fraction n="0.240000" ref="OXYGEN_elm"/>
+    </material>
+    <element name="CARBON_elm" formula="C" Z="6">
+      <atom unit="g/mole" value="12.010700"/>
+    </element>
+    <element name="HYDROGEN_elm" formula="H" Z="1">
+      <atom unit="g/mole" value="1.007940"/>
+    </element>
+    <material name="Scintillator">
+      <D unit="g/cm3" value="1.180000"/>
+      <fraction n="0.850000" ref="CARBON_elm"/>
+      <fraction n="0.150000" ref="HYDROGEN_elm"/>
+    </material>
+  </materials>
+  <solids>
+    <box name="rockBox" x="4000.000000" y="4000.000000" z="6000.000000" lunit="cm"/>
+    <tube name="cavityTube" rmin="0.000000" rmax="450.000000" z="2350.000000" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="magnetTube" rmin="250.000000" rmax="350.000000" z="300.000000" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <tube name="vesselCenterTube" rmin="0.000000" rmax="250.000000" z="300.000000" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <sphere name="vesselNearEnd" rmin="0.000000" rmax="362.500000" startphi="0.000000" deltaphi="360.000000" starttheta="0.000000" deltatheta="43.602818" aunit="deg" lunit="cm"/>
+    <union name="TGeoCompositeShape0x1">
+      <first ref="vesselCenterTube"/>
+      <second ref="vesselNearEnd"/>
+      <position name="TGeoCompositeShape0x1vesselNearEndpos" x="0.000000" y="0.000000" z="-112.500000" unit="cm"/>
+    </union>
+    <sphere name="vesselFarEnd" rmin="0.000000" rmax="362.500000" startphi="0.000000" deltaphi="360.000000" starttheta="136.397186" deltatheta="43.602814" aunit="deg" lunit="cm"/>
+    <union name="TGeoCompositeShape">
+      <first ref="TGeoCompositeShape0x1"/>
+      <second ref="vesselFarEnd"/>
+      <position name="TGeoCompositeShapevesselFarEndpos" x="0.000000" y="0.000000" z="112.500000" unit="cm"/>
+    </union>
+    <tube name="innerVesselCenterTube" rmin="0.000000" rmax="248.000000" z="300.000000" startphi="0" deltaphi="360" aunit="deg" lunit="cm"/>
+    <sphere name="innerVesselNearEnd" rmin="0.000000" rmax="362.795923" startphi="0.000000" deltaphi="360.000000" starttheta="0.000000" deltatheta="43.124027" aunit="deg" lunit="cm"/>
+    <union name="TGeoCompositeShape0x3">
+      <first ref="innerVesselCenterTube"/>
+      <second ref="innerVesselNearEnd"/>
+      <position name="TGeoCompositeShape0x3innerVesselNearEndpos" x="0.000000" y="0.000000" z="-114.795923" unit="cm"/>
+    </union>
+    <sphere name="innerVesselFarEnd" rmin="0.000000" rmax="362.795923" startphi="0.000000" deltaphi="360.000000" starttheta="136.875977" deltatheta="43.124023" aunit="deg" lunit="cm"/>
+    <union name="TGeoCompositeShape0x2">
+      <first ref="TGeoCompositeShape0x3"/>
+      <second ref="innerVesselFarEnd"/>
+      <position name="TGeoCompositeShape0x2innerVesselFarEndpos" x="0.000000" y="0.000000" z="114.795923" unit="cm"/>
+    </union>
+    <box name="motherBox" x="304.000000" y="304.000000" z="364.000000" lunit="cm"/>
+    <box name="scintBoxZ" x="240.000000" y="240.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x1" x="242.000000" y="242.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x2" x="244.000000" y="244.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x3" x="246.000000" y="246.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x4" x="248.000000" y="248.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x5" x="250.000000" y="250.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x6" x="252.000000" y="252.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x7" x="254.000000" y="254.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x8" x="256.000000" y="256.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x9" x="258.000000" y="258.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x10" x="260.000000" y="260.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x11" x="262.000000" y="262.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x12" x="264.000000" y="264.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x13" x="266.000000" y="266.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x14" x="268.000000" y="268.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x15" x="270.000000" y="270.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x16" x="272.000000" y="272.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x17" x="274.000000" y="274.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x18" x="276.000000" y="276.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x19" x="278.000000" y="278.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x20" x="280.000000" y="280.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x21" x="282.000000" y="282.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x22" x="284.000000" y="284.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x23" x="286.000000" y="286.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x24" x="288.000000" y="288.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x25" x="290.000000" y="290.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x26" x="292.000000" y="292.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x27" x="294.000000" y="294.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x28" x="296.000000" y="296.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x29" x="298.000000" y="298.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxZ0x30" x="300.000000" y="300.000000" z="1.000000" lunit="cm"/>
+    <box name="scintBoxY" x="240.000000" y="1.000000" z="302.000000" lunit="cm"/>
+    <box name="scintBoxY0x1" x="242.000000" y="1.000000" z="304.000000" lunit="cm"/>
+    <box name="scintBoxY0x2" x="244.000000" y="1.000000" z="306.000000" lunit="cm"/>
+    <box name="scintBoxY0x3" x="246.000000" y="1.000000" z="308.000000" lunit="cm"/>
+    <box name="scintBoxY0x4" x="248.000000" y="1.000000" z="310.000000" lunit="cm"/>
+    <box name="scintBoxY0x5" x="250.000000" y="1.000000" z="312.000000" lunit="cm"/>
+    <box name="scintBoxY0x6" x="252.000000" y="1.000000" z="314.000000" lunit="cm"/>
+    <box name="scintBoxY0x7" x="254.000000" y="1.000000" z="316.000000" lunit="cm"/>
+    <box name="scintBoxY0x8" x="256.000000" y="1.000000" z="318.000000" lunit="cm"/>
+    <box name="scintBoxY0x9" x="258.000000" y="1.000000" z="320.000000" lunit="cm"/>
+    <box name="scintBoxY0x10" x="260.000000" y="1.000000" z="322.000000" lunit="cm"/>
+    <box name="scintBoxY0x11" x="262.000000" y="1.000000" z="324.000000" lunit="cm"/>
+    <box name="scintBoxY0x12" x="264.000000" y="1.000000" z="326.000000" lunit="cm"/>
+    <box name="scintBoxY0x13" x="266.000000" y="1.000000" z="328.000000" lunit="cm"/>
+    <box name="scintBoxY0x14" x="268.000000" y="1.000000" z="330.000000" lunit="cm"/>
+    <box name="scintBoxY0x15" x="270.000000" y="1.000000" z="332.000000" lunit="cm"/>
+    <box name="scintBoxY0x16" x="272.000000" y="1.000000" z="334.000000" lunit="cm"/>
+    <box name="scintBoxY0x17" x="274.000000" y="1.000000" z="336.000000" lunit="cm"/>
+    <box name="scintBoxY0x18" x="276.000000" y="1.000000" z="338.000000" lunit="cm"/>
+    <box name="scintBoxY0x19" x="278.000000" y="1.000000" z="340.000000" lunit="cm"/>
+    <box name="scintBoxY0x20" x="280.000000" y="1.000000" z="342.000000" lunit="cm"/>
+    <box name="scintBoxY0x21" x="282.000000" y="1.000000" z="344.000000" lunit="cm"/>
+    <box name="scintBoxY0x22" x="284.000000" y="1.000000" z="346.000000" lunit="cm"/>
+    <box name="scintBoxY0x23" x="286.000000" y="1.000000" z="348.000000" lunit="cm"/>
+    <box name="scintBoxY0x24" x="288.000000" y="1.000000" z="350.000000" lunit="cm"/>
+    <box name="scintBoxY0x25" x="290.000000" y="1.000000" z="352.000000" lunit="cm"/>
+    <box name="scintBoxY0x26" x="292.000000" y="1.000000" z="354.000000" lunit="cm"/>
+    <box name="scintBoxY0x27" x="294.000000" y="1.000000" z="356.000000" lunit="cm"/>
+    <box name="scintBoxY0x28" x="296.000000" y="1.000000" z="358.000000" lunit="cm"/>
+    <box name="scintBoxY0x29" x="298.000000" y="1.000000" z="360.000000" lunit="cm"/>
+    <box name="scintBoxY0x30" x="300.000000" y="1.000000" z="362.000000" lunit="cm"/>
+    <box name="scintBoxX" x="1.000000" y="242.000000" z="302.000000" lunit="cm"/>
+    <box name="scintBoxX0x1" x="1.000000" y="244.000000" z="304.000000" lunit="cm"/>
+    <box name="scintBoxX0x2" x="1.000000" y="246.000000" z="306.000000" lunit="cm"/>
+    <box name="scintBoxX0x3" x="1.000000" y="248.000000" z="308.000000" lunit="cm"/>
+    <box name="scintBoxX0x4" x="1.000000" y="250.000000" z="310.000000" lunit="cm"/>
+    <box name="scintBoxX0x5" x="1.000000" y="252.000000" z="312.000000" lunit="cm"/>
+    <box name="scintBoxX0x6" x="1.000000" y="254.000000" z="314.000000" lunit="cm"/>
+    <box name="scintBoxX0x7" x="1.000000" y="256.000000" z="316.000000" lunit="cm"/>
+    <box name="scintBoxX0x8" x="1.000000" y="258.000000" z="318.000000" lunit="cm"/>
+    <box name="scintBoxX0x9" x="1.000000" y="260.000000" z="320.000000" lunit="cm"/>
+    <box name="scintBoxX0x10" x="1.000000" y="262.000000" z="322.000000" lunit="cm"/>
+    <box name="scintBoxX0x11" x="1.000000" y="264.000000" z="324.000000" lunit="cm"/>
+    <box name="scintBoxX0x12" x="1.000000" y="266.000000" z="326.000000" lunit="cm"/>
+    <box name="scintBoxX0x13" x="1.000000" y="268.000000" z="328.000000" lunit="cm"/>
+    <box name="scintBoxX0x14" x="1.000000" y="270.000000" z="330.000000" lunit="cm"/>
+    <box name="scintBoxX0x15" x="1.000000" y="272.000000" z="332.000000" lunit="cm"/>
+    <box name="scintBoxX0x16" x="1.000000" y="274.000000" z="334.000000" lunit="cm"/>
+    <box name="scintBoxX0x17" x="1.000000" y="276.000000" z="336.000000" lunit="cm"/>
+    <box name="scintBoxX0x18" x="1.000000" y="278.000000" z="338.000000" lunit="cm"/>
+    <box name="scintBoxX0x19" x="1.000000" y="280.000000" z="340.000000" lunit="cm"/>
+    <box name="scintBoxX0x20" x="1.000000" y="282.000000" z="342.000000" lunit="cm"/>
+    <box name="scintBoxX0x21" x="1.000000" y="284.000000" z="344.000000" lunit="cm"/>
+    <box name="scintBoxX0x22" x="1.000000" y="286.000000" z="346.000000" lunit="cm"/>
+    <box name="scintBoxX0x23" x="1.000000" y="288.000000" z="348.000000" lunit="cm"/>
+    <box name="scintBoxX0x24" x="1.000000" y="290.000000" z="350.000000" lunit="cm"/>
+    <box name="scintBoxX0x25" x="1.000000" y="292.000000" z="352.000000" lunit="cm"/>
+    <box name="scintBoxX0x26" x="1.000000" y="294.000000" z="354.000000" lunit="cm"/>
+    <box name="scintBoxX0x27" x="1.000000" y="296.000000" z="356.000000" lunit="cm"/>
+    <box name="scintBoxX0x28" x="1.000000" y="298.000000" z="358.000000" lunit="cm"/>
+    <box name="scintBoxX0x29" x="1.000000" y="300.000000" z="360.000000" lunit="cm"/>
+    <box name="scintBoxX0x30" x="1.000000" y="302.000000" z="362.000000" lunit="cm"/>
+    <box name="tpcFidBox" x="240.000000" y="240.000000" z="300.000000" lunit="cm"/>
+  </solids>
+  <structure>
+    <volume name="scintVolumeZ">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ"/>
+    </volume>
+    <volume name="scintVolumeZ0x1">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x1"/>
+    </volume>
+    <volume name="scintVolumeZ0x2">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x2"/>
+    </volume>
+    <volume name="scintVolumeZ0x3">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x3"/>
+    </volume>
+    <volume name="scintVolumeZ0x4">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x4"/>
+    </volume>
+    <volume name="scintVolumeZ0x5">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x5"/>
+    </volume>
+    <volume name="scintVolumeZ0x6">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x6"/>
+    </volume>
+    <volume name="scintVolumeZ0x7">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x7"/>
+    </volume>
+    <volume name="scintVolumeZ0x8">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x8"/>
+    </volume>
+    <volume name="scintVolumeZ0x9">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x9"/>
+    </volume>
+    <volume name="scintVolumeZ0x10">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x10"/>
+    </volume>
+    <volume name="scintVolumeZ0x11">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x11"/>
+    </volume>
+    <volume name="scintVolumeZ0x12">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x12"/>
+    </volume>
+    <volume name="scintVolumeZ0x13">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x13"/>
+    </volume>
+    <volume name="scintVolumeZ0x14">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x14"/>
+    </volume>
+    <volume name="scintVolumeZ0x15">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x15"/>
+    </volume>
+    <volume name="scintVolumeZ0x16">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x16"/>
+    </volume>
+    <volume name="scintVolumeZ0x17">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x17"/>
+    </volume>
+    <volume name="scintVolumeZ0x18">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x18"/>
+    </volume>
+    <volume name="scintVolumeZ0x19">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x19"/>
+    </volume>
+    <volume name="scintVolumeZ0x20">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x20"/>
+    </volume>
+    <volume name="scintVolumeZ0x21">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x21"/>
+    </volume>
+    <volume name="scintVolumeZ0x22">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x22"/>
+    </volume>
+    <volume name="scintVolumeZ0x23">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x23"/>
+    </volume>
+    <volume name="scintVolumeZ0x24">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x24"/>
+    </volume>
+    <volume name="scintVolumeZ0x25">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x25"/>
+    </volume>
+    <volume name="scintVolumeZ0x26">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x26"/>
+    </volume>
+    <volume name="scintVolumeZ0x27">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x27"/>
+    </volume>
+    <volume name="scintVolumeZ0x28">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x28"/>
+    </volume>
+    <volume name="scintVolumeZ0x29">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x29"/>
+    </volume>
+    <volume name="scintVolumeZ0x30">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxZ0x30"/>
+    </volume>
+    <volume name="scintVolumeY">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY"/>
+    </volume>
+    <volume name="scintVolumeY0x1">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x1"/>
+    </volume>
+    <volume name="scintVolumeY0x2">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x2"/>
+    </volume>
+    <volume name="scintVolumeY0x3">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x3"/>
+    </volume>
+    <volume name="scintVolumeY0x4">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x4"/>
+    </volume>
+    <volume name="scintVolumeY0x5">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x5"/>
+    </volume>
+    <volume name="scintVolumeY0x6">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x6"/>
+    </volume>
+    <volume name="scintVolumeY0x7">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x7"/>
+    </volume>
+    <volume name="scintVolumeY0x8">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x8"/>
+    </volume>
+    <volume name="scintVolumeY0x9">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x9"/>
+    </volume>
+    <volume name="scintVolumeY0x10">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x10"/>
+    </volume>
+    <volume name="scintVolumeY0x11">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x11"/>
+    </volume>
+    <volume name="scintVolumeY0x12">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x12"/>
+    </volume>
+    <volume name="scintVolumeY0x13">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x13"/>
+    </volume>
+    <volume name="scintVolumeY0x14">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x14"/>
+    </volume>
+    <volume name="scintVolumeY0x15">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x15"/>
+    </volume>
+    <volume name="scintVolumeY0x16">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x16"/>
+    </volume>
+    <volume name="scintVolumeY0x17">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x17"/>
+    </volume>
+    <volume name="scintVolumeY0x18">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x18"/>
+    </volume>
+    <volume name="scintVolumeY0x19">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x19"/>
+    </volume>
+    <volume name="scintVolumeY0x20">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x20"/>
+    </volume>
+    <volume name="scintVolumeY0x21">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x21"/>
+    </volume>
+    <volume name="scintVolumeY0x22">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x22"/>
+    </volume>
+    <volume name="scintVolumeY0x23">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x23"/>
+    </volume>
+    <volume name="scintVolumeY0x24">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x24"/>
+    </volume>
+    <volume name="scintVolumeY0x25">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x25"/>
+    </volume>
+    <volume name="scintVolumeY0x26">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x26"/>
+    </volume>
+    <volume name="scintVolumeY0x27">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x27"/>
+    </volume>
+    <volume name="scintVolumeY0x28">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x28"/>
+    </volume>
+    <volume name="scintVolumeY0x29">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x29"/>
+    </volume>
+    <volume name="scintVolumeY0x30">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxY0x30"/>
+    </volume>
+    <volume name="scintVolumeX">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX"/>
+    </volume>
+    <volume name="scintVolumeX0x1">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x1"/>
+    </volume>
+    <volume name="scintVolumeX0x2">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x2"/>
+    </volume>
+    <volume name="scintVolumeX0x3">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x3"/>
+    </volume>
+    <volume name="scintVolumeX0x4">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x4"/>
+    </volume>
+    <volume name="scintVolumeX0x5">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x5"/>
+    </volume>
+    <volume name="scintVolumeX0x6">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x6"/>
+    </volume>
+    <volume name="scintVolumeX0x7">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x7"/>
+    </volume>
+    <volume name="scintVolumeX0x8">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x8"/>
+    </volume>
+    <volume name="scintVolumeX0x9">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x9"/>
+    </volume>
+    <volume name="scintVolumeX0x10">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x10"/>
+    </volume>
+    <volume name="scintVolumeX0x11">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x11"/>
+    </volume>
+    <volume name="scintVolumeX0x12">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x12"/>
+    </volume>
+    <volume name="scintVolumeX0x13">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x13"/>
+    </volume>
+    <volume name="scintVolumeX0x14">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x14"/>
+    </volume>
+    <volume name="scintVolumeX0x15">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x15"/>
+    </volume>
+    <volume name="scintVolumeX0x16">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x16"/>
+    </volume>
+    <volume name="scintVolumeX0x17">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x17"/>
+    </volume>
+    <volume name="scintVolumeX0x18">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x18"/>
+    </volume>
+    <volume name="scintVolumeX0x19">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x19"/>
+    </volume>
+    <volume name="scintVolumeX0x20">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x20"/>
+    </volume>
+    <volume name="scintVolumeX0x21">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x21"/>
+    </volume>
+    <volume name="scintVolumeX0x22">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x22"/>
+    </volume>
+    <volume name="scintVolumeX0x23">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x23"/>
+    </volume>
+    <volume name="scintVolumeX0x24">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x24"/>
+    </volume>
+    <volume name="scintVolumeX0x25">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x25"/>
+    </volume>
+    <volume name="scintVolumeX0x26">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x26"/>
+    </volume>
+    <volume name="scintVolumeX0x27">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x27"/>
+    </volume>
+    <volume name="scintVolumeX0x28">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x28"/>
+    </volume>
+    <volume name="scintVolumeX0x29">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x29"/>
+    </volume>
+    <volume name="scintVolumeX0x30">
+      <materialref ref="Scintillator"/>
+      <solidref ref="scintBoxX0x30"/>
+    </volume>
+    <volume name="tpcFidVolume">
+      <materialref ref="matArgon"/>
+      <solidref ref="tpcFidBox"/>
+    </volume>
+    <volume name="motherVolume">
+      <materialref ref="matArgon"/>
+      <solidref ref="motherBox"/>
+      <physvol>
+        <volumeref ref="scintVolumeZ"/>
+        <positionref ref="scintVolumeZ_0inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ"/>
+        <positionref ref="scintVolumeZ_31inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x1"/>
+        <positionref ref="scintVolumeZ_1inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x1"/>
+        <positionref ref="scintVolumeZ_32inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x2"/>
+        <positionref ref="scintVolumeZ_2inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x2"/>
+        <positionref ref="scintVolumeZ_33inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x3"/>
+        <positionref ref="scintVolumeZ_3inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x3"/>
+        <positionref ref="scintVolumeZ_34inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x4"/>
+        <positionref ref="scintVolumeZ_4inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x4"/>
+        <positionref ref="scintVolumeZ_35inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x5"/>
+        <positionref ref="scintVolumeZ_5inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x5"/>
+        <positionref ref="scintVolumeZ_36inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x6"/>
+        <positionref ref="scintVolumeZ_6inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x6"/>
+        <positionref ref="scintVolumeZ_37inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x7"/>
+        <positionref ref="scintVolumeZ_7inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x7"/>
+        <positionref ref="scintVolumeZ_38inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x8"/>
+        <positionref ref="scintVolumeZ_8inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x8"/>
+        <positionref ref="scintVolumeZ_39inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x9"/>
+        <positionref ref="scintVolumeZ_9inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x9"/>
+        <positionref ref="scintVolumeZ_40inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x10"/>
+        <positionref ref="scintVolumeZ_10inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x10"/>
+        <positionref ref="scintVolumeZ_41inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x11"/>
+        <positionref ref="scintVolumeZ_11inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x11"/>
+        <positionref ref="scintVolumeZ_42inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x12"/>
+        <positionref ref="scintVolumeZ_12inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x12"/>
+        <positionref ref="scintVolumeZ_43inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x13"/>
+        <positionref ref="scintVolumeZ_13inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x13"/>
+        <positionref ref="scintVolumeZ_44inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x14"/>
+        <positionref ref="scintVolumeZ_14inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x14"/>
+        <positionref ref="scintVolumeZ_45inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x15"/>
+        <positionref ref="scintVolumeZ_15inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x15"/>
+        <positionref ref="scintVolumeZ_46inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x16"/>
+        <positionref ref="scintVolumeZ_16inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x16"/>
+        <positionref ref="scintVolumeZ_47inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x17"/>
+        <positionref ref="scintVolumeZ_17inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x17"/>
+        <positionref ref="scintVolumeZ_48inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x18"/>
+        <positionref ref="scintVolumeZ_18inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x18"/>
+        <positionref ref="scintVolumeZ_49inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x19"/>
+        <positionref ref="scintVolumeZ_19inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x19"/>
+        <positionref ref="scintVolumeZ_50inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x20"/>
+        <positionref ref="scintVolumeZ_20inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x20"/>
+        <positionref ref="scintVolumeZ_51inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x21"/>
+        <positionref ref="scintVolumeZ_21inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x21"/>
+        <positionref ref="scintVolumeZ_52inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x22"/>
+        <positionref ref="scintVolumeZ_22inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x22"/>
+        <positionref ref="scintVolumeZ_53inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x23"/>
+        <positionref ref="scintVolumeZ_23inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x23"/>
+        <positionref ref="scintVolumeZ_54inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x24"/>
+        <positionref ref="scintVolumeZ_24inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x24"/>
+        <positionref ref="scintVolumeZ_55inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x25"/>
+        <positionref ref="scintVolumeZ_25inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x25"/>
+        <positionref ref="scintVolumeZ_56inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x26"/>
+        <positionref ref="scintVolumeZ_26inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x26"/>
+        <positionref ref="scintVolumeZ_57inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x27"/>
+        <positionref ref="scintVolumeZ_27inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x27"/>
+        <positionref ref="scintVolumeZ_58inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x28"/>
+        <positionref ref="scintVolumeZ_28inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x28"/>
+        <positionref ref="scintVolumeZ_59inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x29"/>
+        <positionref ref="scintVolumeZ_29inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x29"/>
+        <positionref ref="scintVolumeZ_60inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x30"/>
+        <positionref ref="scintVolumeZ_30inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeZ0x30"/>
+        <positionref ref="scintVolumeZ_61inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY"/>
+        <positionref ref="scintVolumeY_0inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY"/>
+        <positionref ref="scintVolumeY_31inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x1"/>
+        <positionref ref="scintVolumeY_1inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x1"/>
+        <positionref ref="scintVolumeY_32inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x2"/>
+        <positionref ref="scintVolumeY_2inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x2"/>
+        <positionref ref="scintVolumeY_33inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x3"/>
+        <positionref ref="scintVolumeY_3inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x3"/>
+        <positionref ref="scintVolumeY_34inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x4"/>
+        <positionref ref="scintVolumeY_4inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x4"/>
+        <positionref ref="scintVolumeY_35inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x5"/>
+        <positionref ref="scintVolumeY_5inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x5"/>
+        <positionref ref="scintVolumeY_36inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x6"/>
+        <positionref ref="scintVolumeY_6inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x6"/>
+        <positionref ref="scintVolumeY_37inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x7"/>
+        <positionref ref="scintVolumeY_7inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x7"/>
+        <positionref ref="scintVolumeY_38inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x8"/>
+        <positionref ref="scintVolumeY_8inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x8"/>
+        <positionref ref="scintVolumeY_39inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x9"/>
+        <positionref ref="scintVolumeY_9inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x9"/>
+        <positionref ref="scintVolumeY_40inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x10"/>
+        <positionref ref="scintVolumeY_10inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x10"/>
+        <positionref ref="scintVolumeY_41inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x11"/>
+        <positionref ref="scintVolumeY_11inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x11"/>
+        <positionref ref="scintVolumeY_42inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x12"/>
+        <positionref ref="scintVolumeY_12inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x12"/>
+        <positionref ref="scintVolumeY_43inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x13"/>
+        <positionref ref="scintVolumeY_13inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x13"/>
+        <positionref ref="scintVolumeY_44inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x14"/>
+        <positionref ref="scintVolumeY_14inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x14"/>
+        <positionref ref="scintVolumeY_45inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x15"/>
+        <positionref ref="scintVolumeY_15inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x15"/>
+        <positionref ref="scintVolumeY_46inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x16"/>
+        <positionref ref="scintVolumeY_16inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x16"/>
+        <positionref ref="scintVolumeY_47inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x17"/>
+        <positionref ref="scintVolumeY_17inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x17"/>
+        <positionref ref="scintVolumeY_48inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x18"/>
+        <positionref ref="scintVolumeY_18inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x18"/>
+        <positionref ref="scintVolumeY_49inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x19"/>
+        <positionref ref="scintVolumeY_19inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x19"/>
+        <positionref ref="scintVolumeY_50inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x20"/>
+        <positionref ref="scintVolumeY_20inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x20"/>
+        <positionref ref="scintVolumeY_51inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x21"/>
+        <positionref ref="scintVolumeY_21inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x21"/>
+        <positionref ref="scintVolumeY_52inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x22"/>
+        <positionref ref="scintVolumeY_22inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x22"/>
+        <positionref ref="scintVolumeY_53inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x23"/>
+        <positionref ref="scintVolumeY_23inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x23"/>
+        <positionref ref="scintVolumeY_54inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x24"/>
+        <positionref ref="scintVolumeY_24inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x24"/>
+        <positionref ref="scintVolumeY_55inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x25"/>
+        <positionref ref="scintVolumeY_25inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x25"/>
+        <positionref ref="scintVolumeY_56inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x26"/>
+        <positionref ref="scintVolumeY_26inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x26"/>
+        <positionref ref="scintVolumeY_57inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x27"/>
+        <positionref ref="scintVolumeY_27inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x27"/>
+        <positionref ref="scintVolumeY_58inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x28"/>
+        <positionref ref="scintVolumeY_28inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x28"/>
+        <positionref ref="scintVolumeY_59inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x29"/>
+        <positionref ref="scintVolumeY_29inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x29"/>
+        <positionref ref="scintVolumeY_60inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x30"/>
+        <positionref ref="scintVolumeY_30inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeY0x30"/>
+        <positionref ref="scintVolumeY_61inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX"/>
+        <positionref ref="scintVolumeX_0inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX"/>
+        <positionref ref="scintVolumeX_31inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x1"/>
+        <positionref ref="scintVolumeX_1inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x1"/>
+        <positionref ref="scintVolumeX_32inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x2"/>
+        <positionref ref="scintVolumeX_2inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x2"/>
+        <positionref ref="scintVolumeX_33inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x3"/>
+        <positionref ref="scintVolumeX_3inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x3"/>
+        <positionref ref="scintVolumeX_34inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x4"/>
+        <positionref ref="scintVolumeX_4inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x4"/>
+        <positionref ref="scintVolumeX_35inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x5"/>
+        <positionref ref="scintVolumeX_5inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x5"/>
+        <positionref ref="scintVolumeX_36inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x6"/>
+        <positionref ref="scintVolumeX_6inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x6"/>
+        <positionref ref="scintVolumeX_37inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x7"/>
+        <positionref ref="scintVolumeX_7inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x7"/>
+        <positionref ref="scintVolumeX_38inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x8"/>
+        <positionref ref="scintVolumeX_8inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x8"/>
+        <positionref ref="scintVolumeX_39inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x9"/>
+        <positionref ref="scintVolumeX_9inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x9"/>
+        <positionref ref="scintVolumeX_40inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x10"/>
+        <positionref ref="scintVolumeX_10inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x10"/>
+        <positionref ref="scintVolumeX_41inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x11"/>
+        <positionref ref="scintVolumeX_11inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x11"/>
+        <positionref ref="scintVolumeX_42inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x12"/>
+        <positionref ref="scintVolumeX_12inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x12"/>
+        <positionref ref="scintVolumeX_43inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x13"/>
+        <positionref ref="scintVolumeX_13inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x13"/>
+        <positionref ref="scintVolumeX_44inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x14"/>
+        <positionref ref="scintVolumeX_14inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x14"/>
+        <positionref ref="scintVolumeX_45inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x15"/>
+        <positionref ref="scintVolumeX_15inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x15"/>
+        <positionref ref="scintVolumeX_46inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x16"/>
+        <positionref ref="scintVolumeX_16inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x16"/>
+        <positionref ref="scintVolumeX_47inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x17"/>
+        <positionref ref="scintVolumeX_17inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x17"/>
+        <positionref ref="scintVolumeX_48inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x18"/>
+        <positionref ref="scintVolumeX_18inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x18"/>
+        <positionref ref="scintVolumeX_49inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x19"/>
+        <positionref ref="scintVolumeX_19inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x19"/>
+        <positionref ref="scintVolumeX_50inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x20"/>
+        <positionref ref="scintVolumeX_20inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x20"/>
+        <positionref ref="scintVolumeX_51inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x21"/>
+        <positionref ref="scintVolumeX_21inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x21"/>
+        <positionref ref="scintVolumeX_52inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x22"/>
+        <positionref ref="scintVolumeX_22inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x22"/>
+        <positionref ref="scintVolumeX_53inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x23"/>
+        <positionref ref="scintVolumeX_23inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x23"/>
+        <positionref ref="scintVolumeX_54inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x24"/>
+        <positionref ref="scintVolumeX_24inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x24"/>
+        <positionref ref="scintVolumeX_55inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x25"/>
+        <positionref ref="scintVolumeX_25inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x25"/>
+        <positionref ref="scintVolumeX_56inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x26"/>
+        <positionref ref="scintVolumeX_26inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x26"/>
+        <positionref ref="scintVolumeX_57inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x27"/>
+        <positionref ref="scintVolumeX_27inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x27"/>
+        <positionref ref="scintVolumeX_58inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x28"/>
+        <positionref ref="scintVolumeX_28inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x28"/>
+        <positionref ref="scintVolumeX_59inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x29"/>
+        <positionref ref="scintVolumeX_29inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x29"/>
+        <positionref ref="scintVolumeX_60inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x30"/>
+        <positionref ref="scintVolumeX_30inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="scintVolumeX0x30"/>
+        <positionref ref="scintVolumeX_61inmotherVolumepos"/>
+      </physvol>
+      <physvol>
+        <volumeref ref="tpcFidVolume"/>
+        <positionref ref="tpcFidVolume_5inmotherVolumepos"/>
+      </physvol>
+    </volume>
+    <volume name="innerVesselVolume">
+      <materialref ref="matArgon"/>
+      <solidref ref="TGeoCompositeShape0x2"/>
+      <physvol>
+        <volumeref ref="motherVolume"/>
+        <positionref ref="motherVolume_4ininnerVesselVolumepos"/>
+      </physvol>
+    </volume>
+    <volume name="vesselVolume">
+      <materialref ref="matArgon"/>
+      <solidref ref="TGeoCompositeShape"/>
+      <physvol>
+        <volumeref ref="innerVesselVolume"/>
+        <positionref ref="innerVesselVolume_1invesselVolumepos"/>
+      </physvol>
+    </volume>
+    <volume name="magnetVolume">
+      <materialref ref="Iron"/>
+      <solidref ref="magnetTube"/>
+      <physvol>
+        <volumeref ref="vesselVolume"/>
+        <positionref ref="vesselVolume_3inmagnetVolumepos"/>
+      </physvol>
+    </volume>
+    <volume name="cavityVolume">
+      <materialref ref="Air"/>
+      <solidref ref="cavityTube"/>
+      <physvol>
+        <volumeref ref="magnetVolume"/>
+        <positionref ref="magnetVolume_2incavityVolumepos"/>
+        <rotationref ref="magnetVolume_2incavityVolumerot"/>
+      </physvol>
+    </volume>
+    <volume name="rockVolume">
+      <materialref ref="Sandstone"/>
+      <solidref ref="rockBox"/>
+      <physvol>
+        <volumeref ref="cavityVolume"/>
+        <positionref ref="cavityVolume_1inrockVolumepos"/>
+        <rotationref ref="cavityVolume_1inrockVolumerot"/>
+      </physvol>
+    </volume>
+  </structure>
+  <setup name="default" version="1.0">
+    <world ref="rockVolume"/>
+  </setup>
+</gdml>
