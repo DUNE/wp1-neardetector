@@ -1,0 +1,11 @@
+nIterations                100
+distance                   1000 m
+radiusCut                  2 m 
+outputFileName             nuData.root
+!piDecayBasketSize          64000000
+!fluxProjectionBasketSize   6400000
+fastFluxBasketSize         64000000
+!loadFluxBasketSize         64000000
+GenieNuEventBasketSize     3200000
+Geant4TrackingBasketSize   3200000
+seed                       1

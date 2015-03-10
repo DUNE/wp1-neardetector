@@ -1,0 +1,4 @@
+nIterations                40000000
+outputFileName             memTestData.root
+memTestBasketSize          6400
+seed                       1

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<messenger_config>
+
+  <!-- 
+    Defines the priority levels for GENIE message streams
+
+    The priority (in descending importance order) can be 
+    FATAL, ALERT, CRIT, ERROR, WARN, NOTICE, INFO, DEBUG
+
+    To change the default priority level for a message stream
+    or to add a default priority level for a new message stream
+    a) edit this file OR b) set the GMSGCONF env. var to point to 
+    your custom messenger config file. More than one custom files
+    may defined in the GMSGCONF var delimited with a ':'. Example:
+    export GMSGCONF= /home/me/msgconf1.xml:/home/me/tmp/msgconf2.xml
+
+    These files are read in addition to the default priority levels
+    file and after it. The later each file is in the Messenger 
+    configuration file chain the higher priority it has, eg. if the 
+    same stream is listed twice with conflicting priority then the 
+    one found last is used
+   -->
+
+  <priority msgstream="AhrensNCEL">          WARN   </priority>
+  <priority msgstream="AlgFactory">          WARN   </priority>
+  <priority msgstream="Algorithm">           WARN   </priority>
+  <priority msgstream="AlgConfigPool">       WARN </priority>
+  <priority msgstream="BardinIMD">           ERROR </priority>
+  <priority msgstream="BaryonResList">       ERROR   </priority>
+  <priority msgstream="BaseHad">             ERROR </priority>
+  <priority msgstream="BreitWignet">         ERROR   </priority>
+  <priority msgstream="Bardin">              ERROR   </priority>
+  <priority msgstream="BodekYang">           ERROR   </priority>
+  <priority msgstream="BodekRitchie">        ERROR   </priority>
+  <priority msgstream="Cache">               ERROR </priority>
+  <priority msgstream="CharmHad">            ERROR </priority>
+  <priority msgstream="CFracTab">            ERROR   </priority>
+  <priority msgstream="COHXSec">             ERROR </priority>
+  <priority msgstream="CLAP">                ERROR </priority>
+  <priority msgstream="COHHadronicVtx">      ERROR   </priority>
+  <priority msgstream="COHKinematics">       ERROR </priority>
+  <priority msgstream="DFRHadronicVtx">      ERROR  </priority>
+  <priority msgstream="DFRKinematics">       ERROR  </priority>
+  <priority msgstream="Decay">               ERROR </priority>
+  <priority msgstream="DISSF">               ERROR </priority>
+  <priority msgstream="DISXSec">             ERROR </priority> 
+  <priority msgstream="DISCharmXSec">        ERROR   </priority>
+  <priority msgstream="DISPXSec">            ERROR </priority>
+  <priority msgstream="DISHadronicVtx">      ERROR   </priority>
+  <priority msgstream="DISKinematics">       ERROR </priority>
+  <priority msgstream="EventGenerator">      ERROR </priority> 
+  <priority msgstream="Elastic">             ERROR   </priority>
+  <priority msgstream="EVGChain">            ERROR   </priority>
+  <priority msgstream="EvGenListAssembler">  ERROR   </priority>
+  <priority msgstream="ELFormFactors">       ERROR   </priority>
+  <priority msgstream="FermiMover">          ERROR   </priority>
+  <priority msgstream="FermiP">              ERROR </priority>
+  <priority msgstream="Flux">                WARN </priority>
+  <priority msgstream="FMap">                ERROR   </priority>
+  <priority msgstream="FragmRecUtils">       ERROR </priority>
+  <priority msgstream="GEVGDriver">          WARN </priority>
+  <priority msgstream="GMCJDriver">          WARN </priority>
+  <priority msgstream="GEVGPool">            WARN   </priority>
+  <priority msgstream="GMCJob">              WARN   </priority>
+  <priority msgstream="GMCJMonitor">         WARN   </priority>
+  <priority msgstream="GROOTGeom">           WARN </priority>
+  <priority msgstream="GHEP">                ERROR </priority>
+  <priority msgstream="GHepParticle">        ERROR   </priority>
+  <priority msgstream="GuiUtils">            ERROR   </priority>
+  <priority msgstream="GridDim">             ERROR   </priority>
+  <priority msgstream="GXSecFunc">           ERROR   </priority>
+  <priority msgstream="GLRES">               ERROR   </priority>
+  <priority msgstream="HadTransp">           ERROR   </priority>
+  <priority msgstream="HadronicVtx">         ERROR </priority>
+  <priority msgstream="HybridHad">           ERROR   </priority>
+  <priority msgstream="IBD">                 ERROR </priority>
+  <priority msgstream="IMDXSec">             ERROR </priority>
+  <priority msgstream="IntSel">              ERROR </priority>
+  <priority msgstream="IntLst">              ERROR </priority>
+  <priority msgstream="Interaction">         ERROR </priority>
+  <priority msgstream="Intranuke">           ERROR </priority>
+  <priority msgstream="INukeData">           ERROR </priority>
+  <priority msgstream="ISApp">               ERROR   </priority>
+  <priority msgstream="IntGenMap">           ERROR   </priority>
+  <priority msgstream="KNOHad">              ERROR </priority> 
+  <priority msgstream="KineLimits">          ERROR   </priority>
+  <priority msgstream="Kinematics">          ERROR   </priority>
+  <priority msgstream="LeptonicVertex">      ERROR   </priority>
+  <priority msgstream="LwlynSmith">          ERROR </priority>
+  <priority msgstream="Math">                ERROR </priority>
+  <priority msgstream="MEC">                 ERROR   </priority>
+  <priority msgstream="Messenger">           ERROR   </priority>
+  <priority msgstream="MuELoss">             ERROR </priority>
+  <priority msgstream="MultProb">            ERROR   </priority>
+  <priority msgstream="NucDeEx">             ERROR </priority>
+  <priority msgstream="NucleonP">            ERROR   </priority>
+  <priority msgstream="Nuclear">             ERROR </priority>
+  <priority msgstream="Numerical">           ERROR   </priority>
+  <priority msgstream="NuEXSec">             ERROR   </priority>
+  <priority msgstream="Ntp">                 ERROR </priority>
+  <priority msgstream="NuVld">               ERROR   </priority>
+  <priority msgstream="NuETargetRemnant">    ERROR   </priority>
+  <priority msgstream="NuEKinematics">       ERROR   </priority>
+  <priority msgstream="PartonModel">         ERROR   </priority>
+  <priority msgstream="PauliBlock">          ERROR   </priority>
+  <priority msgstream="ParticleDecayer">     ERROR   </priority>
+  <priority msgstream="PaschLal">            ERROR   </priority>
+  <priority msgstream="PythiaDec">           ERROR </priority>
+  <priority msgstream="PythiaHad">           ERROR </priority>
+  <priority msgstream="PDG">                 ERROR   </priority>
+  <priority msgstream="PathL">               ERROR </priority>
+  <priority msgstream="QELXSec">             ERROR </priority>
+  <priority msgstream="QELCharmXSec">        ERROR </priority>
+  <priority msgstream="QELHadronicVtx">      ERROR   </priority>
+  <priority msgstream="QELKinematics">       ERROR   </priority>
+  <priority msgstream="RESXSec">             ERROR   </priority>
+  <priority msgstream="RESPXSec">            ERROR   </priority>
+  <priority msgstream="ReinSeghalCohPi">     ERROR   </priority>
+  <priority msgstream="ReinDFR">             ERROR   </priority>
+  <priority msgstream="ReinSeghalRes">       ERROR   </priority>
+  <priority msgstream="ReinSeghalResT">      ERROR </priority>
+  <priority msgstream="ReinSeghalResC">      ERROR </priority>
+  <priority msgstream="ReinSeghalSpp">       ERROR </priority>
+  <priority msgstream="RSHAmpl">             ERROR   </priority>
+  <priority msgstream="Registry">            ERROR   </priority>
+  <priority msgstream="ReW">                 ERROR </priority>
+  <priority msgstream="RESHadronicVtx">      ERROR   </priority>
+  <priority msgstream="RESKinematics">       ERROR   </priority>
+  <priority msgstream="RESSelector">         ERROR </priority>
+  <priority msgstream="Rndm">                ERROR   </priority>
+  <priority msgstream="Rosenbluth">          ERROR </priority>
+  <priority msgstream="StrumiaVissani">      ERROR </priority>
+  <priority msgstream="SpectralFunc1">       ERROR </priority>
+  <priority msgstream="SpectralFunc">        ERROR </priority>
+  <priority msgstream="Simpson1D">           ERROR   </priority>
+  <priority msgstream="Simpson2D">           ERROR   </priority>
+  <priority msgstream="SimMCIntegrator">     ERROR </priority>
+  <priority msgstream="VegasMCIntegrator">   ERROR </priority>
+  <priority msgstream="MiserMCIntegrator">   ERROR </priority>
+  <priority msgstream="Spline">              ERROR   </priority>
+  <priority msgstream="Target">              ERROR   </priority>
+  <priority msgstream="Utils">               ERROR   </priority>
+  <priority msgstream="Vtx">                 ERROR   </priority>
+  <priority msgstream="VldContext">          ERROR </priority>
+  <priority msgstream="VldTestInputs">       ERROR   </priority>
+  <priority msgstream="XSecBase">            ERROR </priority>
+  <priority msgstream="XSecAlgMap">          ERROR </priority>
+  <priority msgstream="XSecSplLst">          ERROR </priority>
+
+</messenger_config>
+

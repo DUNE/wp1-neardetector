@@ -1,0 +1,29 @@
+################# VERBOSE #########################
+### use negative number for memory output ###
+fluxVerbose 		  	 	-1
+eventVerbose 				1
+
+################# FLUX ############################
+loadFluxBasketSize         		64000
+inputBeamFile		   		/hepstore/georgios/gastpc/ndsim/data/flux/Nu_flux_190613.root
+fluxFileExposure			212000
+exposure				1e5
+nuMaxEnergy                		30*GeV
+distance                   		800 m
+radiusCut		  	 	1.5 m
+#radiusCut                  		20 m 
+flavour					0
+
+################ EVENT ############################
+runNumber 				1
+#### do not make this larger than 1e6 as the memory leak induced from ttree->Fill() is very large ####
+nIterations 				0	#use <=0 to use exposure instead set in cards-loadflux.in
+###
+outputFileName 				/hepstore/georgios/gastpc/ndsim/workdir/primaries1.root
+geomFileName      			/user2/tstainer/LAGUNA/lbno/geomconstruct/geomconstruct/workdir/geometry.root
+GenieXSecSplines  			/hepstore/georgios/gastpc/genie/R-2_8_4/splines/gxspl-NuMIbig-v2.8.4.xml
+
+#targetVolume 				motherVolume
+#targetVolume  				vesselVolume
+#targetVolume  				rockVolume
+targetVolume  				tpcFidVolume

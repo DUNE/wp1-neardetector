@@ -1,0 +1,13 @@
+runNumber 			1
+#### do not make this larger than 1e6 as the memory leak induced from ttree->Fill() is very large ####
+nIterations 			0	#use <=0 to use exposure instead set in cards-loadflux.in
+###
+outputFileName 			/user2/tstainer/LAGUNA/lbno/lbno-nd/workdir/test0.root
+#geomFileName 			/user2/tstainer/LAGUNA/lbno/lbno-nd/data/geometry/phase1/phase1.root
+geomFileName      		/user2/tstainer/LAGUNA/lbno/geom_construction/workdir/geometry.root
+GenieXSecSplines  		/hepstore/tstainer/splines/gxspl_all.xml
+#targetVolume 			motherVolume
+#targetVolume  			vesselVolume
+#targetVolume  			rockVolume
+targetVolume  			tpcFidVolume
+eventVerbose 			2

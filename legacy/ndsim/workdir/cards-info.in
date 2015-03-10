@@ -1,0 +1,13 @@
+#dataFileName		test1.root
+#plotFileName		plots1.root
+
+dataFileName	      	/hepstore/tstainer/LAGUNA/lbno/outputs/170614/batch1/data/process_2x2x2_run
+plotFileName          	/hepstore/tstainer/LAGUNA/lbno/outputs/170614/batch1/plots/flux_plots1.root
+
+geomFileName		/hepstore/tstainer/LAGUNA/lbno/outputs/170614/batch1/data/geometry/geometry_2x2x2.root
+
+plotterVerbose	      	1
+numberOfRuns		50
+
+### in GeV ###
+maxEnergy		30.0

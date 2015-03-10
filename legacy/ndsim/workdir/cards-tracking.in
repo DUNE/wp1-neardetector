@@ -1,0 +1,29 @@
+Geant4TrackingBasketSize		16000
+nIterations				100
+#inputNuEventFile			/hepstore/tstainer/LAGUNA/lbno/outputs/270314/batch1/data/process_2x2x2_run0.root
+inputNuEventFile			/scratch/stainer/lbno/outputs/110614/batch1/process_2x2x2_run0.root
+inputNuEventTree			NuInteractions
+inputGeomFile				/user2/tstainer/LAGUNA/lbno/geomconstruct/geomconstruct/workdir/geometry_2x2x2.root
+simGeomFileName				/user2/tstainer/LAGUNA/lbno/geomconstruct/geomconstruct/workdir/geometry_2x2x2.gdml
+outputFileName				/user2/tstainer/LAGUNA/lbno/lbno-nd/workdir/test.root
+EventVerbose				1
+nuMaxEnergy				30.*GeV
+################ TRACKING #########################
+runVisMacro                             0
+runGunMacro                             0
+qeccOnly                                0
+physicsList                             FTFP_BERT
+hadroniclist                            QGSP_BIC_HP
+#hadroniclist                           FTFP_BERT_HP
+emlist                                  EM4
+### input mag field strength in tesla ###
+magFieldStrength                        0.5*tesla
+simTargetVolume                         tpcFidVolume
+simEnergyCut                            1.0*keV
+physicsDefaultCut                       0.1*mm
+gammaCut                                0.1*mm
+electronCut                             0.1*mm
+positronCut                             0.1*mm
+neutronCut                              0.1*mm
+cutEM                                   1.0*keV
+trackingVerbose				1

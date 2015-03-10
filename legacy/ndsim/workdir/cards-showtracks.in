@@ -1,0 +1,10 @@
+event				6
+#event				219
+#dataFileName			/scratch/stainer/lbno/outputs/190514/batch1/process_2x2x2_run0.root
+#dataFileName			/hepstore/tstainer/LAGUNA/lbno/outputs/270314/batch1/data/process_2x2x2_run100.root
+dataFileName			test.root
+plotFileName			tracksHistos.root
+saveDir				/hepstore/tstainer/LAGUNA/lbno/outputs/040614/images/
+binning				500
+scintResolution         	10.0*mm
+scintTrackCountLimit		-1

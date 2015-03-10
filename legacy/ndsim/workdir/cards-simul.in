@@ -1,0 +1,22 @@
+runVisMacro				1
+runGunMacro		  		1
+#simGeomFileName           		/user2/tstainer/LAGUNA/lbno/lbno-nd/data/geometry/phase1/phase1.gdml
+simGeomFileName           		/user2/tstainer/LAGUNA/lbno/geomconstruct/geomconstruct/workdir/geometry.gdml
+fluxOutputFileName       		/user2/tstainer/LAGUNA/lbno/lbno-nd/workdir/flux0.root
+physicsList		  		FTFP_BERT
+hadroniclist             		QGSP_BIC_HP
+emlist                    		EM4
+### input mag field strength in tesla ###
+magFieldStrength          		0.5
+#SDName                    		tpcFidMainVol
+SDName                    		tpcFidVolume
+simTargetVolume          		tpcFidVolume
+trackingVerbose           		1
+simEnergyCut		  		10*MeV
+physicsDefaultCut	  		10.0*mm
+gammaCut		  		10.0*mm
+electronCut		  		10.0*mm
+positronCut               		10.0*mm
+neutronCut                		10.0*mm
+cutEM	                  		10.0*MeV
+

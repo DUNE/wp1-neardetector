@@ -1,0 +1,8 @@
+tpcFidX 1.0 m
+tpcFidY 1.0 m
+tpcFidZ 1.2 m
+tpcPlacementZ 0.0 m
+tpcDensity 0.035*g/cm3
+#tpcPlacementZ 5.0 m
+
+
