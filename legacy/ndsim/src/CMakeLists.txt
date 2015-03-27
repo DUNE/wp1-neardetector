@@ -24,8 +24,8 @@ include($ENV{GasTPC}/build/FindXERCESC.cmake)
 include($ENV{GasTPC}/build/FindLHAPDF.cmake)
 include($ENV{GasTPC}/build/FindROOT.cmake)
 include($ENV{GasTPC}/build/FindGENIE.cmake)
-include($ENV{GasTPC}/build/FindGEANT4.cmake)
-include($ENV{GasTPC}/build/FindVMC.cmake)
+#include($ENV{GasTPC}/build/FindGEANT4.cmake)
+#include($ENV{GasTPC}/build/FindVMC.cmake)
 
 MESSAGE(STATUS "\n Third party is loaded.")
 
@@ -47,35 +47,35 @@ include_directories(.  utils
                        emcalc
 		       geombuilder
                        "${ROOT_INCLUDE_DIR}"
-                       "${GEANT4_INCLUDE_DIR}"
+#                       "${GEANT4_INCLUDE_DIR}"
                        "${GENIE_INCLUDE_DIR}"
                        "${CLHEP_INCLUDE_DIR}"
                        "${LOG4CPP_INCLUDE_DIR}"
                        "${XERCESC_INCLUDE_DIR}"
                        "${LHAPDF_INCLUDE_DIR}"
-                       "${GEANT4VMC_INCLUDE_DIR}"
-                       "${G4ROOT_INCLUDE_DIR}")
+#                       "${GEANT4VMC_INCLUDE_DIR}"
+#                       "${G4ROOT_INCLUDE_DIR}")
 
 link_directories(      "${ROOT_LIBRARY_DIR}"
-                       "${GEANT4_LIBRARY_DIR}"
+#                       "${GEANT4_LIBRARY_DIR}"
                        "${GENIE_LIBRARY_DIR}"
                        "${CLHEP_LIBRARY_DIR}"
                        "${LOG4CPP_LIBRARY_DIR}"
                        "${PYTHIA6_LIBRARY_DIR}"
                        "${XERCESC_LIBRARY_DIR}"
                        "${LHAPDF_LIBRARY_DIR}"
-                       "${GEANT4VMC_LIBRARY_DIR}"
-                       "${G4ROOT_LIBRARY_DIR}")
+#                       "${GEANT4VMC_LIBRARY_DIR}"
+#                       "${G4ROOT_LIBRARY_DIR}")
 
 MESSAGE(STATUS "\n Entering directories ...")
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/utils)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/fluxgen)
+#add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/fluxgen)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/geom)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/evgen)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/recon)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/simul)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/emcalc)
+#add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/recon)
+#add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/simul)
+#add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/emcalc)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tools)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/datastruct)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/geombuilder)
