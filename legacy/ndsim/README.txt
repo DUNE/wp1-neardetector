@@ -114,8 +114,10 @@ If all went well then it should now run. You can add $GasTPC/build/bin to your $
 -----------------------------------------------------------
 First you need to build the geometry
 Go to workdir/geombuilder and run
-geombuild card-file.in card-scint.in card-vessel.in card-tpc.in
+geombuild
 This will create a .root file and a .gdml file
+To visualise the geometry there is a macro in macros/
+To change geometry configurations see the xml in config/
 
 At the moment, only the GasTPCprimaries application have been validated. Go to the workdir and run
 GasTPCprimaries cards-primaries.in
