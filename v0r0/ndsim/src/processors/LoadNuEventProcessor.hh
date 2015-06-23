@@ -1,0 +1,62 @@
+//____________________________________________________________________________
+/*!
+
+\class    LoadNuEventProcessor
+
+\brief    Processor class to read in generated neutrino events 
+	  from previous neutrino run
+
+\author	  Tom Stainer <tstainer \at liv.ac.uk>
+          University of Liverpool
+
+\author   Georgios Christodoulou <georgios at hep.ph.liv.ac.uk>
+          University of Liverpool
+
+\created  Jan 2014
+\last update June 2014
+*/
+//____________________________________________________________________________
+#ifndef PROCESSORS_LOADNUEVENT
+#define PROCESSORS_LOADNUEVENT   1
+
+#include <string>
+#include <iostream>
+
+#include <TSystem.h>
+#include <TLorentzVector.h>
+#include <TTree.h>
+
+//#include "GeometryLoader.hh"
+#include "GasTPCProcessor.hh"
+#include "NuEventFileLoadAlgorithm.hh"
+
+class LoadNuEventProcessor : public GasTPCProcessor {
+
+ public:
+  LoadNuEventProcessor();
+  virtual ~LoadNuEventProcessor() {}
+
+  bool process();
+  void initOutDataTree();
+  void loadInDataTree() {};
+  void initialize(std::string inputFileName, TTree *inputTree, std::string inputGeom);
+  void initialize(std::string inputFileName, std::string inputTreeName, std::string inputGeom);
+  void setVerbose(int verbose) {loader_.setVerbose(verbose);};
+  void setNEvents(int nevents) {maxevents_ = nevents;};
+
+  int getFileEntries() 			{return loader_.getNumberOfEvents();};
+  std::string getGeomFile() 		{return loader_.getGeometryFileName();};
+  int getNEvents()                      {return maxevents_;};
+
+  NuEventFileLoadAlgorithm * getFluxFileAlgo()   {return & loader_;};
+
+ private:
+  NeutrinoEvent* event_; 
+  NuEventFileLoadAlgorithm loader_;
+
+  int maxevents_;
+
+};
+
+#endif
+

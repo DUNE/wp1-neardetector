@@ -1,0 +1,12 @@
+#
+/control/verbose 0
+/run/verbose 0
+#
+/testem/phys/addPhysics emstandard_opt0
+/process/eLoss/CSDARange true
+#/testem/phys/addPhysics emlivermore
+/run/initialize
+#
+#/testem/det/setMat Iron
+#/gun/particle mu-
+#
