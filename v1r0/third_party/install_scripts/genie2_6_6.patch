@@ -1,0 +1,59 @@
+diff -rupN srcold/EVGCore/InteractionGeneratorMap.h src/EVGCore/InteractionGeneratorMap.h
+--- srcold/EVGCore/InteractionGeneratorMap.h	2012-07-04 22:23:43.629001278 +0100
++++ src/EVGCore/InteractionGeneratorMap.h	2012-07-04 22:25:34.359154944 +0100
+@@ -36,6 +36,7 @@ class EventGeneratorI;
+ class InteractionList;
+ class InitialState;
+ class EventGeneratorList;
++class Interaction;
+ 
+ class InteractionGeneratorMap : public map<string, const EventGeneratorI *> {
+ 
+diff -rupN srcold/make/Make.include src/make/Make.include
+--- srcold/make/Make.include	2012-07-04 22:23:43.607001048 +0100
++++ src/make/Make.include	2012-07-04 22:24:55.378748818 +0100
+@@ -119,11 +119,11 @@ LOG_LIBRARIES := -L$(LOG_LIB_DIR) -llog4
+ FORT_LIBRARIES =
+ 
+ ifeq ($(strip $(ARCH)),linux) 
+-FORT_LIBRARIES = -L/usr/lib -lg2c
++FORT_LIBRARIES = -L/usr/lib -lgfortran
+ endif
+ 
+ ifeq ($(strip $(ARCH)),linuxx8664gcc) 
+-FORT_LIBRARIES = -L/usr/lib64 -lg2c
++FORT_LIBRARIES = -L/usr/lib64 -lgfortran
+ endif
+ 
+ ifeq ($(strip $(ARCH)),macosx) 
+diff -rupN srcold/Numerical/Simpson1D.cxx src/Numerical/Simpson1D.cxx
+--- srcold/Numerical/Simpson1D.cxx	2012-07-04 22:23:43.618001164 +0100
++++ src/Numerical/Simpson1D.cxx	2012-07-04 22:24:55.379748828 +0100
+@@ -64,7 +64,7 @@ double Simpson1D::Integrate(GSFunc & gsf
+   // integral value converges to the real one within the required accuracy
+   for(unsigned int iter=0; iter<fIMaxConv; iter++) {
+ 
+-    np = (unsigned int) TMath::Power(2,n) + 1;
++    np = (unsigned int) TMath::Power(2,(int)n) + 1;
+     n++;
+ 
+     fmap.IncreaseGridDensity(np);
+diff -rupN srcold/Numerical/Simpson2D.cxx src/Numerical/Simpson2D.cxx
+--- srcold/Numerical/Simpson2D.cxx	2012-07-04 22:23:43.618001164 +0100
++++ src/Numerical/Simpson2D.cxx	2012-07-04 22:24:55.380748839 +0100
+@@ -107,13 +107,13 @@ double Simpson2D::Integrate(GSFunc & gsf
+     int idim=-1;
+     if(fFastDensityIncrease) {
+       // increase the grid density fast - all dimensions simultaneously
+-      np = (unsigned int) TMath::Power(2,n) + 1;
++      np = (unsigned int) TMath::Power(2,(int)n) + 1;
+       n++;
+       fmap.IncreaseGridDensity(np);
+     } else {
+       // increase the grid density slowly - 1 dimension at a time...
+       if(iter%ndim==0) {
+-        np = (unsigned int) TMath::Power(2,n) + 1;
++        np = (unsigned int) TMath::Power(2,(int)n) + 1;
+         n++;
+         idim = 0;
+       }

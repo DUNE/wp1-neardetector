@@ -1,0 +1,57 @@
+diff -rupN src-pach/Algorithm/AlgConfigPool.cxx src/Algorithm/AlgConfigPool.cxx
+--- src-pach/Algorithm/AlgConfigPool.cxx	2012-05-16 13:07:50.000000000 +0200
++++ src/Algorithm/AlgConfigPool.cxx	2012-05-16 13:21:00.000000000 +0200
+@@ -83,7 +83,7 @@ AlgConfigPool::~AlgConfigPool()
+          << " by specific algorithms. You should make sure you understand the"
+          << " XML config files)" << endl;
+     const Registry * gc = this->GlobalParameterList();
+-    cout << *gc;
++    //cout << *gc;
+ 
+     cout << "AlgConfigPool singleton dtor: "
+          << "Deleting all owned algorithm configurations" << endl;
+diff -rupN src-pach/Algorithm/AlgFactory.cxx src/Algorithm/AlgFactory.cxx
+--- src-pach/Algorithm/AlgFactory.cxx	2012-05-16 13:07:50.000000000 +0200
++++ src/Algorithm/AlgFactory.cxx	2012-05-16 13:17:07.000000000 +0200
+@@ -66,7 +66,7 @@ AlgFactory::~AlgFactory()
+     Algorithm * alg = alg_iter->second;
+     if(alg) {
+       if(!gAbortingInErr) {
+-         cout << "- Deleting algorithm: " << alg->Id() << endl;
++         //cout << "- Deleting algorithm: " << alg->Id() << endl;
+       }
+       delete alg;
+       alg = 0;
+diff -rupN src-pach/Messenger/Messenger.cxx src/Messenger/Messenger.cxx
+--- src-pach/Messenger/Messenger.cxx	2012-05-16 13:07:50.000000000 +0200
++++ src/Messenger/Messenger.cxx	2012-05-16 13:11:35.000000000 +0200
+@@ -73,7 +73,7 @@ Messenger * Messenger::Instance()
+   if(fInstance == 0) {
+ 
+     // the first thing that get's printed in a GENIE session is the banner
+-    utils::print::PrintBanner();
++    // utils::print::PrintBanner();
+ 	
+     static Messenger::Cleaner cleaner;
+     cleaner.DummyMethodAndSilentCompiler();
+@@ -138,7 +138,7 @@ void Messenger::Configure(void)
+   //-- checkout the GMSGCONF conf for additional messenger configuration files
+   string gmsgconf = (gSystem->Getenv("GMSGCONF") ?
+                                             gSystem->Getenv("GMSGCONF") : "");
+-  SLOG("Messenger", pINFO) << "$GMSGCONF env.var = " << gmsgconf;
++  // SLOG("Messenger", pINFO) << "$GMSGCONF env.var = " << gmsgconf;
+ 
+   if(gmsgconf.size()>0) {
+      //-- check for multiple files delimited with a ":"
+@@ -202,9 +202,9 @@ bool Messenger::SetPrioritiesFromXmlFile
+          string priority =
+                 utils::xml::TrimSpaces( xmlNodeListGetString(
+                                xml_doc, xml_msgp->xmlChildrenNode, 1));
+-         SLOG("Messenger", pINFO)
++         /*SLOG("Messenger", pINFO)
+                   << "Setting priority level: " << setfill('.')
+-                          << setw(24) << msgstream << " --> " << priority;
++                          << setw(24) << msgstream << " --> " << priority;*/
+ 
+          log4cpp::Priority::Value pv = this->PriorityFromString(priority);
+          this->SetPriorityLevel(msgstream.c_str(), pv);
