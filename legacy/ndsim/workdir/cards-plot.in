@@ -1,7 +1,0 @@
-#dataFileName         	test
-#plotFileName		plots1.root
-dataFileName            /scratch/stainer/lbno/outputs/190514/batch1/process_2x2x2_run
-plotFileName          	/hepstore/tstainer/LAGUNA/lbno/outputs/190514/batch1/plots/process_2x2x2_plots.root
-selectedVolume		tpcFid
-plotterVerbose	      	1
-numberOfRuns		200

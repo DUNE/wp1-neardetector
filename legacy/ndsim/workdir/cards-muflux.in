@@ -1,7 +1,0 @@
-nDecays 10000
-muEnergy 25 GeV
-muPol 0
-distance 100 m
-radiusCut 2. m 
-outputFileName ../data/muflux.root
-seed 1
