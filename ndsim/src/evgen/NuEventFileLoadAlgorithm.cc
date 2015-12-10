@@ -164,7 +164,7 @@ NeutrinoEvent* NuEventFileLoadAlgorithm::getEvent(int event) {
   
 }
 */
-NeutrinoEvent* NuEventFileLoadAlgorithm::getPGEvent(int eventid) {
+NeutrinoEvent* NuEventFileLoadAlgorithm::getPGEvent(int eventid, int nspills) {
   NeutrinoEvent *_nuEvent = new NeutrinoEvent();
   inputTree_->GetEntry(eventid);
 
@@ -178,6 +178,7 @@ NeutrinoEvent* NuEventFileLoadAlgorithm::getPGEvent(int eventid) {
   _nuEvent->setQ2(-999);
   _nuEvent->setNEUTCode(-999);
   _nuEvent->setRunID(0);
+  _nuEvent->SetSpillNumber(nspills);
 
   TLorentzVector vertex(X,Y,Z,0);
   _nuEvent->setPosition(vertex);
@@ -197,13 +198,13 @@ NeutrinoEvent* NuEventFileLoadAlgorithm::getPGEvent(int eventid) {
   return _nuEvent;
 }
 
-NeutrinoEvent* NuEventFileLoadAlgorithm::getGstEvent(int event) {
+NeutrinoEvent* NuEventFileLoadAlgorithm::getGstEvent(int eventid, int nspills) {
 
   //NeutrinoEvent* _nuEvent = new NeutrinoEvent();
   NeutrinoEvent*_nuEvent = new NeutrinoEvent();
-  inputTree_->GetEntry(event);
+  inputTree_->GetEntry(eventid);
   
-  _nuEvent->setEventID(event);
+  _nuEvent->setEventID(eventid);
   //_nuEvent->setQELCC(qel);
   _nuEvent->setScatteringType(cc);
   _nuEvent->setNeutrinoType(neu);
@@ -217,7 +218,14 @@ NeutrinoEvent* NuEventFileLoadAlgorithm::getGstEvent(int event) {
   //_nuEvent->setresid(resid);
   //_nuEvent->setweight(wght);
   _nuEvent->setNEUTCode(neut_code);
-  TLorentzVector vertex(vtxx,vtxy,vtxz,vtxt);
+
+  TRandom3 rand;
+  int seed = (int)(Ev+eventid);
+  rand.SetSeed(seed);
+  _nuEvent->SetSpillNumber(rand.Integer(nspills));
+  seed = seed*seed;
+  
+  TLorentzVector vertex(vtxx,vtxy,vtxz,rand.Uniform(960));
   //vertex *= CLHEP::m;
   _nuEvent->setPosition(vertex);
 
@@ -282,7 +290,7 @@ EventRecord* NuEventFileLoadAlgorithm::getNtpMCEventRecord(int eventid){
   return mcrec->event;
 }
 
-NeutrinoEvent* NuEventFileLoadAlgorithm::getGHepEvent(int eventid) {
+NeutrinoEvent* NuEventFileLoadAlgorithm::getGHepEvent(int eventid, int nspills) {
 
   NeutrinoEvent* _nuEvent = new NeutrinoEvent();
   inputTree_->GetEntry(eventid);
@@ -387,7 +395,15 @@ NeutrinoEvent* NuEventFileLoadAlgorithm::getGHepEvent(int eventid) {
   //_nuEvent->setresid(resid);
   // _nuEvent->setweight(wght);
   _nuEvent->setNEUTCode(neut_code);
-  TLorentzVector vertex(vtx->X(),vtx->Y(),vtx->Z(),vtx->T());
+
+  TRandom3 rand;
+  int seed = (int)(Ev+eventid);
+  rand.SetSeed(seed);
+  _nuEvent->SetSpillNumber(rand.Integer(nspills));
+  seed = seed*seed;
+  rand.SetSeed(seed);
+  
+  TLorentzVector vertex(vtx->X(),vtx->Y(),vtx->Z(),rand.Uniform(960));
   //vertex *= CLHEP::m;
   _nuEvent->setPosition(vertex);
   _nuEvent->setRunID(thdr->runnu);

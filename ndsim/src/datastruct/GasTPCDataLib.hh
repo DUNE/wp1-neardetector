@@ -254,6 +254,8 @@ class NeutrinoEvent : public BaseEventRecord {
 
   //string InteractionTypeAsString() const {return genie::ScatteringType::AsString(scatteringType_);}
 
+  int GetSpillNumber()            {return spillnum_;}
+
   void clearFssVector()  {std::vector<ParticleDescrShortRecord>().swap(fss_); fss_.clear();fss_.resize(0); 
     std::vector<ParticleDescrShortRecord>().swap(iss_); iss_.clear(); iss_.resize(0);}
 
@@ -283,6 +285,8 @@ class NeutrinoEvent : public BaseEventRecord {
   //void setNodeName(std::string nn) {nodeName_ = nn;}
   //std::string getNodeName() const  {return nodeName_;}
 
+  void SetSpillNumber(int spill) {spillnum_ = spill;};
+
   void printToStream(ostream& stream);
 
  private:
@@ -295,6 +299,7 @@ class NeutrinoEvent : public BaseEventRecord {
   int nucleonpdg_;
   //int resid_;
   //std::string nodeName_;
+  int spillnum_;
 
   //bool sea_, qel_, mec_, res_, dis_, coh_, dfr_, imd_, nuel_, charm_;
 

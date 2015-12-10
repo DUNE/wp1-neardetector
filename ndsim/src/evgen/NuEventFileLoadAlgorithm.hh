@@ -15,7 +15,7 @@
           University of Liverpool
 
 \created  Sep 2012
-\last update Oct 2015
+\last update Dec 2015
 */
 //____________________________________________________________________________
 #ifndef EVGEN_NUEVENTFILELOADALGORITHM_H
@@ -26,6 +26,7 @@
 
 #include <TFile.h>
 #include <TTree.h>
+#include <TRandom3.h>
 
 #include <CLHEP/Units/SystemOfUnits.h>
 #include <CLHEP/Units/PhysicalConstants.h>
@@ -52,9 +53,9 @@ class NuEventFileLoadAlgorithm {
 
   //NeutrinoEvent * getEvent(){return _nuEvent;};
   //NeutrinoEvent * getEvent(int eventNumber);
-  NeutrinoEvent * getGstEvent(int event);
-  NeutrinoEvent * getGHepEvent(int eventid);
-  NeutrinoEvent * getPGEvent(int eventid);
+  NeutrinoEvent * getGstEvent(int event, int nspills);
+  NeutrinoEvent * getGHepEvent(int eventid, int nspills);
+  NeutrinoEvent * getPGEvent(int eventid, int nspills);
 
   TTree * getInputTree(){return inputTree_;};
   EventRecord * getNtpMCEventRecord(int eventid); 

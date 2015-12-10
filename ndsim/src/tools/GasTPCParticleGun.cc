@@ -159,7 +159,7 @@ int main(int argc, char ** argv) {
   // Initialize your processors here. The processors will define
   // default values for all runtime parameters.
   LoadNuEventProcessor     *eventLoader  = new LoadNuEventProcessor();
-  eventLoader->initialize("particlegun",pg,fGeometryFile);
+  eventLoader->initialize("particlegun",pg,fGeometryFile,1);
   if(nentries > 0)
     eventLoader->setNEvents(nentries);
   

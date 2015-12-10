@@ -32,7 +32,7 @@
 void ReadDatacard(std::string datacard);
 
 std::string fGeometryFile, fSimTargetVolume, fPhysicsList, fEMPhysicsList, fHadPhysicsList;
-double fMinEnergyCut, fGammaCut, fElectronCut, fPositronCut, fNeutronCut, fMagneticFieldStrength;
+double fMinEnergyCut, fGammaCut, fElectronCut, fPositronCut, fNeutronCut, fMagneticFieldStrength, fPOTSimulated;
 bool fRunVisMacro;
 int fTrackingVerbose, fSimEcalVolume;
 

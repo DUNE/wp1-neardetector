@@ -40,8 +40,8 @@ class LoadNuEventProcessor : public GasTPCProcessor {
   bool process();
   void initOutDataTree();
   void loadInDataTree() {};
-  void initialize(std::string inputFileName, TTree *inputTree, std::string inputGeom);
-  void initialize(std::string inputFileName, std::string inputTreeName, std::string inputGeom);
+  void initialize(std::string inputFileName, TTree *inputTree, std::string inputGeom, int nspills);
+  void initialize(std::string inputFileName, std::string inputTreeName, std::string inputGeom, int nspills);
   void setVerbose(int verbose) {loader_.setVerbose(verbose);};
   void setNEvents(int nevents) {maxevents_ = nevents;};
   void setMinEvents(int nevents) {minevents_ = nevents;};
@@ -50,6 +50,7 @@ class LoadNuEventProcessor : public GasTPCProcessor {
   std::string getGeomFile() 		{return loader_.getGeometryFileName();};
   int getNEvents()                      {return maxevents_;};
   int getMinEvents()                    {return minevents_;};
+  int getNSpills()                      {return nspills_;};
 
   NuEventFileLoadAlgorithm * getFluxFileAlgo()   {return & loader_;};
 
@@ -60,7 +61,7 @@ class LoadNuEventProcessor : public GasTPCProcessor {
   genie::NtpMCEventRecord * mcrec_;
 
   int maxevents_, minevents_;
-
+  int nspills_;
 };
 
 #endif

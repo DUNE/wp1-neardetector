@@ -40,19 +40,21 @@ void LoadNuEventProcessor::initOutDataTree() {
   outData_->SetDirectory(0);
 }
 
-void LoadNuEventProcessor::initialize(std::string inputFileName, TTree *inputTree, std::string inputGeom){
+void LoadNuEventProcessor::initialize(std::string inputFileName, TTree *inputTree, std::string inputGeom, int nspills){
   verbose_   = 1;
   maxevents_ = -1;
   minevents_ = -1;
+  nspills_   = nspills;
   loader_.initialize(inputFileName, inputTree, inputGeom);
   maxevents_ =  loader_.getNumberOfEvents();
   loader_.setVerbose(verbose_);
 }
 
-void LoadNuEventProcessor::initialize(std::string inputFileName, std::string inputTreeName, std::string inputGeom){
+void LoadNuEventProcessor::initialize(std::string inputFileName, std::string inputTreeName, std::string inputGeom, int nspills){
   verbose_   = 1;
   maxevents_ = -1;
   minevents_ = -1;
+  nspills_   = nspills;
   loader_.initialize(inputFileName, inputTreeName, inputGeom);
   maxevents_ =  loader_.getNumberOfEvents();
   loader_.setVerbose(verbose_);
@@ -68,14 +70,14 @@ bool LoadNuEventProcessor::process() {
     //set the event to the one read from the file
     //event_ = loader_.getEvent();
     if(loader_.getTreeName().find("gst") != std::string::npos)
-      event_ = loader_.getGstEvent(recordCount_);
+      event_ = loader_.getGstEvent(recordCount_,nspills_);
     else if(loader_.getTreeName().find("gtree") != std::string::npos){
-      event_ = loader_.getGHepEvent(recordCount_);
+      event_ = loader_.getGHepEvent(recordCount_,nspills_);
       EventRecord *record = loader_.getNtpMCEventRecord(recordCount_);
       fNtpMCEventRecord->Fill(recordCount_, record);
     }
     else if(loader_.getTreeName().find("pg") != std::string::npos)
-      event_ = loader_.getPGEvent(recordCount_);
+      event_ = loader_.getPGEvent(recordCount_,nspills_);
 
     if(verbose_>2)event_->printToStream(std::cout);
     outData_->Fill();
