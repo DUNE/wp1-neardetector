@@ -588,7 +588,7 @@ void DetectorConstruction::setDetectorAttributes(){
       ScintillatorSensitiveDetector *scint = new ScintillatorSensitiveDetector(lv_name);
       scintSDVector_.push_back(scint);
     }
-    else if(lv_name.find("innerVesselVolume") != std::string::npos){
+    if(lv_name.find("innerVesselVolume") != std::string::npos){
       DetectorSD *tpcFidSD = new DetectorSD(lv_name);
       detectorSDVector.push_back(tpcFidSD);
     }
@@ -606,7 +606,7 @@ void DetectorConstruction::setDetectorAttributes(){
 	ScintillatorSensitiveDetector *scint = new ScintillatorSensitiveDetector(lv_name);
 	scintSDVector_.push_back(scint);
       }
-      else if(lv_name.find("innerVesselVolume") != std::string::npos){
+      if(lv_name.find("innerVesselVolume") != std::string::npos){
 	DetectorSD *tpcFidSD = new DetectorSD(lv_name);
 	detectorSDVector.push_back(tpcFidSD);
       }
@@ -626,7 +626,7 @@ void DetectorConstruction::setDetectorAttributes(){
 	ScintillatorSensitiveDetector *scint = new ScintillatorSensitiveDetector(lv_name);
 	scintSDVector_.push_back(scint);
       }
-      else if(lv_name.find("innerVesselVolume") != std::string::npos){
+      if(lv_name.find("innerVesselVolume") != std::string::npos){
 	DetectorSD *tpcFidSD = new DetectorSD(lv_name);
 	detectorSDVector.push_back(tpcFidSD);
       }
@@ -644,7 +644,7 @@ void DetectorConstruction::setDetectorAttributes(){
 	ScintillatorSensitiveDetector *scint = new ScintillatorSensitiveDetector(lv_name);
 	scintSDVector_.push_back(scint);
       }
-      else if(lv_name.find("innerVesselVolume") != std::string::npos){
+      if(lv_name.find("innerVesselVolume") != std::string::npos){
 	DetectorSD *tpcFidSD = new DetectorSD(lv_name);
 	detectorSDVector.push_back(tpcFidSD);
       }     

@@ -631,8 +631,8 @@ class tpcFidHit : public SDHit {
 class scintHit : public SDHit {
  public:
   scintHit() {name_ = "scintHit";}
-  scintHit(int layerID){name_ = "scintHit";layerNumber = layerID;}
-  scintHit(int ecalID, int layerID){name_ = "scintHit"; ecalNumber =ecalID; layerNumber = layerID;}
+  //scintHit(int layerID){name_ = "scintHit";layerNumber = layerID;}
+  //scintHit(int ecalID, int layerID){name_ = "scintHit"; ecalNumber =ecalID; layerNumber = layerID;}
   ~scintHit() {}
 
   int getLayerNumber()	const	{return layerNumber;};

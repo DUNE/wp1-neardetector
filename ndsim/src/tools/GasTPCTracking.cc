@@ -81,7 +81,7 @@ int main(int argc, char ** argv) {
   ReadDatacard(fdatacard);
 
   if(fGeometryFile == "")
-    fGeometryFile = "Apollon1954TPCEcalMagnetGeometry.gdml";
+    fGeometryFile = "site.gdml";
   std::string fgeofile = string(gastpc_dir) + "/src/config/" + fGeometryFile;
   std::cout << "Geometry file :: " << fgeofile << std::endl;
 
