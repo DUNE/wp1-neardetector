@@ -3,10 +3,10 @@
 <geant_analysis_inputs analysis="GeantHPGASTPC" version="2015a" config="GeantHPTPC">
 
   <!-- Geometry file and volume to run geant simulation -->
-  <GeometryFile>                site.gdml               </GeometryFile>   <!-- has to be located in src/config-->
+  <GeometryFile>                site.gdml              </GeometryFile>   <!-- has to be located in src/config-->
   <SimTargetVolume>             innerVesselVolume      </SimTargetVolume>
   <SimEcalVolume>               12                     </SimEcalVolume>  <!-- Number of ecal volumes to simulate -->
-  <POTSimulated>                1.00e15                </POTSimulated> <!-- POT simulated. This has to be the same with the number provided when running Genie  -->
+  <POTSimulated>                2.25e15                </POTSimulated> <!-- POT simulated. This has to be the same with the number provided when running Genie  -->
 
   <ParticleThresholds>
     <MinEnergyCut>              5.0             </MinEnergyCut>   <!-- MeV -->
@@ -25,7 +25,7 @@
   <HadPhysicsList>              FTFP_BERT_HP       </HadPhysicsList>
 
   <!-- Magnetic Field Strength -->
-  <MagneticFieldStrength>       0.4                </MagneticFieldStrength>
+  <MagneticFieldStrength>       0.4                </MagneticFieldStrength> <!-- Tesla -->
 
   <!-- Verbosity levels -->
   <TrackingVerbose>             2                  </TrackingVerbose>
@@ -56,8 +56,8 @@
     <DEDXScaleMIP>              2.5e-05             </DEDXScaleMIP>
     <GasPressure>               10                  </GasPressure> <!-- bar -->
     <!-- Fiducial Volume -->
-    <FVXY>                      2200.0              </FVXY> <!-- mm -->
-    <FVZ>                       2200.0              </FVZ> <!-- mm -->
+    <FVXY>                      2000.0              </FVXY> <!-- mm -->
+    <FVZ>                       2000.0              </FVZ> <!-- mm -->
     
   </Analysis>
 
