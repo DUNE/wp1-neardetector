@@ -180,7 +180,7 @@ NeutrinoEvent* NuEventFileLoadAlgorithm::getPGEvent(int eventid, int nspills) {
   _nuEvent->setRunID(0);
   _nuEvent->SetSpillNumber(nspills);
 
-  TLorentzVector vertex(X,Y,Z,0);
+  TLorentzVector vertex(X*CLHEP::m,Y*CLHEP::m,Z*CLHEP::m,0);
   _nuEvent->setPosition(vertex);
 
   TLorentzVector p4(Px,Py,Pz,E);
@@ -225,7 +225,7 @@ NeutrinoEvent* NuEventFileLoadAlgorithm::getGstEvent(int eventid, int nspills) {
   _nuEvent->SetSpillNumber(rand.Integer(nspills));
   seed = seed*seed;
   
-  TLorentzVector vertex(vtxx,vtxy,vtxz,rand.Uniform(960));
+  TLorentzVector vertex(vtxx*CLHEP::m,vtxy*CLHEP::m,vtxz*CLHEP::m,rand.Uniform(960));
   //vertex *= CLHEP::m;
   _nuEvent->setPosition(vertex);
 
@@ -403,7 +403,7 @@ NeutrinoEvent* NuEventFileLoadAlgorithm::getGHepEvent(int eventid, int nspills) 
   seed = seed*seed;
   rand.SetSeed(seed);
   
-  TLorentzVector vertex(vtx->X(),vtx->Y(),vtx->Z(),rand.Uniform(960));
+  TLorentzVector vertex(vtx->X()*CLHEP::m,vtx->Y()*CLHEP::m,vtx->Z()*CLHEP::m,rand.Uniform(960));
   //vertex *= CLHEP::m;
   _nuEvent->setPosition(vertex);
   _nuEvent->setRunID(thdr->runnu);
