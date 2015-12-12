@@ -48,7 +48,7 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
   TGeoMaterial *wmaterial = (TGeoMixture*)mats->FindMaterial("Air");
   TGeoMedium *wmedium = new TGeoMedium("Air",1,wmaterial);
   //TGeoBBox *worldbox = new TGeoBBox("Detector",335,335,650);
-  TGeoBBox *worldbox = new TGeoBBox("Detector",365,365,750);
+  TGeoBBox *worldbox = new TGeoBBox("Detector",465,465,850);
 
   volume_ = new TGeoVolume("volDetector",worldbox,wmedium);
   
@@ -145,7 +145,7 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
   start_vol_.SetXYZ(x_center,y_center,z_center);
 
   // Vessel
-  double outradio_  = tpc_radius_ + vessel_thickness_; 
+  double outradio_  = tpc_radius_ + vessel_thickness_/2 + cathodeThickness; 
   double outlength_ = tpc_length_ + vessel_thickness_ + 2*cathodeThickness; 
   
   TGeoTube *tube_ = new TGeoTube("vesselCenterTube",0,outradio_/(CLHEP::cm),outlength_/(2.0*(CLHEP::cm)));
@@ -183,23 +183,24 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
     if(!ecal_buildlayers_){ // ecal without layers
       TGeoBBox *motherBoxZ1 = new TGeoBBox("EcalBoxZ1",x1,y1,z1);
       TGeoVolume *ez1volume = new TGeoVolume("EcalScintVolumeZ1",motherBoxZ1,ecalmedium);
-      volume_->AddNodeOverlap(ez1volume,4,new TGeoTranslation(0 - x_center,0 - y_center,pos - z_center));
+      volume_->AddNode(ez1volume,4,new TGeoTranslation(0 - x_center,0 - y_center,pos - z_center));
       // Better to define separate volumes for all the ecals - 6 in total
       TGeoBBox *motherBoxZ2 = new TGeoBBox("EcalBoxZ2",x1,y1,z1);
       TGeoVolume *ez2volume = new TGeoVolume("EcalEcintVolumeZ2",motherBoxZ2,ecalmedium);
-      volume_->AddNodeOverlap(ez2volume,5,new TGeoTranslation(0 - x_center,0 - y_center,-pos - z_center));
+      volume_->AddNode(ez2volume,5,new TGeoTranslation(0 - x_center,0 - y_center,-pos - z_center));
       
       // Y
       y1 = z1;
-      z1 = ecallength/(CLHEP::cm) + totalthickness/(CLHEP::cm);
+      x1 = ecalradius/(CLHEP::cm) + 2*totalthickness/(CLHEP::cm);
+      z1 = ecallength/(CLHEP::cm) + 2*totalthickness/(CLHEP::cm);
       TGeoBBox *motherBoxY1 = new TGeoBBox("EcalBoxY1",x1,y1,z1);
       TGeoVolume *ey1volume = new TGeoVolume("EcalScintVolumeY1",motherBoxY1,ecalmedium);
       pos = ecalradius/(CLHEP::cm) + totalthickness/(CLHEP::cm)/2;
-      volume_->AddNodeOverlap(ey1volume,6,new TGeoTranslation(0 - x_center,pos - y_center,0 - z_center));
+      volume_->AddNode(ey1volume,6,new TGeoTranslation(0 - x_center,pos - y_center,0 - z_center));
   
       TGeoBBox *motherBoxY2 = new TGeoBBox("EcalBoxY2",x1,y1,z1);
       TGeoVolume *ey2volume = new TGeoVolume("EcalScintVolumeY2",motherBoxY2,ecalmedium);
-      volume_->AddNodeOverlap(ey2volume,7,new TGeoTranslation(0 - x_center,-pos - y_center,0 - z_center));
+      volume_->AddNode(ey2volume,7,new TGeoTranslation(0 - x_center,-pos - y_center,0 - z_center));
       
       // X
       x1 = y1;
@@ -208,11 +209,11 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
       TGeoBBox *motherBoxX1 = new TGeoBBox("EcalBoxX1",x1,y1,z1);
       TGeoVolume *ex1volume = new TGeoVolume("EcalScintVolumeX1",motherBoxX1,ecalmedium);
       pos = -pos;
-      volume_->AddNodeOverlap(ex1volume,8,new TGeoTranslation(pos - x_center,0 - y_center,0 - z_center));
+      volume_->AddNode(ex1volume,8,new TGeoTranslation(pos - x_center,0 - y_center,0 - z_center));
  
       TGeoBBox *motherBoxX2 = new TGeoBBox("EcalBoxX2",x1,y1,z1);
       TGeoVolume *ex2volume = new TGeoVolume("EcalScintVolumeX2",motherBoxX2,ecalmedium);
-      volume_->AddNodeOverlap(ex2volume,9,new TGeoTranslation(-pos - x_center,0 - y_center,0 - z_center));
+      volume_->AddNode(ex2volume,9,new TGeoTranslation(-pos - x_center,0 - y_center,0 - z_center));
     }
     else{ // Add layers
       totalthickness += (double)ecal_layers*ecal_absthickness_;
@@ -221,31 +222,31 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
       int norder = 4;
       for(int i=0;i<ecal_layers;i++){
 	// Z
-	x1 = ecalradius/(CLHEP::cm) + totalthickness/(CLHEP::cm);//
-	y1 = ecalradius/(CLHEP::cm) + totalthickness/(CLHEP::cm);//
+	x1 = ecalradius/(CLHEP::cm); // + totalthickness/(CLHEP::cm);
+	y1 = ecalradius/(CLHEP::cm); // + totalthickness/(CLHEP::cm);
 	z1 = scintthickness/(CLHEP::cm)/2;
 	pos = ecallength/(CLHEP::cm) + i*scintthickness/(CLHEP::cm) + i*absthickness/(CLHEP::cm);
 	TGeoBBox *BoxZ1 = new TGeoBBox(Form("EcalScintBoxZ1_%i",i),x1,y1,z1);
 	TGeoVolume *ez1volume = new TGeoVolume(Form("EcalScintZ1_%iVolume",i),BoxZ1,ecalmedium);
-	volume_->AddNodeOverlap(ez1volume,norder,new TGeoTranslation(0 - x_center,0 - y_center,pos - z_center));
+	volume_->AddNode(ez1volume,norder,new TGeoTranslation(0 - x_center,0 - y_center,pos - z_center));
 	norder++;
 	TGeoBBox *BoxZ2 = new TGeoBBox(Form("EcalScintBoxZ2_%i",i),x1,y1,z1);
 	TGeoVolume *ez2volume = new TGeoVolume(Form("EcalScintZ2_%iVolume",i),BoxZ2,ecalmedium);
-	volume_->AddNodeOverlap(ez2volume,norder,new TGeoTranslation(0 - x_center,0 - y_center,-pos - z_center));
+	volume_->AddNode(ez2volume,norder,new TGeoTranslation(0 - x_center,0 - y_center,-pos - z_center));
 	norder++;
 	// Y
 	y1 = z1;
-	x1 = ecalradius/(CLHEP::cm) + totalthickness/(CLHEP::cm);//
-	z1 = ecallength/(CLHEP::cm); //+ totalthickness/(CLHEP::cm);
+	x1 = ecalradius/(CLHEP::cm) + 2*totalthickness/(CLHEP::cm);
+	z1 = ecallength/(CLHEP::cm) + 2*totalthickness/(CLHEP::cm);
 	pos = ecalradius/(CLHEP::cm) + i*scintthickness/(CLHEP::cm) + i*absthickness/(CLHEP::cm);
 	TGeoBBox *BoxY1 = new TGeoBBox(Form("EcalScintBoxY1_%i",i),x1,y1,z1);
 	TGeoVolume *ey1volume = new TGeoVolume(Form("EcalScintY1_%iVolume",i),BoxY1,ecalmedium);
-	volume_->AddNodeOverlap(ey1volume,norder,new TGeoTranslation(0 - x_center,pos - y_center,0 - z_center));
+	volume_->AddNode(ey1volume,norder,new TGeoTranslation(0 - x_center,pos - y_center,0 - z_center));
 	norder++;
 	
 	TGeoBBox *BoxY2 = new TGeoBBox(Form("EcalScintBoxY2_%i",i),x1,y1,z1);
 	TGeoVolume *ey2volume = new TGeoVolume(Form("EcalScintY2_%iVolume",i),BoxY2,ecalmedium);
-	volume_->AddNodeOverlap(ey2volume,norder,new TGeoTranslation(0 - x_center,-pos - y_center,0 - z_center));
+	volume_->AddNode(ey2volume,norder,new TGeoTranslation(0 - x_center,-pos - y_center,0 - z_center));
 	norder++;
 
 	// X
@@ -254,12 +255,12 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
 	z1 = ecallength/(CLHEP::cm);
 	TGeoBBox *BoxX1 = new TGeoBBox(Form("EcalScintBoxX1_%i",i),x1,y1,z1);
 	TGeoVolume *ex1volume = new TGeoVolume(Form("EcalScintX1_%iVolume",i),BoxX1,ecalmedium);
-	volume_->AddNodeOverlap(ex1volume,norder,new TGeoTranslation(pos - x_center,0 - y_center,0 - z_center));
+	volume_->AddNode(ex1volume,norder,new TGeoTranslation(pos - x_center,0 - y_center,0 - z_center));
 	norder++;
 
 	TGeoBBox *BoxX2 = new TGeoBBox(Form("EcalScintBoxX2_%i",i),x1,y1,z1);
 	TGeoVolume *ex2volume = new TGeoVolume(Form("EcalScintX2_%iVolume",i),BoxX2,ecalmedium);
-	volume_->AddNodeOverlap(ex2volume,norder,new TGeoTranslation(-pos - x_center,0 - y_center,0 - z_center));
+	volume_->AddNode(ex2volume,norder,new TGeoTranslation(-pos - x_center,0 - y_center,0 - z_center));
 	norder++;
 	// Now the lead layer
 	if(absthickness > 0.0){ // only add it if the thickness is greater than zero
@@ -271,27 +272,28 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
 	  pos = pos + scintthickness/(CLHEP::cm)/2 + absthickness/(CLHEP::cm)/2;
 	  TGeoBBox *LBoxZ1 = new TGeoBBox(Form("EcalLeadBoxZ1_%i",i),x1,y1,z1);
 	  TGeoVolume *lz1volume = new TGeoVolume(Form("EcalLeadZ1_%iVolume",i),LBoxZ1,ecalabsmedium);
-	  volume_->AddNodeOverlap(lz1volume,norder,new TGeoTranslation(0 - x_center,0 - y_center,pos - z_center));
+	  volume_->AddNode(lz1volume,norder,new TGeoTranslation(0 - x_center,0 - y_center,pos - z_center));
 	  norder++;
 
 	  TGeoBBox *LBoxZ2 = new TGeoBBox(Form("EcalLeadBoxZ2_%i",i),x1,y1,z1);
 	  TGeoVolume *lz2volume = new TGeoVolume(Form("EcalLeadZ2_%iVolume",i),LBoxZ2,ecalabsmedium);
-	  volume_->AddNodeOverlap(lz2volume,norder,new TGeoTranslation(0 - x_center,0 - y_center,-pos - z_center));
+	  volume_->AddNode(lz2volume,norder,new TGeoTranslation(0 - x_center,0 - y_center,-pos - z_center));
 	  norder++;
 
 	  // Y
 	  y1 = z1;
-	  z1 = ecallength/(CLHEP::cm) + totalthickness/(CLHEP::cm);
+	  x1 = ecalradius/(CLHEP::cm) + 2*totalthickness/(CLHEP::cm); //
+	  z1 = ecallength/(CLHEP::cm) + 2*totalthickness/(CLHEP::cm);
 	  pos = ecalradius/(CLHEP::cm) + i*scintthickness/(CLHEP::cm) + i*absthickness/(CLHEP::cm);
 	  pos = pos + scintthickness/(CLHEP::cm)/2 + absthickness/(CLHEP::cm)/2;
 	  TGeoBBox *LBoxY1 = new TGeoBBox(Form("EcalLeadBoxY1_%i",i),x1,y1,z1);
 	  TGeoVolume *ly1volume = new TGeoVolume(Form("EcalLeadY1_%iVolume",i),LBoxY1,ecalabsmedium);
-	  volume_->AddNodeOverlap(ly1volume,norder,new TGeoTranslation(0 - x_center,pos - y_center,0 - z_center));
+	  volume_->AddNode(ly1volume,norder,new TGeoTranslation(0 - x_center,pos - y_center,0 - z_center));
 	  norder++;
 
 	  TGeoBBox *LBoxY2 = new TGeoBBox(Form("EcalLeadBoxY2_%i",i),x1,y1,z1);
 	  TGeoVolume *ly2volume = new TGeoVolume(Form("EcalLeadY2_%iVolume",i),LBoxY2,ecalabsmedium);
-	  volume_->AddNodeOverlap(ly2volume,norder,new TGeoTranslation(0 - x_center,-pos - y_center,0 - z_center));
+	  volume_->AddNode(ly2volume,norder,new TGeoTranslation(0 - x_center,-pos - y_center,0 - z_center));
 	  norder++;
 
 	  // X
@@ -300,12 +302,12 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
 	  z1 = ecallength/(CLHEP::cm);
 	  TGeoBBox *LBoxX1 = new TGeoBBox(Form("EcalLeadBoxX1_%i",i),x1,y1,z1);
 	  TGeoVolume *lx1volume = new TGeoVolume(Form("EcalLeadX1_%iVolume",i),LBoxX1,ecalabsmedium);
-	  volume_->AddNodeOverlap(lx1volume,norder,new TGeoTranslation(pos - x_center,0 - y_center,0 - z_center));
+	  volume_->AddNode(lx1volume,norder,new TGeoTranslation(pos - x_center,0 - y_center,0 - z_center));
 	  norder++;
 
 	  TGeoBBox *LBoxX2 = new TGeoBBox(Form("EcalLeadBoxX2_%i",i),x1,y1,z1);
 	  TGeoVolume *lx2volume = new TGeoVolume(Form("EcalLeadX2_%iVolume",i),LBoxX2,ecalabsmedium);
-	  volume_->AddNodeOverlap(lx2volume,norder,new TGeoTranslation(-pos - x_center,0 - y_center,0 - z_center));
+	  volume_->AddNode(lx2volume,norder,new TGeoTranslation(-pos - x_center,0 - y_center,0 - z_center));
 	  norder++;
 	}
 	
@@ -317,30 +319,30 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
       double magnet_gap = 2*ecal_gap;
       double magnetradius = ecalradius + magnet_gap + totalthickness;
       double magnetlength = ecallength + magnet_gap + totalthickness;
-      x1 = magnetradius/(CLHEP::cm) + magnet_thickness_/(CLHEP::cm);
-      y1 = magnetradius/(CLHEP::cm) + magnet_thickness_/(CLHEP::cm);
+      x1 = magnetradius/(CLHEP::cm); // + magnet_thickness_/(CLHEP::cm);
+      y1 = magnetradius/(CLHEP::cm); //+ magnet_thickness_/(CLHEP::cm);
       z1 = magnet_thickness_/(CLHEP::cm)/2;
       TGeoBBox *MmotherBoxZ1 = new TGeoBBox("MagnetBoxZ1",x1,y1,z1);
       TGeoVolume *mz1volume = new TGeoVolume("MagnetVolumeZ1",MmotherBoxZ1,magnetmedium);
       pos = magnetlength/(CLHEP::cm) + magnet_thickness_/(CLHEP::cm)/2;
-      volume_->AddNodeOverlap(mz1volume,10,new TGeoTranslation(0 - x_center,0 - y_center,pos - z_center));
+      volume_->AddNode(mz1volume,10,new TGeoTranslation(0 - x_center,0 - y_center,pos - z_center));
       // Better to define separate volumes for the magnet
       TGeoBBox *MmotherBoxZ2 = new TGeoBBox("MagnetBoxZ2",x1,y1,z1);
       TGeoVolume *mz2volume = new TGeoVolume("MagnetVolumeZ2",MmotherBoxZ2,magnetmedium);
-      volume_->AddNodeOverlap(mz2volume,11,new TGeoTranslation(0 - x_center,0 - y_center,-pos - z_center));
+      volume_->AddNode(mz2volume,11,new TGeoTranslation(0 - x_center,0 - y_center,-pos - z_center));
  
       // Y
-      x1 = magnetradius/(CLHEP::cm) + magnet_thickness_/(CLHEP::cm);
+      x1 = magnetradius/(CLHEP::cm) + 2*magnet_thickness_/(CLHEP::cm);
       y1 = z1;
-      z1 = magnetlength/(CLHEP::cm) + magnet_thickness_/(CLHEP::cm);
+      z1 = magnetlength/(CLHEP::cm) + 2*magnet_thickness_/(CLHEP::cm);
       TGeoBBox *MmotherBoxY1 = new TGeoBBox("MagnetBoxY1",x1,y1,z1);
       TGeoVolume *my1volume = new TGeoVolume("MagnetVolumeY1",MmotherBoxY1,magnetmedium);
       pos = magnetradius/(CLHEP::cm) + magnet_thickness_/(CLHEP::cm)/2;
-      volume_->AddNodeOverlap(my1volume,12,new TGeoTranslation(0 - x_center,pos - y_center,0 - z_center));
+      volume_->AddNode(my1volume,12,new TGeoTranslation(0 - x_center,pos - y_center,0 - z_center));
       
       TGeoBBox *MmotherBoxY2 = new TGeoBBox("MagnetBoxY2",x1,y1,z1);
       TGeoVolume *my2volume = new TGeoVolume("MagnetVolumeY2",MmotherBoxY2,magnetmedium);
-      volume_->AddNodeOverlap(my2volume,13,new TGeoTranslation(0 - x_center,-pos - y_center,0 - z_center));
+      volume_->AddNode(my2volume,13,new TGeoTranslation(0 - x_center,-pos - y_center,0 - z_center));
  
       // X
       x1 = y1;
@@ -349,11 +351,11 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
       TGeoBBox *MmotherBoxX1 = new TGeoBBox("MagnetBoxX1",x1,y1,z1);
       TGeoVolume *mx1volume = new TGeoVolume("MagnetVolumeX1",MmotherBoxX1,magnetmedium);
       pos = -pos;
-      volume_->AddNodeOverlap(mx1volume,14,new TGeoTranslation(pos - x_center,0 - y_center,0 - z_center));
+      volume_->AddNode(mx1volume,14,new TGeoTranslation(pos - x_center,0 - y_center,0 - z_center));
       
       TGeoBBox *MmotherBoxX2 = new TGeoBBox("MagnetBoxX2",x1,y1,z1);
       TGeoVolume *mx2volume = new TGeoVolume("MagnetVolumeX2",MmotherBoxX2,magnetmedium);
-      volume_->AddNodeOverlap(mx2volume,15,new TGeoTranslation(-pos - x_center,0 - y_center,0 - z_center));
+      volume_->AddNode(mx2volume,15,new TGeoTranslation(-pos - x_center,0 - y_center,0 - z_center));
  
     }
     

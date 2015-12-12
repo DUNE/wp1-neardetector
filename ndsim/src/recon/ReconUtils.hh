@@ -53,7 +53,8 @@ namespace ReconUtils{
 
   // True interaction mode for Valor
   int getInteractionMode(int neut, int pipm, int pi0, bool cc, bool nc, bool qel, bool mec, bool coh);
-
+  // Get the sanple based only on truth info
+  int getSampleTruth(int neutPdg, int topo, bool fhc);
 }
 
 #endif

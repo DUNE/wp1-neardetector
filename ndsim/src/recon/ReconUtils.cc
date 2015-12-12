@@ -216,3 +216,37 @@ int ReconUtils::getInteractionMode(int neut, int pipm, int pi0, bool cc, bool nc
   return reactionmode;
 
 }
+//____________________________________________________________________________
+int ReconUtils::getSampleTruth(int neutPdg, int topo, bool fhc){
+  int sample = -1;
+
+  if(fhc){
+    if(topo < 10){
+      if(neutPdg == 14)
+        sample = topo;
+      else if(neutPdg == -14)
+        sample = 9;
+      else if(neutPdg == -12 || neutPdg == 12)
+        sample = 8;
+    }
+    else{
+      sample = 10;
+    }
+  }
+  else{
+    if(topo < 10){
+      if(neutPdg == -14)
+        sample = topo;
+      else if(neutPdg == 14)
+        sample = 9;
+      else if(neutPdg == -12 || neutPdg == 12)
+        sample = 8;
+    }
+    else{
+      sample = 10;
+    }
+  }
+
+  return sample;
+
+}
