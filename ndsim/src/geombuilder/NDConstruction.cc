@@ -114,7 +114,7 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
 	      << "\nINFO::NDConstruction::Ecal absorber MATERIAL NOT SET - using Lead as default"
 	      << "\n------------------------------------------------------------" << std::endl;
   }
-  TGeoMedium *ecalabsmedium  = new TGeoMedium(ecal_absmatName_.c_str(),1,ecalmaterial);
+  TGeoMedium *ecalabsmedium  = new TGeoMedium(ecal_absmatName_.c_str(),1,ecalabsmaterial);
   // Magnet
   TGeoMixture *magnetmaterial = (TGeoMixture*)mats->FindMaterial(magnet_matName_.c_str());
   if(magnetmaterial)
