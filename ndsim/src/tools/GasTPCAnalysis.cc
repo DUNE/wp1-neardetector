@@ -162,8 +162,7 @@ int main(int argc, char ** argv) {
     
     NeutrinoEvent *nuEvent_           = tpcplotter->getNuEvent();
     GeantTrackingTruth* trackingtruth = tpcplotter->getTrackingTruth();
-    //genie::NtpMCEventRecord * grec    = tpcplotter->getGenieMCEventRecord();
-    //if(nuEvent_->getNucleonPdg() != 1000180400) continue;
+ 
     if(!pg){
       genie::NtpMCEventRecord * grec    = tpcplotter->getGenieMCEventRecord();
       genie::EventRecord *eventr = grec->event;
@@ -174,14 +173,11 @@ int main(int argc, char ** argv) {
     NCEcalUnusedHits = 0; NCEcalTracks = 0; NGeantTracks = 0; NFSParticles = 0; NISParticles = 0; NNeutron = 0; NGamma = 0;   
     
     // Topology
-    //ParticleDescrShortRecord lepton           = nuEvent_->getFspl();
-    //ParticleDescrShortRecord hitnucleon       = nuEvent_->getHitNucleon();
     std::vector<ParticleDescrShortRecord> fss = nuEvent_->getFssVector();
     std::vector<ParticleDescrShortRecord> iss = nuEvent_->getIssVector();
 
     // Argon interaction
     bool argon = false;
-    //Target = hitnucleon.getPDG();
     Target = nuEvent_->getNucleonPdg();
     if(Target == 1000180400)
       argon = true;
@@ -193,15 +189,11 @@ int main(int argc, char ** argv) {
 
     // In FV
     bool VertexinVessel = false;
-    //if(ReconUtils::inVessel(pos, fiducialZ, fiducialXY))
     if(ReconUtils::inVesselFV(vpos, 2500, 2500)){
       VertexinVessel = true;
-      //std::cout << Target << std::endl;
     }
       
     //cout << "----- Event --------- " << i << endl;
-    //TLorentzVector lepmom = lepton.getP4();
-
     Int_t inter_fs = -1;
     Int_t npic  = 0, npi0 = 0;
     Double_t Eneutral = 0, plepton = 0;
@@ -210,10 +202,6 @@ int main(int argc, char ** argv) {
       NISParticles = iss.size();
       NFSParticles = fss.size();
       // Set the lepton
-      //ISPdg[0] = lepton.getPDG();
-      //FSPdg[0] = lepton.getPDG();
-      //FSMomentum[0] = lepmom.Vect().Mag();
-      //FSCostheta[0] = lepmom.CosTheta();
       // Primary state topologies
       Int_t nother = 0, count = 0;
       for(std::vector< ParticleDescrShortRecord >::iterator k = iss.begin();k != iss.end();++k){
@@ -363,11 +351,6 @@ int main(int argc, char ** argv) {
     HitCollection tpcSdHits = tpcplotter->getSimData()->getTpcFidHits();
     // Ecal hits
     ScintHitCollection scintSdHits = tpcplotter->getSimData()->getScintHits();
-
-    //cout << i << " , Beginning No of TPC Hits = " << tpcSdHits.size() << " , Number of Ecal Hits = " << scintSdHits.size() << endl;
-    // To speed up things a little bit
-    //if(scintSdHits.size() > 25000)
-    //scintSdHits.clear();
     // --------------------------------------------------------------------------------------
     // TPC hits
     // --------------------------------------------------------------------------------------
@@ -400,23 +383,14 @@ int main(int argc, char ** argv) {
 
       for(Int_t j=0; j<tpcSdHits.size(); j++){
 	SDHit tmpHit = tpcSdHits.at(j);
-	/*
-	if(value == tmpHit.getParentID() && pdgparent != -1){
-	  pdgparent    = tmpHit.getPDG();
-	  primpdg      = tmpHit.getPDG();
-	  primid       = tmpHit.getTrackID();
-	}
-	*/
+
 	// Only those the track id matched
 	if(value == tmpHit.getTrackID()){
 	  nhits++;
 	  npdg         = tmpHit.getPDG();
 	  edep         += tmpHit.getEdep()*1000;
 	  idparent     = tmpHit.getParentID();
-	  //pdgparent    = tmpHit.getParent().getPDG();
 	  charge       = tmpHit.getCharge();
-	  //primpdg      = tmpHit.getParent().getPDG();
-	  //primid       = tmpHit.getParent().getTrackID();
 	  exitdetector = tmpHit.getTrackLeftVolume();
 	  rseed        = (int)tmpHit.getP4().E() + j + i + rseed;
 
@@ -618,8 +592,6 @@ int main(int argc, char ** argv) {
 	if(value == tmpHit.getTrackID()){
 	  nhits++;
 	  edep += tmpHit.getEdep()*1000;
-	  //primid    = tmpHit.getParent().getTrackID();
-	  //cout << "TPC hit id : " << value << " , tpc parent = " << idparent << " , pdg = " << tmpHit.getPDG() << " , " << tmpHit.getP4().Vect().Mag() << " , " << tmpHit.getTrackID() << " , " << tmpHit.getParentID() << " , " << tmpHit.getParent().getTrackID() << " , " << tmpHit.getParent().getPDG() << endl;
 	  if(nhits == 1){
 	    necal++;
 	    firstpos.SetXYZ(tmpHit.getPosition().X(),tmpHit.getPosition().Y(),tmpHit.getPosition().Z());
@@ -704,8 +676,6 @@ int main(int argc, char ** argv) {
 	  if(nvalue == tmpHit.getTrackID()){
 	    nhits++;
 	    edep += tmpHit.getEdep()*1000;
-	    //primid    = tmpHit.getParent().getTrackID();
-	    //cout << "S TPC hit id : " << value << " , tpc parent = " << idparent << " , pdg = " << tmpHit.getPDG() << " , " << tmpHit.getP4().Vect().Mag() << " , " << tmpHit.getTrackID() << " , " << tmpHit.getParentID() << " , " << tmpHit.getParent().getTrackID() << " , " << tmpHit.getParent().getPDG() << endl;
 	    if(nhits == 1){
 	      necal++;
 	      firstpos.SetXYZ(tmpHit.getPosition().X(),tmpHit.getPosition().Y(),tmpHit.getPosition().Z());
@@ -782,8 +752,6 @@ int main(int argc, char ** argv) {
 	}
       }
 
-      //cout << "TPC Track found! pdg = " << npdg << " , track id = " << value << " , pid = " << idparent << " , prim pdg = " << primpdg << " , primid = " << primid << " , inecal = " << lecal << endl;
-
       // Fill the tree
       EcalFirstGeantHitPosition[counter][0] = firstpos.X();
       EcalFirstGeantHitPosition[counter][1] = firstpos.Y();
@@ -855,44 +823,9 @@ int main(int argc, char ** argv) {
       reactionmode      = -1;
       y = -10.0;
     }
-    /*
-    // Quick recon to fill in the samples. This has to be done properly.
-    if(NTPCTracksInEcal > 0){
-      int nmuons=0, nmuonsp=0, npions=0, nelectrons=0, nprotons=0, nother=0;
-      for(Int_t k=0; k<counter; k++){
-	if(IsTPCRecon[counter] == 0) continue;
-	if(ReconInFV[counter] == 0) continue;
-	if(NEcals[counter] > 1)  continue;
-	if(NGeantHits[counter] < 15) continue;
-	//if(EcalFirstLayer[counter] > 4) continue;
-	
-	if(Pdg[counter] == 13)
-	  nmuons++;
-	else if(Pdg[counter] == -13)
-	  nmuonsp++;
-	else if(abs(Pdg[counter]) == 211)
-	  npions++;
-	else if(abs(Pdg[counter]) == 11)
-	  nelectrons++;
-	else if(Pdg[counter] == 2212)
-	  nprotons++;
-	else
-	  nother++;
-      }
-      //if(nmuons+ nmuonsp+ npions+ nelectrons+ nprotons+ nother > 0)
-      //cout << "mu- = " << nmuons << " , mu+ = " << nmuonsp << " , pi = " << npions << " , elec = " << nelectrons << " , prot = " << nprotons << " , oth = " << nother << endl;
-    }
-    else{
-      sample = -1;
-    }
-    */
     // --------------------------------------------------------------------------------------
-    // Do not do the ecal neutral cluster hit selection
-    if(!doecal) {continue;}
-    // --------------------------------------------------------------------------------------
-    
     //cout << i << " , After tpc tracking No of TPC Hits = " << tpcSdHits.size() << " , Number of Ecal Hits = " << scintSdHits.size() << endl;
-    
+    // BELOW IS REALLY WORK IN PROGRESS
     // --------------------------------------------------------------------------------------   
     // Gammas
     // --------------------------------------------------------------------------------------
@@ -1535,34 +1468,7 @@ int main(int argc, char ** argv) {
   //delete momsmearer;
   tpcplotter->deleteTrees();
   FileMC.Close();
-
-  // Do the first event selection - this must go in its own class
-  // Clone gastpc tree
-  TTree *def1 = GasTPCTree->CloneTree(0);
   
-  for(int ii=0; ii < nspills; ii++){ // Spill-by spill analysis
-    for(int i=0; i < GasTPCTree->GetEntries(); i++){
-      GasTPCTree->GetEntry(i);
-     
-      if(SpillNumber == ii){
-	if(NTPCTracksInEcal == 0) continue;
-	//if(Target != 1000180400) continue;
-	for(int j=0; j < NGeantTracks; j++){
-	  if(IsTPCRecon[j] == 0) continue;
-	  if(EcalFirstLayer[j] > 2 && EcalFirstLayer[j] != -1) continue;
-	  if(EcalFirstLayer[j] == -1 || EcalLastLayer[j] < 4) continue;
-	  if(NEcals[j] > 1)  continue;
-	  if(EcalReconHitPosition[j][3] < 0 || EcalReconHitPosition[j][3] > 960) continue;
-	  if(ReconInFV[j] == 0) continue;
-       
-	  //if(NGeantHits[j] < 15) continue;
-	  //if(abs(Pdg[j]) == 13 || abs(Pdg[j]) == 211)
-	  std::cout << "Spill = " << ii << " , target = " << Target << " , pdg = " << Pdg[j] << " ppdg = " << ParentPdg[j] << " , position Z = " <<  ReconPosition[j][2] << " , position Y = " << ReconPosition[j][1] << " , position X = " << ReconPosition[j][0] << " , last layer = " << EcalLastLayer[j] << " , first layer = " << EcalFirstLayer[j] << " , momentum = " << ReconMomentum[j] << std::endl;
-	}
-      }
-      
-    }
-  }  
   // OutputFile
   TFile *f = new TFile(outputfile.c_str(),"RECREATE");
   GasTPCTree->Write();
