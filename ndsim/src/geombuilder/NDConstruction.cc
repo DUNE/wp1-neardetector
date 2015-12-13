@@ -181,6 +181,8 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
     double pos = ecallength/(CLHEP::cm) + totalthickness/(CLHEP::cm)/2;
 
     if(!ecal_buildlayers_){ // ecal without layers
+      x1 = ecalradius/(CLHEP::cm) + totalthickness/(CLHEP::cm);//
+      y1 = ecalradius/(CLHEP::cm) + totalthickness/(CLHEP::cm);//
       TGeoBBox *motherBoxZ1 = new TGeoBBox("EcalBoxZ1",x1,y1,z1);
       TGeoVolume *ez1volume = new TGeoVolume("EcalScintVolumeZ1",motherBoxZ1,ecalmedium);
       volume_->AddNode(ez1volume,4,new TGeoTranslation(0 - x_center,0 - y_center,pos - z_center));
@@ -191,8 +193,8 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
       
       // Y
       y1 = z1;
-      x1 = ecalradius/(CLHEP::cm) + 2*totalthickness/(CLHEP::cm);
-      z1 = ecallength/(CLHEP::cm) + 2*totalthickness/(CLHEP::cm);
+      x1 = ecalradius/(CLHEP::cm) + totalthickness/(CLHEP::cm);
+      z1 = ecallength/(CLHEP::cm);
       TGeoBBox *motherBoxY1 = new TGeoBBox("EcalBoxY1",x1,y1,z1);
       TGeoVolume *ey1volume = new TGeoVolume("EcalScintVolumeY1",motherBoxY1,ecalmedium);
       pos = ecalradius/(CLHEP::cm) + totalthickness/(CLHEP::cm)/2;
@@ -222,8 +224,8 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
       int norder = 4;
       for(int i=0;i<ecal_layers;i++){
 	// Z
-	x1 = ecalradius/(CLHEP::cm); // + totalthickness/(CLHEP::cm);
-	y1 = ecalradius/(CLHEP::cm); // + totalthickness/(CLHEP::cm);
+	x1 = ecalradius/(CLHEP::cm) + totalthickness/(CLHEP::cm);//
+	y1 = ecalradius/(CLHEP::cm) + totalthickness/(CLHEP::cm);//
 	z1 = scintthickness/(CLHEP::cm)/2;
 	pos = ecallength/(CLHEP::cm) + i*scintthickness/(CLHEP::cm) + i*absthickness/(CLHEP::cm);
 	TGeoBBox *BoxZ1 = new TGeoBBox(Form("EcalScintBoxZ1_%i",i),x1,y1,z1);
@@ -236,8 +238,8 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
 	norder++;
 	// Y
 	y1 = z1;
-	x1 = ecalradius/(CLHEP::cm) + 2*totalthickness/(CLHEP::cm);
-	z1 = ecallength/(CLHEP::cm) + 2*totalthickness/(CLHEP::cm);
+	x1 = ecalradius/(CLHEP::cm) + totalthickness/(CLHEP::cm);
+	z1 = ecallength/(CLHEP::cm);
 	pos = ecalradius/(CLHEP::cm) + i*scintthickness/(CLHEP::cm) + i*absthickness/(CLHEP::cm);
 	TGeoBBox *BoxY1 = new TGeoBBox(Form("EcalScintBoxY1_%i",i),x1,y1,z1);
 	TGeoVolume *ey1volume = new TGeoVolume(Form("EcalScintY1_%iVolume",i),BoxY1,ecalmedium);
@@ -264,8 +266,8 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
 	norder++;
 	// Now the lead layer
 	if(absthickness > 0.0){ // only add it if the thickness is greater than zero
-	  x1 = ecalradius/(CLHEP::cm);
-	  y1 = ecalradius/(CLHEP::cm);
+	  x1 = ecalradius/(CLHEP::cm) + totalthickness/(CLHEP::cm);//
+	  y1 = ecalradius/(CLHEP::cm) + totalthickness/(CLHEP::cm);//
 	  z1 = absthickness/(CLHEP::cm)/2;
 	  pos = ecallength/(CLHEP::cm) + i*scintthickness/(CLHEP::cm) + i*absthickness/(CLHEP::cm);
 	  
@@ -282,8 +284,8 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
 
 	  // Y
 	  y1 = z1;
-	  x1 = ecalradius/(CLHEP::cm) + 2*totalthickness/(CLHEP::cm); //
-	  z1 = ecallength/(CLHEP::cm) + 2*totalthickness/(CLHEP::cm);
+	  x1 = ecalradius/(CLHEP::cm) + totalthickness/(CLHEP::cm); //
+	  z1 = ecallength/(CLHEP::cm);
 	  pos = ecalradius/(CLHEP::cm) + i*scintthickness/(CLHEP::cm) + i*absthickness/(CLHEP::cm);
 	  pos = pos + scintthickness/(CLHEP::cm)/2 + absthickness/(CLHEP::cm)/2;
 	  TGeoBBox *LBoxY1 = new TGeoBBox(Form("EcalLeadBoxY1_%i",i),x1,y1,z1);
@@ -319,8 +321,8 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
       double magnet_gap = 2*ecal_gap;
       double magnetradius = ecalradius + magnet_gap + totalthickness;
       double magnetlength = ecallength + magnet_gap + totalthickness;
-      x1 = magnetradius/(CLHEP::cm); // + magnet_thickness_/(CLHEP::cm);
-      y1 = magnetradius/(CLHEP::cm); //+ magnet_thickness_/(CLHEP::cm);
+      x1 = magnetradius/(CLHEP::cm) + magnet_thickness_/(CLHEP::cm);
+      y1 = magnetradius/(CLHEP::cm) + magnet_thickness_/(CLHEP::cm);
       z1 = magnet_thickness_/(CLHEP::cm)/2;
       TGeoBBox *MmotherBoxZ1 = new TGeoBBox("MagnetBoxZ1",x1,y1,z1);
       TGeoVolume *mz1volume = new TGeoVolume("MagnetVolumeZ1",MmotherBoxZ1,magnetmedium);
@@ -332,9 +334,9 @@ void NDConstruction::construction(Materials * mats, bool ecal, bool magnet){
       volume_->AddNode(mz2volume,11,new TGeoTranslation(0 - x_center,0 - y_center,-pos - z_center));
  
       // Y
-      x1 = magnetradius/(CLHEP::cm) + 2*magnet_thickness_/(CLHEP::cm);
       y1 = z1;
-      z1 = magnetlength/(CLHEP::cm) + 2*magnet_thickness_/(CLHEP::cm);
+      x1 = magnetradius/(CLHEP::cm) + magnet_thickness_/(CLHEP::cm);
+      z1 = magnetlength/(CLHEP::cm);
       TGeoBBox *MmotherBoxY1 = new TGeoBBox("MagnetBoxY1",x1,y1,z1);
       TGeoVolume *my1volume = new TGeoVolume("MagnetVolumeY1",MmotherBoxY1,magnetmedium);
       pos = magnetradius/(CLHEP::cm) + magnet_thickness_/(CLHEP::cm)/2;
