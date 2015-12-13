@@ -93,10 +93,10 @@ cmake -DCMAKE_INSTALL_PREFIX=/hepstore/georgios/gastpc/genie/dk2nu/trunk/dk2nu/d
 make
 make install
 
-
 The majority of the packages are required for GENIE, so if you have genie installed it should be a lot easier. 
 
 All the above software is needed to use the GasTPC-ND software. It will give you an error otherwise.
+They are all included in Fermilab ups.
 
 If you already have the software installed then simply add the paths of this to setup.sh.
 Then make sure you have set the $GasTPC variable to point to this directory and then source setup.sh.
@@ -110,13 +110,13 @@ version of geant4_vmc and VGM and they must also be compatible with the geant4.1
 ------------
 Once all third party software is installed you must make sure that each is on your $PATH and libraries on $LD_LIBRARY_PATH. 
 There is a script to help with this, setup.sh.
-Once you have the branch and everything is setup do the following to install GasTPC-nd software:
+Once you have the branch and everything is setup do the following to install GasTPC software:
 
 cd build
 cmake ../src
 make
 
-If all went well then it should now run. You can add $GasTPC/build/bin to your $PATH and then you can perform GasTPCprocess.
+If all went well then it should now run. You can add $GasTPC/build/bin to your $PATH.
 
 6. How to run the default program
 -----------------------------------------------------------
@@ -130,9 +130,12 @@ Alternative you can use the geometry files in src/config/GasTPCDetector.gdml
 The complete geometry with the detector in the cavity is here src/config/site.gdml
 
 Step 1: Run genie with the geometry file: This is not depending on this software
+Example:
+gevgen_numi_dk2nu -f /path/to/flux/file,DUNE-NDTF-01 -g ${GasTPC}/src/config/site.gdml --cross-sections /path/to/xssplines -o /path/out.root -m ${GasTPC}/src/config/gmxpl_gastpc.xml --seed seed -e 2.25e+15 -r seed -L cm -t volDetEnclosure
+Note: If you change the number of pot to simulate, then make sure to change the <POTSimulated> in src/config/GeantSimulation.xml
 
-Step2: Propagate the genie output to geant. This will same all the g4 hits (energy depositions)
+Step2: Propagate the genie output to geant. This will save all the g4 hits (energy depositions)
 GasTPCTracking -i inputgeniefile.root -o geantfile.root 
 
-Step3: Do the mock reconstruction and write the output in flat tree
+Step3: Do the preliminary mock reconstruction and write the output in flat tree
 GasTPCAnalysis -i geantfile.root -o analfile.root
