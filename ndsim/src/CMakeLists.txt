@@ -2,6 +2,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1 FATAL_ERROR)
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #set the compiler for gcc
 #set(CMAKE_CXX_COMPILER "/batchsoft/gcc/gcc-4.8.1-x86_64-sl6/bin/gcc")
