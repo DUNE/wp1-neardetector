@@ -16,7 +16,8 @@ set(INCLUDE_DIRECTORIES             ../utils
                                     ${CLHEP_INCLUDE_DIR}
 				    ${Geant4_INCLUDE_DIR})
 
-ROOT_GENERATE_DICTIONARY("${GasTPCUtils_HEADERS}" "${GasTPC_LINKDEF}" "${GasTPC_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
+ROOT_GENERATE_DICTIONARY(GasTPCDataDict "${GasTPCUtils_HEADERS}" 
+                         LINKDEF "${GasTPC_LINKDEF}")
 
 # get list of all source files in this directory.
 AUX_SOURCE_DIRECTORY(.              DATASTR_SOURCE_FILES)
