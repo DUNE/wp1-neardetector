@@ -15,7 +15,7 @@ FIND_PATH(LHAPDF_INCLUDE_DIR NAMES   LHAPDF                  PATHS
                                                              $ENV{LHAPDF_INSTALL_DIR}/include/
                                                              NO_DEFAULT_PATH)
 
-FIND_PATH(LHAPDF_LIBRARY_DIR NAMES   libLHAPDF.so            PATHS
+FIND_PATH(LHAPDF_LIBRARY_DIR NAMES   libLHAPDF.so libLHAPDF.dylib           PATHS
                                                              $ENV{LHAPDF_INSTALL_DIR}/lib/
                                                              NO_DEFAULT_PATH)
 
