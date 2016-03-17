@@ -20,7 +20,8 @@ FIND_PATH(CLHEP_INCLUDE_DIR NAMES CLHEP                 PATHS
 
 FIND_PATH(CLHEP_LIBRARY_DIR NAMES libG4clhep.so libG4clhep.dylib PATHS
                                                         	 $ENV{CLHEP}/lib64/
-								 $ENV{CLHEP_LIB_DIR}/
+                                                           $ENV{CLHEP}/lib/
+								                                           $ENV{CLHEP_LIB_DIR}/
                                                         	 NO_DEFAULT_PATH)
 
 # did not find libG4clhep.so - possibly using a build of CLHEP outside of G4 v10
