@@ -17,7 +17,7 @@ FIND_PATH(LOG4CPP_INCLUDE_DIR NAMES log4cpp             PATHS
 
 #MESSAGE("LOG4CPP_INCLUDE_DIR is ${LOG4CPP_INCLUDE_DIR}")
 
-FIND_PATH(LOG4CPP_LIBRARY_DIR NAMES liblog4cpp.so       PATHS
+FIND_PATH(LOG4CPP_LIBRARY_DIR NAMES liblog4cpp.so liblog4cpp.dylib    PATHS
                                                         $ENV{LOG4CPP}/lib64/
                                                         $ENV{LOG4CPP}/lib/
                                                         NO_DEFAULT_PATH)
