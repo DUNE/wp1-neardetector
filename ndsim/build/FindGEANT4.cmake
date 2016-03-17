@@ -15,7 +15,7 @@ add_definitions(${Geant4_DEFINITIONS})
 SET(GEANT4_INCLUDE_DIR ${Geant4_INCLUDE_DIR})
  #message("Geant4_INCLUDE_DIRS : ${Geant4_INCLUDE_DIRS}")
 
-FIND_PATH(GEANT4_LIBRARY_DIR NAMES libG4event.so             PATHS
+FIND_PATH(GEANT4_LIBRARY_DIR NAMES libG4event.so libG4event.dylib          PATHS
                                                              ${Geant4_INCLUDE_DIR}/../../lib64/
                                                              ${Geant4_INCLUDE_DIR}/../../lib/
                                                              NO_DEFAULT_PATH)
