@@ -4,11 +4,11 @@ message(STATUS "datastruct ... ")
 # set everything needed for the root dictionary and create the
 # dictionary
 
-set(GasTPC_LINKDEF                    LinkDef.hh)
+set(GasTPCData_LINKDEF                    LinkDef.hh)
 
-set(GasTPC_DICTIONARY                 ${CMAKE_CURRENT_BINARY_DIR}/GasTPCDataDict.cxx)
+set(GasTPCData_DICTIONARY                 ${CMAKE_CURRENT_BINARY_DIR}/GasTPCDataDict.cxx)
 
-set(GasTPCUtils_HEADERS               RunStats.hh
+set(GasTPCData_HEADERS               RunStats.hh
                                       GasTPCDataLib.hh)
 
 set(INCLUDE_DIRECTORIES             ../utils
@@ -17,7 +17,7 @@ set(INCLUDE_DIRECTORIES             ../utils
 				    ${Geant4_INCLUDE_DIR})
 
 
-ROOT_GENERATE_DICTIONARY("${GasTPCUtils_HEADERS}" "${GasTPC_LINKDEF}" "${GasTPC_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
+ROOT_GENERATE_DICTIONARY("${GasTPCData_HEADERS}" "${GasTPCData_LINKDEF}" "${GasTPCData_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
 
 
 # get list of all source files in this directory.
@@ -27,7 +27,7 @@ AUX_SOURCE_DIRECTORY(.              DATASTR_SOURCE_FILES)
 
 #set(CMAKE_CXX_FLAGS)
 add_library (datastruct             ${DATASTR_SOURCE_FILES}
-                                    ${GasTPC_DICTIONARY})
+                                    ${GasTPCData_DICTIONARY})
 
 target_link_libraries(datastruct    utils
                                     ${ROOT_LIBRARIES}
