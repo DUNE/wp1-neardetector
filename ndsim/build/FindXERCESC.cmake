@@ -6,7 +6,7 @@ FIND_PATH(XERCESC_INCLUDE_DIR NAMES    xercesc          PATHS
                                                         $ENV{XERCESC_INSTALL_DIR}/include/
                                                         NO_DEFAULT_PATH)
 
-FIND_PATH(XERCESC_LIBRARY_DIR NAMES libxerces-c.so    PATHS
+FIND_PATH(XERCESC_LIBRARY_DIR NAMES libxerces-c.so libxerces-c.dylib   PATHS
                                                         $ENV{XERCESC_INSTALL_DIR}/lib64/
                                                         $ENV{XERCESC_INSTALL_DIR}/lib/
                                                         NO_DEFAULT_PATH)
