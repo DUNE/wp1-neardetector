@@ -676,7 +676,7 @@ void DetectorConstruction::setDetectorAttributes(){
 	//tmpSD_lv->SetVisAttributes(G4Colour::Blue());
 	tmpSD_lv->SetSensitiveDetector(tmpSD);
 	//tmpSD_lv->SetUserLimits(new G4UserLimits(GetSteppingLimit()));
-	tmpSD_lv->SetUserLimits(new G4UserLimits(5.0*CLHEP::mm));
+	tmpSD_lv->SetUserLimits(new G4UserLimits(1.0*CLHEP::mm)); // same as T2K
 	std::cout << "\n*****************************************************"
 		  << "\nFound detector with name: " << tmpSD_lv->GetName() 
 		  << " -- SD set!" 
