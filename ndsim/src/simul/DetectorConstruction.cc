@@ -20,7 +20,7 @@
 #include <G4UserLimits.hh>
 
 DetectorConstruction::DetectorConstruction(std::string geomFile, G4double magFieldStength, TGeoManager * geoMgr) {
-  rootDet_ = NULL;
+  //rootDet_ = NULL;
 
   //is it root geometry or gdml?
   //root file 
@@ -34,8 +34,8 @@ DetectorConstruction::DetectorConstruction(std::string geomFile, G4double magFie
 
       usingRootFile = 1;
       geoMgr_ = geoMgr;
-      rootMgr_ = TG4RootNavMgr::GetInstance(geoMgr_);
-      rootDet_ = new TG4RootDetectorConstruction(geoMgr_);
+      //rootMgr_ = TG4RootNavMgr::GetInstance(geoMgr_);
+      //rootDet_ = new TG4RootDetectorConstruction(geoMgr_);
       //rootDet_ = rootMgr_->GetDetConstruction();
     }
 
@@ -175,7 +175,7 @@ DetectorConstruction::DetectorConstruction(std::string geomFile, G4double magFie
 }
 
 DetectorConstruction::DetectorConstruction(std::string geomFile, G4double magFieldStength) {
-  rootDet_ = NULL;
+  //rootDet_ = NULL;
   
   if(geomFile.find("gdml") != std::string::npos)
     {
@@ -304,10 +304,10 @@ DetectorConstruction::DetectorConstruction(std::string geomFile, G4double magFie
 }
 
 DetectorConstruction::~DetectorConstruction(){
-  if(rootDet_ ) delete rootDet_;
+  //if(rootDet_ ) delete rootDet_;
   if(fpMagField_) delete fpMagField_;
-  if(rootNav_) delete rootNav_;
-  if(rootMgr_) delete rootMgr_;
+  //if(rootNav_) delete rootNav_;
+  //if(rootMgr_) delete rootMgr_;
   if(geoMgr_) delete geoMgr_;
   if(World_) delete World_;
   //if(Rock_Physic)  delete Rock_Physic;
@@ -326,7 +326,7 @@ DetectorConstruction::~DetectorConstruction(){
 G4VPhysicalVolume* DetectorConstruction::Construct() {
 
   if(usingRootFile == 1){
-    World_ = rootDet_->GetTopPV();
+    //World_ = rootDet_->GetTopPV();
     this->setDetectorAttributes();
   }
 

@@ -36,11 +36,11 @@
 #include "G4GeometryManager.hh"
 #include "G4PVPlacement.hh"
 
-#include <TG4RootDetectorConstruction.h>
+//#include <TG4RootDetectorConstruction.h>
 
 #include "TGeoManager.h"
-#include "TG4RootNavigator.h"
-#include "TG4RootNavMgr.h"
+//#include "TG4RootNavigator.h"
+//#include "TG4RootNavMgr.h"
 
 #include "GasTPCDataLib.hh"
 #include "ScintillatorSensitiveDetector.hh"
@@ -63,7 +63,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
   int		   GetNumberOfCopies(const G4String& vn);
 
   TGeoManager * getGeoMgr()       const {return geoMgr_;}
-  TG4RootNavMgr * getRootMgr()    const {return rootMgr_;};
+  //TG4RootNavMgr * getRootMgr()    const {return rootMgr_;};
 
   //void setTpcFidHitPtr(tpcFidHit* hitPtr) {tpcFidSD_->setHitPtr(hitPtr);}
   //void setSDHitPtr(SDHit* hitPtr) {if(DetectorSD_)DetectorSD_->setHitPtr(hitPtr);}
@@ -89,9 +89,9 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
 
   G4VPhysicalVolume *           World_;
   TGeoManager *			geoMgr_;
-  TG4RootNavMgr *		rootMgr_;
-  TG4RootNavigator *		rootNav_;
-  TG4RootDetectorConstruction *	rootDet_;
+  //TG4RootNavMgr *		rootMgr_;
+  //TG4RootNavigator *		rootNav_;
+  //TG4RootDetectorConstruction *	rootDet_;
 
   G4GDMLParser                 gdmlParser_;
 

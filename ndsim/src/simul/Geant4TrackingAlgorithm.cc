@@ -58,7 +58,7 @@ Geant4TrackingAlgorithm::Geant4TrackingAlgorithm(std::string geomFile, std::stri
 
 Geant4TrackingAlgorithm::~Geant4TrackingAlgorithm() {
   if(geoMgr_) delete geoMgr_;
-  if(postDetConstruction_) delete postDetConstruction_;
+  //if(postDetConstruction_) delete postDetConstruction_;
   //if(detector_) delete detector_;
 
   if(physList_)delete physList_;
@@ -83,17 +83,17 @@ void Geant4TrackingAlgorithm::initialize() {
 
   bool tgeo = detector_->GetValueUsingRootGeom();
 
-  if(tgeo)detMgr = detector_->getRootMgr();
+  //if(tgeo)detMgr = detector_->getRootMgr();
  
   //set run manager
   runManager_ = new G4RunManager();
 
-  postDetConstruction_ = NULL;
+  //postDetConstruction_ = NULL;
   if(tgeo){
-    postDetConstruction_ = new MyUserPostDetConstruction(targetVolName_,magFieldStrength_/*,geoMgr_*/);
-    detMgr->Initialize(postDetConstruction_);
+    //postDetConstruction_ = new MyUserPostDetConstruction(targetVolName_,magFieldStrength_/*,geoMgr_*/);
+    //detMgr->Initialize(postDetConstruction_);
     //needed to connect to GEANT4 run manager
-    detMgr->ConnectToG4();
+    //detMgr->ConnectToG4();
   }
   else 
     runManager_->SetUserInitialization(detector_);

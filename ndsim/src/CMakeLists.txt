@@ -28,7 +28,7 @@ include($ENV{GasTPC}/build/FindLHAPDF.cmake)
 include($ENV{GasTPC}/build/FindROOT.cmake)
 include($ENV{GasTPC}/build/FindGENIE.cmake)
 include($ENV{GasTPC}/build/FindGEANT4.cmake)
-include($ENV{GasTPC}/build/FindVMC.cmake)
+#include($ENV{GasTPC}/build/FindVMC.cmake)
 
 MESSAGE(STATUS "\n Third party is loaded.")
 
@@ -53,9 +53,9 @@ include_directories(.  utils
                        "${CLHEP_INCLUDE_DIR}"
                        "${LOG4CPP_INCLUDE_DIR}"
                        "${XERCESC_INCLUDE_DIR}"
-                       "${LHAPDF_INCLUDE_DIR}"
-                       "${GEANT4VMC_INCLUDE_DIR}"
-                       "${G4ROOT_INCLUDE_DIR}")
+                       "${LHAPDF_INCLUDE_DIR}")
+                       #"${GEANT4VMC_INCLUDE_DIR}"
+                       #"${G4ROOT_INCLUDE_DIR}")
 
 link_directories(      "${ROOT_LIBRARY_DIR}"
                        "${GEANT4_LIBRARY_DIR}"
@@ -64,9 +64,9 @@ link_directories(      "${ROOT_LIBRARY_DIR}"
                        "${LOG4CPP_LIBRARY_DIR}"
                        "${PYTHIA6_LIBRARY_DIR}"
                        "${XERCESC_LIBRARY_DIR}"
-                       "${LHAPDF_LIBRARY_DIR}"
-                       "${GEANT4VMC_LIBRARY_DIR}"
-                       "${G4ROOT_LIBRARY_DIR}")
+                       "${LHAPDF_LIBRARY_DIR}")
+                       #"${GEANT4VMC_LIBRARY_DIR}"
+                       #"${G4ROOT_LIBRARY_DIR}")
 
 MESSAGE(STATUS "\n Entering directories ...")
 
