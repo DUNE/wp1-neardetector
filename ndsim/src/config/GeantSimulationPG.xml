@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+
+<geant_analysis_inputs analysis="GeantHPGASTPC" version="2015a" config="GeantHPTPC">
+
+  <!-- Geometry file and volume to run geant simulation -->
+  <GeometryFile>                MyTPC.gdml              </GeometryFile>   <!-- has to be located in src/config-->
+  <SimTargetVolume>             innerVesselVolume      </SimTargetVolume>
+  <SimEcalVolume>               12                     </SimEcalVolume>  <!-- Number of ecal volumes to simulate -->
+  <POTSimulated>                2.25e15                </POTSimulated> <!-- POT simulated. This has to be the same with the number provided when running Genie  -->
+
+  <ParticleThresholds>
+    <MinEnergyCut>              5.0             </MinEnergyCut>   <!-- MeV -->
+    <GammaCut>                  50              </GammaCut>       <!-- mm -->
+    <ElectronCut>               50              </ElectronCut>    <!-- mm -->
+    <PositronCut>               50              </PositronCut>    <!-- mm -->
+    <NeutronCut>                50              </NeutronCut>     <!-- mm -->
+  </ParticleThresholds>
+
+  <!-- Options to build drifting model -->
+  <DriftingModel>
+    <I0>           15.8    </I0>           <!-- ionization potenial, eV -->
+    <DiffusionCF>  0.04    </DiffusionCF>  <!-- Ar Diffusion coefficient,
+                                            cm2/sec, F.Sauli, CERN
+                                            77-09, Table 4  -->
+    <Mobility>      1.7    </Mobility>     <!-- Ar mobility coefficient,
+                                            cm2/sec/V, F.Sauli, CERN
+                                            77-09, Table 4  -->
+    <EField>        290    </EField>      <!-- TPC electric field, V/cm -->
+    <Z0>             0     </Z0>          <!-- Z-position of TPC acceleration plate -->
+    <DiscFact>       1     </DiscFact>    <!-- Charge discrimination factor,
+														 Ncharges*DiscFact is simulating,
+													    may be used to speed-up simulation -->
+    <Verbosity>      0     </Verbosity>   <!-- Drifting model verbosity, -->
+  </DriftingModel>
+
+  <!-- Options to run vis macro -->
+  <RunVisMacro>                 0                  </RunVisMacro>
+
+  <!-- Physics Lists -->
+  <PhysicsList>                 FTFP_BERT          </PhysicsList>
+  <EMPhysicsList>               EM4                </EMPhysicsList>
+  <HadPhysicsList>              FTFP_BERT_HP       </HadPhysicsList>
+
+  <!-- Magnetic Field Strength -->
+  <MagneticFieldStrength>       0.4                </MagneticFieldStrength> <!-- Tesla -->
+
+  <!-- Verbosity levels -->
+  <TrackingVerbose>             0                  </TrackingVerbose>
+
+  <!-- For Partcile Gun use -->
+  <ParticleGun>
+  <!-- Position in meters -->
+    <PositionX>                 0.0                </PositionX>
+    <PositionY>                 0.0                </PositionY>
+    <PositionZ>                 3.5582             </PositionZ>    <!-- center of vessel -->
+    <MomentumX>                 0.0                </MomentumX>    <!-- if |P|>0, then DIRECTION of particle -->
+    <MomentumY>                 0.0                </MomentumY>
+    <MomentumZ>                 0.0                </MomentumZ>
+    <!-- Keep  MinEnergy==MaxEnergy if to simulate monoenergetic beam. Otherwise, a flat distribution between MinEnergy and MaxEnergy will be simulate. If Gauss is on then Simulate energy as a gaussian function with mean the maxenergy -->
+    <MinEnergy>                 0.05                </MinEnergy>    <!-- minimal kinetic Energy, GeV  -->
+    <MaxEnergy>                 0.05                </MaxEnergy>    <!-- maximal kinetic Energy, GeV  -->
+    <Gauss>                     0                  </Gauss>
+    <PDG>                       2212                </PDG>
+  </ParticleGun>
+
+  <!-- Analysis -->
+  <Analysis>
+    <deltaSagitta>              0.05                </deltaSagitta> <!-- mm -->
+    <TPCPositRes>               0.60                </TPCPositRes>  <!-- mm -->
+    <TPCAngulRes>               0.20                </TPCAngulRes>  <!-- rad -->
+    <EcalPositRes>              10.0                </EcalPositRes> <!-- mm -->
+    <EcalTimeRes>               2.5                 </EcalTimeRes>  <!-- ns -->
+    <DEDXScaleEle>              2.2e-05             </DEDXScaleEle>
+    <DEDXScaleMIP>              2.5e-05             </DEDXScaleMIP>
+    <GasPressure>               10                  </GasPressure> <!-- bar -->
+    <!-- Fiducial Volume -->
+    <FVXY>                      2000.0              </FVXY> <!-- mm -->
+    <FVZ>                       2000.0              </FVZ> <!-- mm -->
+    
+  </Analysis>
+
+</geant_analysis_inputs>
