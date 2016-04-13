@@ -137,7 +137,10 @@ void NuEventFileLoadAlgorithm::initialize(std::string inputFileName, std::string
 
 void NuEventFileLoadAlgorithm::close() {
   inputTree_->Delete();
-  inputFile_->Close();
+
+  if(inputFileName_.find("particlegun") == std::string::npos)
+	 inputFile_->Close();
+
   if(verbose_>0){
     std::cout << "\n--------------------------------------"
 	      << "\nINFO::Closing " << inputFileName_ << " file"
@@ -342,7 +345,13 @@ NeutrinoEvent* NuEventFileLoadAlgorithm::getGHepEvent(int eventid, int nspills) 
   bool is_weaknc = proc_info.IsWeakNC();
   bool is_mec    = proc_info.IsMEC();
   
-  if(!hitnucl) { assert(is_coh || is_imd || is_imdanh || is_nuel); }
+  //  if(!hitnucl) { assert(is_coh || is_imd || is_imdanh || is_nuel); }
+
+  if(!hitnucl) {
+	 cout << "Skipping event w/o Nucleon hit" << endl;
+    mcrec->Clear();
+    return NULL;
+  }
   
   // Hit quark - set only for DIS events
   int  qrk  = (is_dis) ? tgt.HitQrkPdg() : 0;     
