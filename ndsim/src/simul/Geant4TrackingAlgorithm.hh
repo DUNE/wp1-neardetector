@@ -35,7 +35,7 @@
 
 #include "GasTPCDataLib.hh"
 #include "GeometryLoader.hh"
-#include "MyUserPostDetConstruction.hh"
+//#include "MyUserPostDetConstruction.hh"
 #include "PrimaryGeneratorAction.hh"
 #include "DetectorConstruction.hh"
 #include "SteppingAction.hh"
@@ -91,12 +91,12 @@ class Geant4TrackingAlgorithm {
   PrimaryGeneratorAction*     getPrimaryGenerator()         const {return pgAction_;}
   SteppingAction*             getSteppingAction()           const {return stpAction_;}
   DetectorConstruction*       getDetectorConstruction()     const {return detector_;}
-  MyUserPostDetConstruction*  getPostDetectorConstruction() const {return postDetConstruction_;}
+  //MyUserPostDetConstruction*  getPostDetectorConstruction() const {return postDetConstruction_;}
 
  private:
   G4RunManager*             runManager_;
 
-  MyUserPostDetConstruction * postDetConstruction_;
+  //MyUserPostDetConstruction * postDetConstruction_;
 
   PhysicsList*              physList_;
   RunAction*                runAction_;
@@ -108,7 +108,7 @@ class Geant4TrackingAlgorithm {
   DetectorConstruction*     detector_;
 
   TGeoManager *  geoMgr_;
-  TG4RootNavMgr *detMgr;
+  //TG4RootNavMgr *detMgr;
 
   G4UImanager* UImanager;
   G4VisManager* visManager;

@@ -29,7 +29,7 @@ add_library (simul             Geant4TrackingAlgorithm.cc
 			       TrackInformation.cc
                                PrimaryGeneratorAction.cc
                                DetectorConstruction.cc
-			       MyUserPostDetConstruction.cc
+			       #MyUserPostDetConstruction.cc
 			       DetectorHit.cc
 			       DetectorSD.cc
 			       MagneticField.cc
@@ -38,7 +38,7 @@ add_library (simul             Geant4TrackingAlgorithm.cc
 target_link_libraries(simul    ${Geant4_LIBRARIES}
                                ${ROOT_LIBRARIES}
                                ${CLHEP_LIBRARIES}
-                               g4root
+                               #g4root
                                #geant4vmc
                                #G3toG4
                                #VMC

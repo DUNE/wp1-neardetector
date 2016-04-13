@@ -366,6 +366,23 @@ NeutrinoEvent* NuEventFileLoadAlgorithm::getGHepEvent(int eventid, int nspills) 
   
   // Get NEUT equivalent reaction codes (if any)
   neut_code   = utils::ghep::NeutReactionCode(&eventr);
+
+  // Special reaction codes
+  if(is_imd){
+    neut_code = 80;
+    if(neutrino->Pdg() < 0)
+      neut_code = -neut_code;
+  }
+  else if(is_nuel){
+    neut_code = 81;
+    if(neutrino->Pdg() < 0)
+      neut_code = -neut_code;
+  }
+  else if(is_mec){ // This should already exist, but add just in case
+   neut_code = 2;
+    if(neutrino->Pdg() < 0)
+      neut_code = -neut_code; 
+  }
   
   // Get event weight
   wght = eventr.Weight();
