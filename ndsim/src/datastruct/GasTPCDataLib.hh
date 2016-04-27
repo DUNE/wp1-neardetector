@@ -480,6 +480,90 @@ class GeantDaughterParticle : public GeantParticle {
 };
 */
 ////////////////////////////////////////////////////////////////////////////////
+class TrackParticle: public namedRecord/* , public GeantParticle, public NeutrinoEvent*/{
+
+ public:
+  TrackParticle() {name_ = "TrackParticle";}
+  virtual ~TrackParticle() {}
+ 
+  //copy constructor
+  //TrackParticle(const TrackParticle &p);
+
+public:
+  // Setters
+  void SetGeantParticle(GeantParticle* p)        {G4Particle = p;};
+  void SetGeantParentParticle(GeantParticle* p)  {G4ParentParticle = p;};
+  void SetNeutrinoEvent(NeutrinoEvent* n)        {GenEvent = n;};
+  
+  void SetReconMomentum(double x)         {ReconMomentum = x;};
+  void SetReconCostheta(double x)         {ReconCostheta = x;};
+  void SetReconPosition(TLorentzVector v) {ReconPosition = v;};
+  void SetReconCharge(int x)              {ReconCharge = x;};
+  void SetRecondEdx(double x)             {RecondEdx = x;};
+  void SetRecondEdxTruncated(double x)    {RecondEdxTruncated = x;};
+  void SetdEdxSigma(double x)             {dEdxSigma = x;};
+  void SetReconTrackLength(double x)      {ReconTrackLength = x;};
+  void SetInEcal(bool b)                  {InEcal = b;};
+
+  void SetdEdx(double x)                  {dEdx = x;};
+  void SetdEdxTruncated(double x)         {dEdxTruncated = x;};
+  void SetdEdxMuon(double x)              {dEdxMuon = x;};
+  void SetdEdxPion(double x)              {dEdxPion = x;};
+  void SetdEdxElec(double x)              {dEdxElec = x;};
+  void SetdEdxKaon(double x)              {dEdxKaon = x;};
+  void SetdEdxProt(double x)              {dEdxProt = x;};
+  void SetTrackLength(double x)           {TrackLength = x;};
+
+  // Getters
+  GeantParticle* GetGeantParticle() const        {return G4Particle;};
+  GeantParticle* GetGeantParentParticle() const  {return G4ParentParticle;};
+  NeutrinoEvent* GetNeutrinoEvent() const        {return GenEvent;};
+
+  double GetReconMomentum()                 {return ReconMomentum;};
+  double GetReconCostheta()                 {return ReconCostheta;};
+  TLorentzVector GetReconPosition()         {return ReconPosition;};
+  int GetReconCharge()                      {return ReconCharge;};
+  double GetRecondEdx()                     {return RecondEdx;};
+  double GetRecondEdxTruncated()            {return RecondEdxTruncated;};
+  double GetdEdxSigma()                     {return dEdxSigma;};
+  double GetReconTrackLength()              {return ReconTrackLength;};
+  bool GetInEcal()                          {return InEcal;};
+
+  double GetdEdx()                          {return dEdx;};
+  double GetdEdxTruncated()                 {return dEdxTruncated;};
+  double GetdEdxMuon()                      {return dEdxMuon;};
+  double GetdEdxPion()                      {return dEdxPion;};
+  double GetdEdxElec()                      {return dEdxElec;};
+  double GetdEdxKaon()                      {return dEdxKaon;};
+  double GetdEdxProt()                      {return dEdxProt;};
+  double GetTrackLength()                   {return TrackLength;};
+
+ private:
+   // The geant particle associated with this track
+  GeantParticle* G4Particle;
+  // The geant parent particle
+  GeantParticle* G4ParentParticle;
+  // The true vertex associate with this track
+  NeutrinoEvent* GenEvent;
+
+  // Recon momentum, angle, position, charge
+  double ReconMomentum, ReconCostheta;
+  TLorentzVector ReconPosition;
+  int ReconCharge;
+  // dE/dx
+  double RecondEdx, RecondEdxTruncated;
+  // Sigma
+  double dEdxSigma;
+  // Track length
+  double ReconTrackLength;
+  // Going in the ecal
+  bool InEcal;
+
+  // True quantities
+  double dEdx, dEdxTruncated, dEdxMuon, dEdxPion, dEdxElec, dEdxKaon, dEdxProt;
+  double TrackLength;
+};
+////////////////////////////////////////////////////////////////////////////////
 class GeantTrackingTruth : public namedRecord {
 
  public:

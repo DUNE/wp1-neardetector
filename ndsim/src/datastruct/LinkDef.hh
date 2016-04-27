@@ -32,6 +32,7 @@
 //#pragma link C++ class GeantPrimaryParticle+;
 //#pragma link C++ class GeantDaughterParticle+;
 #pragma link C++ class GeantTrackingTruth+;
+#pragma link C++ class TrackParticle+;
 //#pragma link C++ class MuonRange+;
 #pragma link C++ class MemTestRecord+;
 //#pragma link C++ class ReconData+;

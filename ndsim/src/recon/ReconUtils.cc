@@ -143,7 +143,7 @@ bool ReconUtils::IsReconTrack(int nodes, int seed){
   delete rand;
 
   bool toreturn = true;
-  if(nodes > 21){
+  if(nodes > 20){
     if(rval > eff[19]*1000)
       toreturn = false;
   }

@@ -79,19 +79,11 @@ If you have problems with the scripts the software needed is:
   + lhapdf
   + libxml2
   + log4pp
-  + root (tested with root_v5.34.26)
-  + genie (tested with R-2_8_4)
+  + root (tested with root_v5.34.36)
+  + genie (tested with R-2_8_6)
   + xerces
-  + geant4 (tested with geant4.10.01)
-  + geant4_vmc (tested with geant4_vmc.3.1.p1)
-  + VGM (tested with vgm.4.2)
-  + dk2nu (to run with gevgen_numi for lbnf flux)
-  to compile
-  mkdir dk2nu-build
-  cd dk2nu-build
-cmake -DCMAKE_INSTALL_PREFIX=/hepstore/georgios/gastpc/genie/dk2nu/trunk/dk2nu/dk2nu-install /hepstore/georgios/gastpc/genie/dk2nu/trunk/dk2nu
-make
-make install
+  + geant4 (tested with geant4.10.01.p02. You need to compile geant with -DGEANT4_USE_GDML=ON)
+  + dk2nu (to run with gevgen_numi or gevgen_fnal)
 
 The majority of the packages are required for GENIE, so if you have genie installed it should be a lot easier. 
 
@@ -102,9 +94,6 @@ If you already have the software installed then simply add the paths of this to 
 Then make sure you have set the $GasTPC variable to point to this directory and then source setup.sh.
 
 Otherwise you can run the install_all.sh script to install all the software into the third_party directory, however this is very time consuming.
-
-The versions of geant4_vmc and VGM are root and geant4 depended. If you want to use an older version of root you have to find the corresponding 
-version of geant4_vmc and VGM and they must also be compatible with the geant4.10.* versions.
 
 5. Install
 ------------

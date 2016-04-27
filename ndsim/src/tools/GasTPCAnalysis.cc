@@ -477,6 +477,7 @@ int main(int argc, char ** argv) {
 	// dedx resolution is the %
 	dedxres = dedxres*fdedx/100.0;
 	double dedxrecon = ReconUtils::Smearer(fdedx,dedxres,rseed);
+	
 	dEdx[counter]                   = fdedx;
 	dEdxSigma[counter]              = dedxres;
 	RecondEdx[counter]              = dedxrecon;
@@ -488,6 +489,48 @@ int main(int argc, char ** argv) {
 	double dedxExpElec = dedxCorElec*ReconUtils::DEDXExp(tmom.Vect().Mag(), 0.511);
 	double dedxExpKaon = dedxCorMIP*ReconUtils::DEDXExp(tmom.Vect().Mag(), 493.67);
 	double dedxExpProt = dedxCorMIP*ReconUtils::DEDXExp(tmom.Vect().Mag(), 938.27);
+
+	// Additional correction based on the truth dEdx
+	if(abs(npdg) == 13){
+	  double diff = fdedx - dedxExpMuon;
+	  dedxExpMuon = dedxExpMuon + diff;
+	  dedxExpPion = dedxExpPion + diff;
+	  dedxExpElec = dedxExpElec + diff;
+	  dedxExpKaon = dedxExpKaon + diff;
+	  dedxExpProt = dedxExpProt + diff;
+	}
+	else if(abs(npdg) == 211){
+	  double diff = fdedx - dedxExpPion;
+	  dedxExpMuon = dedxExpMuon + diff;
+	  dedxExpPion = dedxExpPion + diff;
+	  dedxExpElec = dedxExpElec + diff;
+	  dedxExpKaon = dedxExpKaon + diff;
+	  dedxExpProt = dedxExpProt + diff;
+	}
+	else if(abs(npdg) == 11){
+	  double diff = fdedx - dedxExpElec;
+	  dedxExpMuon = dedxExpMuon + diff;
+	  dedxExpPion = dedxExpPion + diff;
+	  dedxExpElec = dedxExpElec + diff;
+	  dedxExpKaon = dedxExpKaon + diff;
+	  dedxExpProt = dedxExpProt + diff;
+	}
+	else if(abs(npdg) == 321){
+	  double diff = fdedx - dedxExpKaon;
+	  dedxExpMuon = dedxExpMuon + diff;
+	  dedxExpPion = dedxExpPion + diff;
+	  dedxExpElec = dedxExpElec + diff;
+	  dedxExpKaon = dedxExpKaon + diff;
+	  dedxExpProt = dedxExpProt + diff;
+	}
+	else if(abs(npdg) == 2212){
+	  double diff = fdedx - dedxExpProt;
+	  dedxExpMuon = dedxExpMuon + diff;
+	  dedxExpPion = dedxExpPion + diff;
+	  dedxExpElec = dedxExpElec + diff;
+	  dedxExpKaon = dedxExpKaon + diff;
+	  dedxExpProt = dedxExpProt + diff;
+	}
 
 	dEdxMuon[counter]               = dedxExpMuon;
 	dEdxPion[counter]               = dedxExpPion;

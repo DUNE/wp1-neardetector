@@ -34,6 +34,7 @@ ClassImp(GeantParticle)
 //ClassImp(GeantDaughterParticle)
 ClassImp(PionDecayEvent)
 ClassImp(MuonDecayEvent)
+ClassImp(TrackParticle)
 
 ///////////////////////////////////////////////////////////////////////////////
 
