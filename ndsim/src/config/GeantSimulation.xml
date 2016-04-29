@@ -6,7 +6,7 @@
   <GeometryFile>                site.gdml              </GeometryFile>   <!-- has to be located in src/config-->
   <SimTargetVolume>             innerVesselVolume      </SimTargetVolume>
   <SimEcalVolume>               12                     </SimEcalVolume>  <!-- Number of ecal volumes to simulate -->
-  <POTSimulated>                2.25e15                </POTSimulated> <!-- POT simulated. This has to be the same with the number provided when running Genie  -->
+  <POTSimulated>                1.15e15                </POTSimulated> <!-- POT simulated. This has to be the same with the number provided when running Genie  -->
 
   <ParticleThresholds>
     <MinEnergyCut>              5.0             </MinEnergyCut>   <!-- MeV -->
