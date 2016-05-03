@@ -218,7 +218,7 @@ int main(int argc, char ** argv) {
 
       // Final state topologies
       count = 0;
-      Int_t npic_fs  = 0, npi0_fs = 0, nother_fs = 0;  
+      Int_t npic_fs  = 0, npi0_fs = 0, nother_fs = 0, nprot = 0;  
       for(std::vector< ParticleDescrShortRecord >::iterator k = fss.begin();k != fss.end();++k){
 	ParticleDescrShortRecord fssparticle = *k;
 	count++;
@@ -230,6 +230,9 @@ int main(int argc, char ** argv) {
 	if(fssparticle.getPDG() == 211 || fssparticle.getPDG() == -211){
 	  npic_fs++;
 	}
+  else if (fssparticle.getPDG() == 2212) {
+    nprot++;
+  }
 	else if(fssparticle.getPDG() == 111){
 	  npi0_fs++;
 	  Eneutral += fssmom.E();
@@ -246,8 +249,10 @@ int main(int argc, char ** argv) {
       }
 
       if(nuEvent_->getScatteringType()==1){
-	if(npic_fs ==0 && npi0_fs == 0 && nother_fs == 0)
+	if(npic_fs ==0 && npi0_fs == 0 && nother_fs == 0 && nprot == 0)
 	  inter_fs = 1;
+  else if (npic_fs ==0 && npi0_fs == 0 && nother_fs == 0 && nprot == 1)
+    inter_fs = 2;
 	else if(npic_fs == 1 && npi0_fs == 0 && nother_fs == 0)
 	  inter_fs = 3;
 	else if(npic_fs == 0 && npi0_fs == 1 && nother_fs == 0)
