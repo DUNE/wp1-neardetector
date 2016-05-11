@@ -29,6 +29,7 @@
 #include <TCanvas.h>
 #include <TRandom3.h>
 #include <TMath.h>
+#include <THnSparse.h>
 
 #include "GasTPCPlotter.hh"
 #include "TXMLEngine.h"
@@ -372,6 +373,11 @@ int main(int argc, char ** argv) {
     // Get the number of TPC tracks - this also includes tracks with just one geant hit
     NGeantTracks     = myset.size();
 
+    Int_t nbins[3] = {700, 700, 700};
+    Double_t xmins[3] = {-3500., -3500., -3500.};
+    Double_t xmaxs[3] = { 3500.,  3500.,  3500.};
+    THnSparseF hitPositionXYZ("HitPositionXYZ", "", 3, nbins, xmins, xmaxs);
+
     // Loop start
     Int_t counter = 0;
     Int_t inecal = 0;
@@ -435,6 +441,9 @@ int main(int argc, char ** argv) {
 	    HitPositionYZ[i]->Fill(tmpHit.getPosition().Y(),tmpHit.getPosition().Z(),tmpHit.getEdep());
 	  }
 	  
+	  Double_t xyzpos[3] = {tmpHit.getPosition().X(), tmpHit.getPosition().Y(), tmpHit.getPosition().Z()};
+	  hitPositionXYZ.Fill(xyzpos, tmpHit.getEdep());
+
 	  //tpcSdHits.erase(tpcSdHits.begin() + j);
 	  //j--;
 	}
@@ -1506,6 +1515,8 @@ int main(int argc, char ** argv) {
     //delete nuEvent_;
     //delete trackingtruth;
   
+    fHitPositionXYZ = &hitPositionXYZ;
+
     // Fill the output tree
     GasTPCTree->Fill(); 
   } // end of event loop
@@ -1549,6 +1560,7 @@ int main(int argc, char ** argv) {
 
 void ReadOutputTree(TTree *GasTPCTree){
   GasTPCTree->Branch("gmcrec","genie::NtpMCEventRecord", &fAnalNtpMCEventRecord);
+  GasTPCTree->Branch("HitPositionXYZ", &fHitPositionXYZ);
   GasTPCTree->Branch("EventID",                      &EventID,                      "EventID/I");
   GasTPCTree->Branch("RunID",                        &RunID,                        "RunID/I");
   GasTPCTree->Branch("SpillNumber",                  &SpillNumber,                  "SpillNumber/I");
