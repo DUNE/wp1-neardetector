@@ -54,6 +54,4 @@ Double_t y_All, Ev_All;
 
 genie::NtpMCEventRecord *fAnalNtpMCEventRecord;
 
-THnSparseF* fHitPositionXYZ;
-
 #endif
