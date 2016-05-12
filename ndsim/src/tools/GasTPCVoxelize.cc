@@ -1,6 +1,6 @@
-#include <iostream>
 #include "GasTPCPlotter.hh"
-
+#include <THnSparse.h>
+#include <iostream>
 
 int main(int argc, char ** argv) 
 {
@@ -12,29 +12,28 @@ int main(int argc, char ** argv)
   }
 
   TFile FileMC(inputfile.c_str(),"UPDATE");
-    if(FileMC.GetNkeys()<1){
-      std::cout << "ERROR::Bad input file: " << inputfile << std::endl;
-      return 1;
-    }
+  if(FileMC.GetNkeys()<1){
+    std::cout << "ERROR::Bad input file: " << inputfile << std::endl;
+    return 1;
+  }
 
   GasTPCPlotter *tpcplotter = new GasTPCPlotter();
   tpcplotter->setupTrees(FileMC);
-
   TTree *detectorHitsTree = tpcplotter->getTrackingTree();
-  Int_t TrnEntries        = detectorHitsTree->GetEntries();
-
   TTree* VoxelsTree = new TTree("VoxelsTree", "VoxelsTree");
 
-  THnSparseF* hn = 0;
-  VoxelsTree->Branch("Voxels", &hn);
+  Int_t dim = 3;
+  Int_t bins[dim] = {700, 700, 700};
+  Double_t maxs[dim] = { 3500.,  3500., 3558.2+3500.};
+  Double_t mins[dim] = {-3500., -3500., 3558.2-3500.};
+  THnSparseF* voxels = new THnSparseF("Voxels", "", dim, bins, mins, maxs);
+  VoxelsTree->Branch("voxels", "THnSparseF", &voxels);
 
   for(Int_t i=0; i<detectorHitsTree->GetEntries(); i++){
 
-    Int_t bins[3] = {700, 700, 700};
-    Double_t maxs[3] = { 3500.,  3500., 3558.2+3500.};
-    Double_t mins[3] = {-3500., -3500., 3558.2-3500.};
+    detectorHitsTree->GetEntry(i);
 
-    THnSparseF voxels("Voxels", "", 3, bins, mins, maxs);
+    voxels->Reset();
 
     // TPC Hits
     HitCollection tpcSdHits = tpcplotter->getSimData()->getTpcFidHits();
@@ -42,13 +41,18 @@ int main(int argc, char ** argv)
     for (Int_t j=0; j<tpcSdHits.size(); j++) {
       SDHit tmpHit = tpcSdHits.at(j);
       Double_t xyz[3] = {tmpHit.getPosition().X(), tmpHit.getPosition().Y(), tmpHit.getPosition().Z()};
-      voxels.Fill(xyz, tmpHit.getEdep()*1000);
+      voxels->Fill(xyz);
     }
 
-    hn = &voxels;
     VoxelsTree->Fill();
   }
 
-  VoxelsTree->Write();
+  VoxelsTree->Print();
+  FileMC.Write();
+
+  tpcplotter->deleteTrees();
   FileMC.Close();
+
+
+    //f.Close();
 }
