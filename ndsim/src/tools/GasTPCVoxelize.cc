@@ -41,7 +41,7 @@ int main(int argc, char ** argv)
     for (Int_t j=0; j<tpcSdHits.size(); j++) {
       SDHit tmpHit = tpcSdHits.at(j);
       Double_t xyz[3] = {tmpHit.getPosition().X(), tmpHit.getPosition().Y(), tmpHit.getPosition().Z()};
-      voxels->Fill(xyz);
+      voxels->Fill(xyz, tmpHit.getEdep()*1000.);
     }
 
     VoxelsTree->Fill();
