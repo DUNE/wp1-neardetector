@@ -22,7 +22,7 @@ int main(int argc, char ** argv)
   TTree *detectorHitsTree = tpcplotter->getTrackingTree();
   TTree* VoxelsTree = new TTree("VoxelsTree", "VoxelsTree");
 
-  Int_t dim = 3;
+  const Int_t dim = 3;
   Int_t bins[dim] = {700, 700, 700};
   Double_t maxs[dim] = { 3500.,  3500., 3558.2+3500.};
   Double_t mins[dim] = {-3500., -3500., 3558.2-3500.};
