@@ -30,6 +30,12 @@ target_link_libraries (GasTPCAnalysis    utils
 					 geom
 					 recon)
 
+add_executable (GasTPCRecon              GasTPCRecon.cc)
+target_link_libraries (GasTPCRecon    	 utils
+		      		         datastruct
+					 geom
+					 recon)
+
 add_executable (GasTPCVoxelize           GasTPCVoxelize.cc)
 target_link_libraries (GasTPCVoxelize   utils
                                         datastruct
