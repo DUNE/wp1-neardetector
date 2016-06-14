@@ -6,7 +6,7 @@
   <GeometryFile>                site.gdml              </GeometryFile>   <!-- has to be located in src/config-->
   <SimTargetVolume>             innerVesselVolume      </SimTargetVolume>
   <SimEcalVolume>               12                     </SimEcalVolume>  <!-- Number of ecal volumes to simulate -->
-  <POTSimulated>                1.15e15                </POTSimulated> <!-- POT simulated. This has to be the same with the number provided when running Genie  -->
+  <NSpillsSimulated>            15                     </NSpillsSimulated> <!-- Number of spill to simulate, each with 7.5e13 POT  -->
 
   <ParticleThresholds>
     <MinEnergyCut>              5.0             </MinEnergyCut>   <!-- MeV -->
@@ -51,7 +51,7 @@
     <TPCPositRes>               0.60                </TPCPositRes>  <!-- mm -->
     <TPCAngulRes>               0.20                </TPCAngulRes>  <!-- rad -->
     <EcalPositRes>              10.0                </EcalPositRes> <!-- mm -->
-    <EcalTimeRes>               2.5                 </EcalTimeRes>  <!-- ns -->
+    <EcalTimeRes>               2.0                 </EcalTimeRes>  <!-- ns -->
     <DEDXScaleEle>              2.2e-05             </DEDXScaleEle>
     <DEDXScaleMIP>              2.5e-05             </DEDXScaleMIP>
     <GasPressure>               10                  </GasPressure> <!-- bar -->
