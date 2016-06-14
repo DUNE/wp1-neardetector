@@ -386,16 +386,16 @@ class GeantParticle : public GeantBasicParticle {
   int getEventID() const		{return eventID;};
   //int getStepNumber() const		{return stepNumber;};
   // Returns true if the particle left the target volume
-  bool getExitVolume() const            {return exitvolume;};
+  int getExitVolume() const            {return exitvolume;};
   // Returns true if the particle entered the target volume
-  bool getEnterVolume() const            {return entervolume;};
+  int getEnterVolume() const            {return entervolume;};
   //SimulData * getHitsDataPtr() const 	{return hitsData;};
 
   //setters
   void setEventID(int id){eventID =id;};
   //void setStepNumber(int n){stepNumber =n;};
-  void setExitVolume(bool b){exitvolume =b;};
-  void setEnterVolume(bool b){entervolume =b;};
+  void setExitVolume(int b){exitvolume =b;};
+  void setEnterVolume(int b){entervolume =b;};
   //void setHitsDataPtr(SimulData * hitsPtr) {hitsData = hitsPtr;};
 
   void printToStream(ostream& stream);
@@ -403,8 +403,8 @@ class GeantParticle : public GeantBasicParticle {
  protected:
   int eventID;
   //int stepNumber;
-  bool exitvolume;
-  bool entervolume;
+  int exitvolume;
+  int entervolume;
 
   //SimulData * hitsData;
 
@@ -479,31 +479,33 @@ class GeantDaughterParticle : public GeantParticle {
   ClassDef(GeantDaughterParticle, 1);
 };
 */
+
 ////////////////////////////////////////////////////////////////////////////////
-class TrackParticle: public namedRecord/* , public GeantParticle, public NeutrinoEvent*/{
+class TrackParticle: public namedRecord {
 
  public:
   TrackParticle() {name_ = "TrackParticle";}
   virtual ~TrackParticle() {}
  
-  //copy constructor
-  //TrackParticle(const TrackParticle &p);
-
 public:
   // Setters
-  void SetGeantParticle(GeantParticle* p)        {G4Particle = p;};
-  void SetGeantParentParticle(GeantParticle* p)  {G4ParentParticle = p;};
-  void SetNeutrinoEvent(NeutrinoEvent* n)        {GenEvent = n;};
-  
   void SetReconMomentum(double x)         {ReconMomentum = x;};
   void SetReconCostheta(double x)         {ReconCostheta = x;};
   void SetReconPosition(TLorentzVector v) {ReconPosition = v;};
+  void SetBackPosition(TLorentzVector v)  {BackPosition = v;};
   void SetReconCharge(int x)              {ReconCharge = x;};
   void SetRecondEdx(double x)             {RecondEdx = x;};
   void SetRecondEdxTruncated(double x)    {RecondEdxTruncated = x;};
   void SetdEdxSigma(double x)             {dEdxSigma = x;};
+  void SetMuonPull(double x)              {MuonPull = x;};
+  void SetPionPull(double x)              {PionPull = x;};
+  void SetElecPull(double x)              {ElecPull = x;};
+  void SetKaonPull(double x)              {KaonPull = x;};
+  void SetProtPull(double x)              {ProtPull = x;};
   void SetReconTrackLength(double x)      {ReconTrackLength = x;};
   void SetInEcal(bool b)                  {InEcal = b;};
+  void SetInFV(bool b)                    {InFV = b;};
+  void SetNEcals(int i)                   {InEcal = i;};
 
   void SetdEdx(double x)                  {dEdx = x;};
   void SetdEdxTruncated(double x)         {dEdxTruncated = x;};
@@ -514,20 +516,27 @@ public:
   void SetdEdxProt(double x)              {dEdxProt = x;};
   void SetTrackLength(double x)           {TrackLength = x;};
 
-  // Getters
-  GeantParticle* GetGeantParticle() const        {return G4Particle;};
-  GeantParticle* GetGeantParentParticle() const  {return G4ParentParticle;};
-  NeutrinoEvent* GetNeutrinoEvent() const        {return GenEvent;};
+  void SetNGeantHits(int i)               {NGeantHits = i;};
+  void SetTotalTPCEDep(double x)          {TotalTPCEDep = x;};  
 
+  // Getters
   double GetReconMomentum()                 {return ReconMomentum;};
   double GetReconCostheta()                 {return ReconCostheta;};
   TLorentzVector GetReconPosition()         {return ReconPosition;};
+  TLorentzVector GetBackPosition()          {return BackPosition;};
   int GetReconCharge()                      {return ReconCharge;};
   double GetRecondEdx()                     {return RecondEdx;};
   double GetRecondEdxTruncated()            {return RecondEdxTruncated;};
   double GetdEdxSigma()                     {return dEdxSigma;};
+  double GetMuonPull()                      {return MuonPull;};
+  double GetPionPull()                      {return PionPull;};
+  double GetElecPull()                      {return ElecPull;};
+  double GetKaonPull()                      {return KaonPull;};
+  double GetProtPull()                      {return ProtPull;};
   double GetReconTrackLength()              {return ReconTrackLength;};
   bool GetInEcal()                          {return InEcal;};
+  bool GetInFV()                            {return InFV;};
+  int GetNEcals()                           {return NEcals;};
 
   double GetdEdx()                          {return dEdx;};
   double GetdEdxTruncated()                 {return dEdxTruncated;};
@@ -538,31 +547,68 @@ public:
   double GetdEdxProt()                      {return dEdxProt;};
   double GetTrackLength()                   {return TrackLength;};
 
- private:
-   // The geant particle associated with this track
-  GeantParticle* G4Particle;
-  // The geant parent particle
-  GeantParticle* G4ParentParticle;
-  // The true vertex associate with this track
-  NeutrinoEvent* GenEvent;
+  int GetNGeantHits()                       {return NGeantHits;};
+  double GetTotalTPCEDep()                  {return TotalTPCEDep;};
 
+ private:
   // Recon momentum, angle, position, charge
   double ReconMomentum, ReconCostheta;
-  TLorentzVector ReconPosition;
+  TLorentzVector ReconPosition, BackPosition;
   int ReconCharge;
   // dE/dx
-  double RecondEdx, RecondEdxTruncated;
-  // Sigma
-  double dEdxSigma;
+  double RecondEdx, RecondEdxTruncated, dEdxSigma, MuonPull, PionPull, ElecPull, KaonPull, ProtPull;
   // Track length
   double ReconTrackLength;
   // Going in the ecal
   bool InEcal;
+  // Number of ecals the track enters
+  bool NEcals;
+  // Track reconstructed in FV
+  bool InFV;
 
   // True quantities
   double dEdx, dEdxTruncated, dEdxMuon, dEdxPion, dEdxElec, dEdxKaon, dEdxProt;
   double TrackLength;
+  // Number of geant hits
+  int NGeantHits;
+  // True energy deposit fro geant hits
+  double TotalTPCEDep;
+
+  ClassDef(TrackParticle, 1);
 };
+
+////////////////////////////////////////////////////////////////////////////////
+//typedef std::vector<TrackParticle> DetectorEvent;
+class SimulDetectorEvent  : public namedRecord {
+public:
+  SimulDetectorEvent() {name_ = "SimulDetectorEvent";};
+  virtual ~SimulDetectorEvent() {track.resize(0); particle.resize(0); event.resize(0); parentparticle.resize(0); };
+
+  std::vector<TrackParticle> getTracksInEvent() 	         {return track;};
+  std::vector<GeantParticle> getParticlesInEvent()	         {return particle;};
+  std::vector<GeantParticle> getParentParticlesInEvent()         {return parentparticle;};
+  std::vector<NeutrinoEvent> getTrueVertexInEvent()	         {return event;};
+  
+  void setTracksInEvent(std::vector<TrackParticle> t)            {track = t;};
+  void setParticlesInEvent(std::vector<GeantParticle> t)         {particle = t;};
+  void setParentParticlesInEvent(std::vector<GeantParticle> t)   {parentparticle = t;};
+  void setTrueVertexInEvent(std::vector<NeutrinoEvent> t)        {event = t;};
+  
+  void clearTracks()		                                 {std::vector<TrackParticle>().swap(track); track.resize(0);};
+  void clearParticles()		                                 {std::vector<GeantParticle>().swap(particle); particle.resize(0);};
+  void clearParentParticles()		                         {std::vector<GeantParticle>().swap(parentparticle); parentparticle.resize(0);};
+  void clearNeutrinoEvent()		                         {std::vector<NeutrinoEvent>().swap(event); event.resize(0);};
+  void clear()                                                   {clearTracks(); clearParticles(); clearNeutrinoEvent(); clearParentParticles();};
+  
+private:
+  std::vector<TrackParticle> track;
+  std::vector<GeantParticle> particle;
+  std::vector<GeantParticle> parentparticle;
+  std::vector<NeutrinoEvent> event;
+
+  ClassDef(SimulDetectorEvent, 1);
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 class GeantTrackingTruth : public namedRecord {
 
