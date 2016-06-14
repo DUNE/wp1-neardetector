@@ -25,6 +25,9 @@ CONTENTS:
 
 1. Authors:
 -----------------------------------------------------------
+Justo Martin Albo <justo.martin-albo@physics.ox.ac.uk> - current developer
+University of Oxford
+
 Georgios Christodoulou <georgios at hep.ph.liv.ac.uk> - current developer
 University of Liverpool
 
@@ -118,13 +121,14 @@ This will generate the detector geometry, but it won't add the detector in the c
 Alternative you can use the geometry files in src/config/GasTPCDetector.gdml
 The complete geometry with the detector in the cavity is here src/config/site.gdml
 
-Step 1: Run genie with the geometry file: This is not depending on this software
-Example:
-gevgen_numi_dk2nu -f /path/to/flux/file,DUNE-NDTF-01 -g ${GasTPC}/src/config/site.gdml --cross-sections /path/to/xssplines -o /path/out.root -m ${GasTPC}/src/config/gmxpl_gastpc.xml --seed seed -e 2.25e+15 -r seed -L cm -t volDetEnclosure
-Note: If you change the number of pot to simulate, then make sure to change the <POTSimulated> in src/config/GeantSimulation.xml
+Step 1: Run genie with the geometry file found in src/config: This is not depending on this software
+Note: If you change the number of spills simulated (each spill is assumed 7.5e13 POT), then make sure to change the <NSpillsSimulated> in src/config/GeantSimulation.xml
 
 Step2: Propagate the genie output to geant. This will save all the g4 hits (energy depositions)
-GasTPCTracking -i inputgeniefile.root -o geantfile.root 
+GasTPCTracking -i inputgeniefile.root -o geantfile.root
 
-Step3: Do the preliminary mock reconstruction and write the output in flat tree
+Step3: Make tracks from the Geant hits
+GasTPCRecon -i geantfile.root -o reconfile.root
+
+Step4: Do the preliminary mock reconstruction and write the output in flat tree
 GasTPCAnalysis -i geantfile.root -o analfile.root
