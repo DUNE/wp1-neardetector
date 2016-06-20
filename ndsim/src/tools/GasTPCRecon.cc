@@ -85,8 +85,8 @@ int main(int argc, char ** argv) {
   detectorHitsTree->SetBranchAddress("SimulData",           &fsimData);
   detectorHitsTree->SetBranchAddress("GeantTrackingTruth",  &ftrackingRecord);
 
-  Int_t nEntries          = nuEventTree->GetEntries();
-  Int_t TrnEntries        = detectorHitsTree->GetEntries();
+  int nEntries          = nuEventTree->GetEntries();
+  int TrnEntries        = detectorHitsTree->GetEntries();
 
   if(TrnEntries != nEntries){
     std::cout << "ERROR::Truth tree and GEANT tree doesn't have the same number of entries in file: " << inputfile << " , EXIT!!!" << std::endl;
@@ -99,23 +99,32 @@ int main(int argc, char ** argv) {
   // Spill by spill analysis
   cout << "INFO::Numbers of spill to simulate: " << fNSpillsSimulated << endl;
 
-  for(Int_t j=0; j<fNSpillsSimulated; j++){
+  for(int j=0; j<fNSpillsSimulated; j++){
     // Vector to store products from reco
     std::vector<TrackParticle> DetectorEvent;
+    std::vector<EcalTrackParticle> EcalDetectorEvent;
     std::vector<NeutrinoEvent> NeutrinoEventV;
     std::vector<GeantParticle> GeantTrack;
     std::vector<GeantParticle> GeantParentTrack;
     
     // Event loop
-    for(Int_t i=0; i<nEntries; i++){
+    for(int i=0; i<nEntries; i++){
       nuEventTree->GetEntry(i);
       detectorHitsTree->GetEntry(i);
       
       // True neutrino event
       NeutrinoEvent *nuEvent_           = fnuEvent;
       if( !nuEvent_ ) continue;
+
+      // Temporary
+      int spill = nuEvent_->GetSpillNumber();
+      if( spill > fNSpillsSimulated )
+	spill = spill - fNSpillsSimulated;
+
       // Only events in this spill
-      if( j != nuEvent_->GetSpillNumber() ) continue;
+      if( j != spill ) continue;
+
+      spill = 1000000*nuEvent_->getRunID() + spill;
 
       GeantTrackingTruth* trackingtruth = ftrackingRecord;
       SimulData*          simuldata     = fsimData;
@@ -134,11 +143,11 @@ int main(int argc, char ** argv) {
       // ----------------------------------------------------------------------
       // Take the unique track id for each tpc track
       std::set<int> myset; // set takes only unique elements
-      for(Int_t k=0; k<tpcSdHits.size(); k++){
+      for(int k=0; k<tpcSdHits.size(); k++){
 	SDHit tmpHit = tpcSdHits.at(k);
 	//if(tmpHit.getPDG() > 99999){continue;}
 	myset.insert(tmpHit.getTrackID());
-	if(myset.size() > kMaxTrack)
+	if( myset.size() > kMaxTrack )
 	  break;
       }
       
@@ -155,17 +164,17 @@ int main(int argc, char ** argv) {
 	// Initialize
 	Int_t rseed = 9999, npdg = 0; Int_t nhits = 0; Int_t idparent = 0;  Int_t pdgparent = -1; Int_t charge = 0; Int_t exitdetector = -1;
 	Double_t edep = 0.0, length = 0.0, ftimepos = 0.0, ltimepos = 0.0;
-	TLorentzVector tmom;
+	TLorentzVector tmom, backmom;
 	TVector3 firstpos, lastpos;
 	TVector2 xzfirstpos, xzlastpos;
 	GeantParticle part;
 	GeantParticle parentpart;
 	
-	for(Int_t j=0; j<tpcSdHits.size(); j++){
+	for(int j=0; j<tpcSdHits.size(); j++){
 	  SDHit tmpHit = tpcSdHits.at(j);
 	  
 	  // Only those the track id matched
-	  if(value == tmpHit.getTrackID()){
+	  if( value == tmpHit.getTrackID() ){
 	    nhits++;
 	    npdg         = tmpHit.getPDG();
 	    edep         += tmpHit.getEdep()*1000;
@@ -174,7 +183,7 @@ int main(int argc, char ** argv) {
 	    exitdetector = tmpHit.getTrackLeftVolume();
 	    rseed        = (int)tmpHit.getP4().E() + j + i + rseed;
 	    
-	    if(nhits == 1){
+	    if( nhits == 1 ){
 	      firstpos.SetXYZ(tmpHit.getPosition().X(),tmpHit.getPosition().Y(),tmpHit.getPosition().Z());
 	      xzfirstpos.Set(tmpHit.getPosition().X(),tmpHit.getPosition().Z());
 	      tmom.SetXYZT(tmpHit.getP4().X(),tmpHit.getP4().Y(),tmpHit.getP4().Z(),0);
@@ -186,7 +195,7 @@ int main(int argc, char ** argv) {
 		if( value == geantparticle.getTrackID() )
 		  part = geantparticle;
 		
-		if(idparent == geantparticle.getTrackID())
+		if( idparent == geantparticle.getTrackID() )
 		  parentpart = geantparticle;
 
 	      }
@@ -197,14 +206,15 @@ int main(int argc, char ** argv) {
 		if( value == geantparticle.getTrackID() )
 		  part = geantparticle;
 		
-		if(idparent == geantparticle.getTrackID())
+		if( idparent == geantparticle.getTrackID() )
 		  parentpart = geantparticle;
 
 	      }
 	    }
 	    else{	    
 	      TVector3 temppos(tmpHit.getPosition().X(),tmpHit.getPosition().Y(),tmpHit.getPosition().Z());
-	      if(lastpos.X() == 0){
+	      backmom.SetXYZT(tmpHit.getP4().X(),tmpHit.getP4().Y(),tmpHit.getP4().Z(),0);
+	      if( lastpos.X() == 0 ){
 		Double_t hitdist = (temppos-firstpos).Mag();
 		length += hitdist;
 	      }
@@ -234,6 +244,7 @@ int main(int argc, char ** argv) {
 	TVector3 freconpos = ReconUtils::Smearer( firstpos, tpcresolution, rseed );
 	TVector3 lreconpos = ReconUtils::Smearer( lastpos, tpcresolution, rseed*rseed );
 	bool ReconInFV     = ReconUtils::inVesselFV( freconpos, fiducialZ, fiducialXY );
+	bool BackReconInFV = ReconUtils::inVesselFV( lreconpos, fiducialZ, fiducialXY );
 	double TrackLength = (lastpos-firstpos).Mag();
 	double ReconTrackLength = (lreconpos-freconpos).Mag();
 
@@ -254,7 +265,7 @@ int main(int argc, char ** argv) {
 	double dedxExpProt = dedxCorMIP*ReconUtils::DEDXExp(tmom.Vect().Mag(), 938.27);
 
 	// Additional correction based on the truth dEdx
-	if(abs(npdg) == 13){
+	if( abs(npdg) == 13 ){
 	  double diff = fdedx - dedxExpMuon;
 	  dedxExpMuon = dedxExpMuon + diff;
 	  dedxExpPion = dedxExpPion + diff;
@@ -262,7 +273,7 @@ int main(int argc, char ** argv) {
 	  dedxExpKaon = dedxExpKaon + diff;
 	  dedxExpProt = dedxExpProt + diff;
 	}
-	else if(abs(npdg) == 211){
+	else if( abs(npdg) == 211 ){
 	  double diff = fdedx - dedxExpPion;
 	  dedxExpMuon = dedxExpMuon + diff;
 	  dedxExpPion = dedxExpPion + diff;
@@ -270,7 +281,7 @@ int main(int argc, char ** argv) {
 	  dedxExpKaon = dedxExpKaon + diff;
 	  dedxExpProt = dedxExpProt + diff;
 	}
-	else if(abs(npdg) == 11){
+	else if( abs(npdg) == 11 ){
 	  double diff = fdedx - dedxExpElec;
 	  dedxExpMuon = dedxExpMuon + diff;
 	  dedxExpPion = dedxExpPion + diff;
@@ -278,7 +289,7 @@ int main(int argc, char ** argv) {
 	  dedxExpKaon = dedxExpKaon + diff;
 	  dedxExpProt = dedxExpProt + diff;
 	}
-	else if(abs(npdg) == 321){
+	else if( abs(npdg) == 321 ){
 	  double diff = fdedx - dedxExpKaon;
 	  dedxExpMuon = dedxExpMuon + diff;
 	  dedxExpPion = dedxExpPion + diff;
@@ -286,7 +297,7 @@ int main(int argc, char ** argv) {
 	  dedxExpKaon = dedxExpKaon + diff;
 	  dedxExpProt = dedxExpProt + diff;
 	}
-	else if(abs(npdg) == 2212){
+	else if( abs(npdg) == 2212 ){
 	  double diff = fdedx - dedxExpProt;
 	  dedxExpMuon = dedxExpMuon + diff;
 	  dedxExpPion = dedxExpPion + diff;
@@ -312,49 +323,79 @@ int main(int argc, char ** argv) {
 	int reconcharge        = ReconUtils::getReconCharge(smearsagita,charge);
 	double transvmom       = ReconUtils::getReconTransMomentum(magfield,tracklength,smearsagita,deltaSagitta); 
 
-	double pxsmear         = ReconUtils::getReconMomentumX(transvmom,truthtransmom,tmom.X(),9999*value);
+	double pxsmear         = ReconUtils::getReconMomentumX(transvmom,truthtransmom,tmom.X(),rseed);
 
 	double ReconMomentum   = TMath::Sqrt(transvmom*transvmom + pxsmear*pxsmear);
 
-	if(ReconMomentum <= 0) continue;
+	if( ReconMomentum <= 0 ) continue;
 
-	double pz = ReconMomentum*cos(ang);
-	double py = ReconMomentum*ReconMomentum - pz*pz - pxsmear*pxsmear;
-	if(py > 0)
-	  py = TMath::Sqrt(py);
-	else
-	  py =0;
+	//double pz = ReconMomentum*cos(ang);
+	//double py = ReconMomentum*ReconMomentum - pz*pz - pxsmear*pxsmear;
+	//if(py > 0)
+	//py = TMath::Sqrt(py);
+	//else
+	//py =0;
+
+	// Back momentum
+	double btruthtransmom  = TMath::Sqrt(backmom.Y()*backmom.Y() + backmom.Z()*backmom.Z());
+	double bgetsagita      = ReconUtils::getTrackSagitta(magfield,tracklength,btruthtransmom);
+	double bsmearsagita    = ReconUtils::Smearer(bgetsagita,deltaSagitta,rseed);
+	double btransvmom      = ReconUtils::getReconTransMomentum(magfield,tracklength,bsmearsagita,deltaSagitta);
+	double bpxsmear        = ReconUtils::getReconMomentumX(btransvmom,btruthtransmom,backmom.X(),rseed);
+	double BackMomentum    = TMath::Sqrt(btransvmom*btransvmom + bpxsmear*bpxsmear);
 
 	bool inecal = false;
-	double recontime = -9999.0;
-	int ecal = -1; int necal = 0;
-	for(Int_t j=0; j<scintSdHits.size(); j++){
-	  scintHit tmpHit = scintSdHits.at(j);
+	double recontime = -9999.0; double lrecontime = -9999.0; double ecaledep = 0.0;
+	int ecal = -1; int necal = 0; int firstecal = -1; int necalhits = 0;
+	TVector3 ecalfirstpos, ecallastpos;
+	for(int jj=0; jj<scintSdHits.size(); jj++){
+	  scintHit tmpHit = scintSdHits.at(jj);
 	
 	  // Only those the track id matched
 	  if( value == tmpHit.getTrackID() ){
-	    inecal = true;
-	    double time = tmpHit.getP4().T();
-	    recontime = ReconUtils::Smearer(time,ecalTimeRes,rseed);
+	    necalhits++;
 	    
-	    if(ecal != tmpHit.getEcalNumber()){
+	    if(necalhits == 1){
+	      ecaledep += tmpHit.getEdep()*1000;
+	      inecal = true;
+	      double time = tmpHit.getPosition().T();
+	      recontime = ReconUtils::Smearer(time,ecalTimeRes,rseed);
+	      firstecal = tmpHit.getEcalNumber();
+	      ecalfirstpos.SetXYZ(tmpHit.getPosition().X(),tmpHit.getPosition().Y(),tmpHit.getPosition().Z());
+	    }
+
+	    if( tmpHit.getEcalNumber() == firstecal){
+	      ecaledep += tmpHit.getEdep()*1000;
+	      ecallastpos.SetXYZ(tmpHit.getPosition().X(),tmpHit.getPosition().Y(),tmpHit.getPosition().Z());
+	      lrecontime = tmpHit.getPosition().T();
+	    }
+
+	    if( ecal != tmpHit.getEcalNumber() ){
 	      ecal = tmpHit.getEcalNumber();
 	      necal++;
 	    }
-
+	    
 	  }
 	} // scint hits
 
 	// Track position
-	TLorentzVector tpos(freconpos.X(), freconpos.Y(), freconpos.Z(), recontime);
+	TLorentzVector fpos(freconpos.X(), freconpos.Y(), freconpos.Z(), recontime);
+	TLorentzVector lpos(lreconpos.X(), lreconpos.Y(), lreconpos.Z(), lrecontime);
+	// For ecal
+	TVector3 fecalreconpos = ReconUtils::Smearer( ecalfirstpos, tpcresolution, rseed );
+	TVector3 lecalreconpos = ReconUtils::Smearer( ecallastpos, tpcresolution, rseed*rseed );
+	TLorentzVector ecalfpos(fecalreconpos.X(), fecalreconpos.Y(), fecalreconpos.Z(), recontime);
+	TLorentzVector ecallpos(lecalreconpos.X(), lecalreconpos.Y(), lecalreconpos.Z(), lrecontime);
 
-	// Define a new track
+	// Define a new tpc track
 	TrackParticle* track = new TrackParticle();
-	// Set the track properties - a better way of doing this?
 
+	// Set the track properties - a better way of doing this?
 	track->SetReconMomentum(ReconMomentum);
+	track->SetBackMomentum(BackMomentum);
 	track->SetReconCostheta(cos(ang));
-	track->SetReconPosition(tpos);
+	track->SetReconPosition(fpos);
+	track->SetBackPosition(lpos);
 	track->SetReconCharge(reconcharge);
 	track->SetRecondEdx(dedxrecon);
 	track->SetdEdxSigma(dedxres);
@@ -366,7 +407,10 @@ int main(int argc, char ** argv) {
 	track->SetReconTrackLength(ReconTrackLength);
 	track->SetInEcal(inecal);
 	track->SetInFV(ReconInFV);
+	track->SetBackInFV(BackReconInFV);
 	track->SetNEcals(necal);
+	track->SetSpillNumber(spill);
+	track->SetFlippedKinematics(false);
 
 	track->SetdEdx(fdedx);
 	track->SetdEdxMuon(dedxExpMuon);
@@ -378,7 +422,39 @@ int main(int argc, char ** argv) {
 	track->SetNGeantHits(nhits);
 	track->SetTotalTPCEDep(edep);
 
+	// Flip kinematics - only for tracks coming outside the FV and stop in FV
+	if( BackReconInFV && !ReconInFV ){
+	  track->SetReconMomentum(BackMomentum);
+	  track->SetBackMomentum(ReconMomentum);
+	  track->SetReconCostheta(-cos(ang));
+	  track->SetReconPosition(lpos);
+	  track->SetBackPosition(fpos);
+	  track->SetReconCharge(-reconcharge);
+
+	  track->SetInFV(BackReconInFV);
+	  track->SetBackInFV(ReconInFV);
+	  track->SetFlippedKinematics(true);
+	}
+
+	// Define a new ecal track
+	EcalTrackParticle* ecaltrack = new EcalTrackParticle();
+
+	// Set the ecaltrack properties - this is the first ecal the track enters
+	ecaltrack->SetEcal(firstecal);
+	ecaltrack->SetReconPosition(ecalfpos);
+	ecaltrack->SetBackPosition(ecallpos);
+	ecaltrack->SetNGeantHits(necalhits);
+	ecaltrack->SetTotalECALEDep(ecaledep);
+	ecaltrack->SetSpillNumber(spill);
+
+	if( BackReconInFV && !ReconInFV ){
+	  ecaltrack->SetReconPosition(ecallpos);
+	  ecaltrack->SetBackPosition(ecalfpos);
+	  ecaltrack->SetFlippedKinematics(true);
+	}
+
 	DetectorEvent.push_back(*track);
+	EcalDetectorEvent.push_back(*ecaltrack);
 	NeutrinoEventV.push_back(*nuEvent_);
 	GeantParentTrack.push_back(parentpart);
 	GeantTrack.push_back(part);
@@ -387,6 +463,7 @@ int main(int argc, char ** argv) {
     } // event loop
 
     fevent->setTracksInEvent(DetectorEvent);
+    fevent->setEcalTracksInEvent(EcalDetectorEvent);
     fevent->setParticlesInEvent(GeantTrack);
     fevent->setParentParticlesInEvent(GeantParentTrack);
     fevent->setTrueVertexInEvent(NeutrinoEventV);
