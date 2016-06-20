@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<analysis_selection analysis="SelectionParameters" version="2015a" config="SelectionParameters">
+
+<!-- NuMu -->
+<NuMuAnalysis>
+  <MinTrackLength>        150             </MinTrackLength> <!-- mm -->
+  <MuonPull>              2.5             </MuonPull>
+  <ElecPull>              2.0             </ElecPull>
+</NuMuAnalysis>
+
+<!-- NuE -->
+<NuEAnalysis>
+
+</NuEAnalysis>
+
+</analysis_selection>

@@ -49,7 +49,7 @@
   <Analysis>
     <deltaSagitta>              0.05                </deltaSagitta> <!-- mm -->
     <TPCPositRes>               0.60                </TPCPositRes>  <!-- mm -->
-    <TPCAngulRes>               0.20                </TPCAngulRes>  <!-- rad -->
+    <TPCAngulRes>               0.02                </TPCAngulRes>  <!-- rad -->
     <EcalPositRes>              10.0                </EcalPositRes> <!-- mm -->
     <EcalTimeRes>               2.0                 </EcalTimeRes>  <!-- ns -->
     <DEDXScaleEle>              2.2e-05             </DEDXScaleEle>
