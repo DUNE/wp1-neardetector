@@ -33,6 +33,7 @@
 //#pragma link C++ class GeantDaughterParticle+;
 #pragma link C++ class GeantTrackingTruth+;
 #pragma link C++ class TrackParticle+;
+#pragma link C++ class EcalTrackParticle+;
 #pragma link C++ class SimulDetectorEvent+;
 //#pragma link C++ class MuonRange+;
 #pragma link C++ class MemTestRecord+;

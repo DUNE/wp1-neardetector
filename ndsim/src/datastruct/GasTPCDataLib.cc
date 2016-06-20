@@ -13,7 +13,7 @@
           University of Liverpool
 
 \created  Sep 2012
-\last update Apr 2015
+\last update June 2016
 
 */
 //____________________________________________________________________________
@@ -35,6 +35,7 @@ ClassImp(GeantParticle)
 ClassImp(PionDecayEvent)
 ClassImp(MuonDecayEvent)
 ClassImp(TrackParticle)
+ClassImp(EcalTrackParticle)
 
 ///////////////////////////////////////////////////////////////////////////////
 

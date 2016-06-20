@@ -15,7 +15,7 @@
           University of Liverpool
 
 \created  Sep 2012
-\last update June 2015
+\last update June 2016
 */
 //____________________________________________________________________________
 
@@ -386,16 +386,16 @@ class GeantParticle : public GeantBasicParticle {
   int getEventID() const		{return eventID;};
   //int getStepNumber() const		{return stepNumber;};
   // Returns true if the particle left the target volume
-  int getExitVolume() const            {return exitvolume;};
+  bool getExitVolume() const            {return exitvolume;};
   // Returns true if the particle entered the target volume
-  int getEnterVolume() const            {return entervolume;};
+  bool getEnterVolume() const           {return entervolume;};
   //SimulData * getHitsDataPtr() const 	{return hitsData;};
 
   //setters
   void setEventID(int id){eventID =id;};
   //void setStepNumber(int n){stepNumber =n;};
-  void setExitVolume(int b){exitvolume =b;};
-  void setEnterVolume(int b){entervolume =b;};
+  void setExitVolume(bool b){exitvolume =b;};
+  void setEnterVolume(bool b){entervolume =b;};
   //void setHitsDataPtr(SimulData * hitsPtr) {hitsData = hitsPtr;};
 
   void printToStream(ostream& stream);
@@ -403,12 +403,12 @@ class GeantParticle : public GeantBasicParticle {
  protected:
   int eventID;
   //int stepNumber;
-  int exitvolume;
-  int entervolume;
+  bool exitvolume;
+  bool entervolume;
 
   //SimulData * hitsData;
 
-  ClassDef(GeantParticle, 1);
+  ClassDef(GeantParticle, 2);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -486,10 +486,10 @@ class TrackParticle: public namedRecord {
  public:
   TrackParticle() {name_ = "TrackParticle";}
   virtual ~TrackParticle() {}
- 
-public:
+
   // Setters
   void SetReconMomentum(double x)         {ReconMomentum = x;};
+  void SetBackMomentum(double x)          {BackMomentum = x;};
   void SetReconCostheta(double x)         {ReconCostheta = x;};
   void SetReconPosition(TLorentzVector v) {ReconPosition = v;};
   void SetBackPosition(TLorentzVector v)  {BackPosition = v;};
@@ -505,7 +505,10 @@ public:
   void SetReconTrackLength(double x)      {ReconTrackLength = x;};
   void SetInEcal(bool b)                  {InEcal = b;};
   void SetInFV(bool b)                    {InFV = b;};
-  void SetNEcals(int i)                   {InEcal = i;};
+  void SetBackInFV(bool b)                {BackInFV = b;};
+  void SetNEcals(int i)                   {NEcals = i;};
+  void SetSpillNumber(int i)              {Spillnum = i;};
+  void SetFlippedKinematics(bool b)       {FlippedKinematics = b;};
 
   void SetdEdx(double x)                  {dEdx = x;};
   void SetdEdxTruncated(double x)         {dEdxTruncated = x;};
@@ -520,39 +523,43 @@ public:
   void SetTotalTPCEDep(double x)          {TotalTPCEDep = x;};  
 
   // Getters
-  double GetReconMomentum()                 {return ReconMomentum;};
-  double GetReconCostheta()                 {return ReconCostheta;};
-  TLorentzVector GetReconPosition()         {return ReconPosition;};
-  TLorentzVector GetBackPosition()          {return BackPosition;};
-  int GetReconCharge()                      {return ReconCharge;};
-  double GetRecondEdx()                     {return RecondEdx;};
-  double GetRecondEdxTruncated()            {return RecondEdxTruncated;};
-  double GetdEdxSigma()                     {return dEdxSigma;};
-  double GetMuonPull()                      {return MuonPull;};
-  double GetPionPull()                      {return PionPull;};
-  double GetElecPull()                      {return ElecPull;};
-  double GetKaonPull()                      {return KaonPull;};
-  double GetProtPull()                      {return ProtPull;};
-  double GetReconTrackLength()              {return ReconTrackLength;};
-  bool GetInEcal()                          {return InEcal;};
-  bool GetInFV()                            {return InFV;};
-  int GetNEcals()                           {return NEcals;};
+  double GetReconMomentum()               {return ReconMomentum;};
+  double GetBackMomentum()                {return BackMomentum;};
+  double GetReconCostheta()               {return ReconCostheta;};
+  TLorentzVector GetReconPosition()       {return ReconPosition;};
+  TLorentzVector GetBackPosition()        {return BackPosition;};
+  int GetReconCharge()                    {return ReconCharge;};
+  double GetRecondEdx()                   {return RecondEdx;};
+  double GetRecondEdxTruncated()          {return RecondEdxTruncated;};
+  double GetdEdxSigma()                   {return dEdxSigma;};
+  double GetMuonPull()                    {return MuonPull;};
+  double GetPionPull()                    {return PionPull;};
+  double GetElecPull()                    {return ElecPull;};
+  double GetKaonPull()                    {return KaonPull;};
+  double GetProtPull()                    {return ProtPull;};
+  double GetReconTrackLength()            {return ReconTrackLength;};
+  bool GetInEcal()                        {return InEcal;};
+  bool GetInFV()                          {return InFV;};
+  bool GetBackInFV()                      {return BackInFV;};
+  int GetNEcals()                         {return NEcals;};
+  int GetSpillNumber()                    {return Spillnum;};
+  bool GetFlippedKinematics()             {return FlippedKinematics;};
 
-  double GetdEdx()                          {return dEdx;};
-  double GetdEdxTruncated()                 {return dEdxTruncated;};
-  double GetdEdxMuon()                      {return dEdxMuon;};
-  double GetdEdxPion()                      {return dEdxPion;};
-  double GetdEdxElec()                      {return dEdxElec;};
-  double GetdEdxKaon()                      {return dEdxKaon;};
-  double GetdEdxProt()                      {return dEdxProt;};
-  double GetTrackLength()                   {return TrackLength;};
+  double GetdEdx()                        {return dEdx;};
+  double GetdEdxTruncated()               {return dEdxTruncated;};
+  double GetdEdxMuon()                    {return dEdxMuon;};
+  double GetdEdxPion()                    {return dEdxPion;};
+  double GetdEdxElec()                    {return dEdxElec;};
+  double GetdEdxKaon()                    {return dEdxKaon;};
+  double GetdEdxProt()                    {return dEdxProt;};
+  double GetTrackLength()                 {return TrackLength;};
 
-  int GetNGeantHits()                       {return NGeantHits;};
-  double GetTotalTPCEDep()                  {return TotalTPCEDep;};
+  int GetNGeantHits()                     {return NGeantHits;};
+  double GetTotalTPCEDep()                {return TotalTPCEDep;};
 
  private:
   // Recon momentum, angle, position, charge
-  double ReconMomentum, ReconCostheta;
+  double ReconMomentum, BackMomentum, ReconCostheta;
   TLorentzVector ReconPosition, BackPosition;
   int ReconCharge;
   // dE/dx
@@ -562,9 +569,15 @@ public:
   // Going in the ecal
   bool InEcal;
   // Number of ecals the track enters
-  bool NEcals;
+  int NEcals;
   // Track reconstructed in FV
   bool InFV;
+  // Track's back position reconstructed in FV
+  bool BackInFV;
+  // Spill number
+  int Spillnum;
+  // Check if the track's kinematics are flipped
+  bool FlippedKinematics;
 
   // True quantities
   double dEdx, dEdxTruncated, dEdxMuon, dEdxPion, dEdxElec, dEdxKaon, dEdxProt;
@@ -576,32 +589,82 @@ public:
 
   ClassDef(TrackParticle, 1);
 };
-
 ////////////////////////////////////////////////////////////////////////////////
-//typedef std::vector<TrackParticle> DetectorEvent;
+class EcalTrackParticle: public namedRecord {
+
+ public:
+  EcalTrackParticle() {name_ = "EcalTrackParticle";}
+  virtual ~EcalTrackParticle() {}
+  
+  // Setters
+  void SetReconPosition(TLorentzVector v) {ReconPosition = v;};
+  void SetBackPosition(TLorentzVector v)  {BackPosition = v;};
+
+  // First Ecal found
+  void SetEcal(int i)                     {NEcal = i;};
+  void SetSpillNumber(int i)              {Spillnum = i;};
+  void SetFlippedKinematics(bool b)       {FlippedKinematics = b;};
+
+  void SetNGeantHits(int i)               {NGeantHits = i;};
+  void SetTotalECALEDep(double x)         {TotalECALEDep = x;};
+
+  // Getters
+  TLorentzVector GetReconPosition()       {return ReconPosition;};
+  TLorentzVector GetBackPosition()        {return BackPosition;};
+
+  int GetEcal()                           {return NEcal;};
+  int GetSpillNumber()                    {return Spillnum;};
+   bool GetFlippedKinematics()             {return FlippedKinematics;};
+  
+  int GetNGeantHits()                     {return NGeantHits;};
+  double GetTotalECALEDep()               {return TotalECALEDep;};
+
+private:
+  // Recon
+  TLorentzVector ReconPosition, BackPosition;
+  int NEcal;
+  // Spill number
+  int Spillnum;
+
+  // True quantities
+  // Number of geant hits
+  int NGeantHits;
+  // True energy deposit fro geant hits
+  double TotalECALEDep;
+  // Check if the track's kinematics are flipped
+  bool FlippedKinematics;
+
+  ClassDef(EcalTrackParticle, 1);
+};
+////////////////////////////////////////////////////////////////////////////////
 class SimulDetectorEvent  : public namedRecord {
 public:
   SimulDetectorEvent() {name_ = "SimulDetectorEvent";};
-  virtual ~SimulDetectorEvent() {track.resize(0); particle.resize(0); event.resize(0); parentparticle.resize(0); };
+  virtual ~SimulDetectorEvent() {track.resize(0); ecaltrack.resize(0); particle.resize(0); event.resize(0); parentparticle.resize(0); };
 
-  std::vector<TrackParticle> getTracksInEvent() 	         {return track;};
-  std::vector<GeantParticle> getParticlesInEvent()	         {return particle;};
-  std::vector<GeantParticle> getParentParticlesInEvent()         {return parentparticle;};
-  std::vector<NeutrinoEvent> getTrueVertexInEvent()	         {return event;};
+  std::vector<TrackParticle>     getTracksInEvent() 	         {return track;};
+  std::vector<EcalTrackParticle> getEcalTracksInEvent() 	 {return ecaltrack;};
+  std::vector<GeantParticle>     getParticlesInEvent()	         {return particle;};
+  std::vector<GeantParticle>     getParentParticlesInEvent()     {return parentparticle;};
+  std::vector<NeutrinoEvent>     getTrueVertexInEvent()	         {return event;};
   
   void setTracksInEvent(std::vector<TrackParticle> t)            {track = t;};
+  void setEcalTracksInEvent(std::vector<EcalTrackParticle> t)    {ecaltrack = t;};
   void setParticlesInEvent(std::vector<GeantParticle> t)         {particle = t;};
   void setParentParticlesInEvent(std::vector<GeantParticle> t)   {parentparticle = t;};
   void setTrueVertexInEvent(std::vector<NeutrinoEvent> t)        {event = t;};
   
-  void clearTracks()		                                 {std::vector<TrackParticle>().swap(track); track.resize(0);};
-  void clearParticles()		                                 {std::vector<GeantParticle>().swap(particle); particle.resize(0);};
+  void clearTracks()		                                 {std::vector<TrackParticle>().swap(track);          track.resize(0);};
+  void clearEcalTracks()		                         {std::vector<EcalTrackParticle>().swap(ecaltrack);  ecaltrack.resize(0);};
+  void clearParticles()		                                 {std::vector<GeantParticle>().swap(particle);       particle.resize(0);};
   void clearParentParticles()		                         {std::vector<GeantParticle>().swap(parentparticle); parentparticle.resize(0);};
-  void clearNeutrinoEvent()		                         {std::vector<NeutrinoEvent>().swap(event); event.resize(0);};
-  void clear()                                                   {clearTracks(); clearParticles(); clearNeutrinoEvent(); clearParentParticles();};
+  void clearNeutrinoEvent()		                         {std::vector<NeutrinoEvent>().swap(event);          event.resize(0);};
+
+  void clear()                                                   {clearTracks(); clearEcalTracks(); clearParticles(); clearNeutrinoEvent(); clearParentParticles();};
   
 private:
   std::vector<TrackParticle> track;
+  std::vector<EcalTrackParticle> ecaltrack;
   std::vector<GeantParticle> particle;
   std::vector<GeantParticle> parentparticle;
   std::vector<NeutrinoEvent> event;
