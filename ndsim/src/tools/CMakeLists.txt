@@ -36,6 +36,11 @@ target_link_libraries (GasTPCRecon    	 utils
 					 geom
 					 recon)
 
+add_executable (NuMuCCAnalysis           NuMuCCAnalysis.cc)
+target_link_libraries (NuMuCCAnalysis    utils
+		      		         datastruct
+					 recon)
+
 add_executable (GasTPCVoxelize           GasTPCVoxelize.cc)
 target_link_libraries (GasTPCVoxelize   utils
                                         datastruct
