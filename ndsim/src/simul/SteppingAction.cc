@@ -162,8 +162,8 @@ void SteppingAction::UserSteppingAction(const G4Step* theStep) {
   this->setParticleKinematics(particle);
 
   // Default values
-  particle.setEnterVolume(-1);
-  particle.setExitVolume(-1);
+  //particle.setEnterVolume(-1);
+  //particle.setExitVolume(-1);
 
   //must be a primary track and not stepped over before
   if( (theTrack->GetParentID()==0) && (particleSet(primariesVtr,trackID)==false) ){
@@ -173,13 +173,13 @@ void SteppingAction::UserSteppingAction(const G4Step* theStep) {
     //prim.setEnterVolume(false);
     //prim.setExitVolume(false);
 
-    particle.setEnterVolume(0);
-    particle.setExitVolume(0);
+    particle.setEnterVolume(false);
+    particle.setExitVolume(false);
 
-    if(trackVolumeName.compare(0,targetVolName_.size(),targetVolName_)!=0){
-      particle.setEnterVolume(1);
-      particle.setExitVolume(1);
-    }
+    //if(trackVolumeName.compare(0,targetVolName_.size(),targetVolName_)!=0){
+    //particle.setEnterVolume(1);
+    //particle.setExitVolume(1);
+    //}
 
     if( (thePostPoint->GetStepStatus() == fGeomBoundary) &&
       (trackVolumeName.compare(0,targetVolName_.size(),targetVolName_)!=0) &&
@@ -188,7 +188,7 @@ void SteppingAction::UserSteppingAction(const G4Step* theStep) {
       (trackNextMotherVolumeName.compare(0,targetVolName_.size(),targetVolName_)!=0) ){
       
       //prim.setEnterVolume(true);
-      particle.setEnterVolume(2);
+      particle.setEnterVolume(true);
     }
 
     if( (thePostPoint->GetStepStatus() == fGeomBoundary)  &&
@@ -198,7 +198,7 @@ void SteppingAction::UserSteppingAction(const G4Step* theStep) {
       (trackNextMotherVolumeName.compare(0,targetVolName_.size(),targetVolName_)!=0) ){
 
       //prim.setExitVolume(true);
-      particle.setExitVolume(2);
+      particle.setExitVolume(true);
     }
     
     //add to the primary vector
@@ -214,8 +214,8 @@ void SteppingAction::UserSteppingAction(const G4Step* theStep) {
     //this->setParticleKinematics(particle);
     //particle.setParent(prim);
 
-    particle.setEnterVolume(0);
-    particle.setExitVolume(0);
+    particle.setEnterVolume(false);
+    particle.setExitVolume(false);
 
     if( (thePostPoint->GetStepStatus() == fGeomBoundary) &&
       (trackVolumeName.compare(0,targetVolName_.size(),targetVolName_)!=0) &&
@@ -223,7 +223,7 @@ void SteppingAction::UserSteppingAction(const G4Step* theStep) {
       (trackMotherVolumeName.compare(0,targetVolName_.size(),targetVolName_)!=0) &&
       (trackNextMotherVolumeName.compare(0,targetVolName_.size(),targetVolName_)!=0) ){
       
-      particle.setEnterVolume(2);
+      particle.setEnterVolume(true);
     }
 
     if( (thePostPoint->GetStepStatus() == fGeomBoundary)  &&
@@ -232,7 +232,7 @@ void SteppingAction::UserSteppingAction(const G4Step* theStep) {
       (trackMotherVolumeName.compare(0,targetVolName_.size(),targetVolName_)!=0) &&
       (trackNextMotherVolumeName.compare(0,targetVolName_.size(),targetVolName_)!=0) ){
 
-      particle.setExitVolume(2);
+      particle.setExitVolume(true);
     }
     
     //if(trackVolumeName.find("innerVessel") != std::string::npos){
