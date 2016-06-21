@@ -282,10 +282,7 @@ int main(int argc, char ** argv) {
   hSigVsZ->SetDirectory(0); hlist->Add(hSigVsZ);
 
   // Number of spills simulated
-  const double pot_per_spill = 7.5e13;
-  int nspills = (int)(fPOTSimulated/pot_per_spill);
-  
-  std::cout << "INFO::Number of spills simulated: " << nspills << std::endl;
+  std::cout << "INFO::Number of spills simulated: " << fNSpillsSimulated << std::endl;
   
   GasTPCTree->SetDirectory(0);
 
@@ -1836,7 +1833,7 @@ void ReadDatacard(std::string datacard){
   gaspressure          = util::XML2Dbl(xml,root_node,"Analysis/GasPressure");
   fiducialXY           = util::XML2Dbl(xml,root_node,"Analysis/FVXY");
   fiducialZ            = util::XML2Dbl(xml,root_node,"Analysis/FVZ");
-  fPOTSimulated        = util::XML2Dbl(xml,root_node,"POTSimulated");
+  fNSpillsSimulated    = (int)util::XML2Dbl(xml,root_node,"NSpillsSimulated");
 
   // Drifting model options
   Info("ReadDatacard","TPC Drift model parameters");

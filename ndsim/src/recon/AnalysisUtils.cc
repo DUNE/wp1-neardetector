@@ -32,8 +32,10 @@ std::vector<TVector3> AnalysisUtils::FindTPCVertices(std::vector<TrackParticle> 
     bool vertexfound = false;
     for(int kk=0; kk<Vertices.size(); kk++){
       TVector3 temp = Vertices.at(kk);
-      if( (track_pos - temp).Mag() < 50.0)
+      if( (track_pos - temp).Mag() < 50.0){
 	vertexfound = true;
+	break;
+      }
     }
 
     if( vertexfound ) continue;
@@ -98,8 +100,10 @@ std::vector<TVector3> AnalysisUtils::FindIsoTPCTracks(std::vector<TrackParticle>
     bool vertexfound = false;
     for(int kk=0; kk<Vertices.size(); kk++){
       TVector3 temp = Vertices.at(kk);
-      if( (track_pos - temp).Mag() < 50.0)
+      if( (track_pos - temp).Mag() < 50.0){
 	vertexfound = true;
+	break;
+      }
     }
 
     if( vertexfound ) continue;
@@ -129,7 +133,30 @@ std::vector<TVector3> AnalysisUtils::FindIsoTPCTracks(std::vector<TrackParticle>
 	time_stamp = true;
     }
 
-    // No nearby tracks - skip
+    // Nearby tracks - skip
+    if( ntracks > 0 )  continue;
+
+    // Loop again to find nearby tracks - check back position
+    for(int kk=0; kk<Event.size(); kk++){
+      // Not the same track
+      if( kk == k ) continue;
+      
+      TrackParticle temp_track = Event.at(kk);
+	
+      TVector3 temp_pos(temp_track.GetBackPosition().X(),
+			temp_track.GetBackPosition().Y(),
+			temp_track.GetBackPosition().Z() );
+      
+      double dist = (temp_pos-track_pos).Mag();
+      
+      if( dist >= 50.0 ) continue;
+      ntracks++;
+
+      if( temp_track.GetBackPosition().T() > 0 &&  temp_track.GetBackPosition().T() < 960.0 )
+	time_stamp = true;
+    }
+
+    // Nearby tracks - skip
     if( ntracks > 0 )  continue;
 
     if( time_stamp )

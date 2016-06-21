@@ -12,8 +12,8 @@
 \last update June 2016
 */
 //____________________________________________________________________________
-#ifndef CCANALYSIS_HH
-#define CCANALYSIS_HH
+#ifndef GASTPCRECON_HH
+#define GASTPCRECON_HH
 
 #include "UtlXML.hh"
 

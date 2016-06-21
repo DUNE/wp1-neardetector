@@ -25,7 +25,8 @@
 void ReadDatacard(std::string datacard);
 void ReadOutputTree(TTree *GasTPCTree);
 
-double deltaSagitta, tpcresolution, magfield, angresolution, scintresolution, scintTimeRes, dedxCorMIP, dedxCorElec, gaspressure, fiducialXY, fiducialZ, fPOTSimulated;
+double deltaSagitta, tpcresolution, magfield, angresolution, scintresolution, scintTimeRes, dedxCorMIP, dedxCorElec, gaspressure, fiducialXY, fiducialZ;
+int fNSpillsSimulated;
 
 // The output tree variables
 const Int_t kMaxTrack = 500;

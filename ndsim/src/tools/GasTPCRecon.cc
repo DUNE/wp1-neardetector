@@ -379,6 +379,8 @@ int main(int argc, char ** argv) {
 	} // scint hits
 
 	// Track position
+	if( lrecontime > 0 )
+	  lrecontime = ReconUtils::Smearer(lrecontime,ecalTimeRes,rseed);
 	TLorentzVector fpos(freconpos.X(), freconpos.Y(), freconpos.Z(), recontime);
 	TLorentzVector lpos(lreconpos.X(), lreconpos.Y(), lreconpos.Z(), lrecontime);
 	// For ecal

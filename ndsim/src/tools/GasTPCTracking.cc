@@ -93,10 +93,8 @@ int main(int argc, char ** argv) {
   
   // Initialize your processors here. The processors will define
   // default values for all runtime parameters.
-  const double pot_per_spill = 7.5e13;
-  int nspills = (int)(fPOTSimulated/pot_per_spill);
   LoadNuEventProcessor     *eventLoader  = new LoadNuEventProcessor();
-  eventLoader->initialize(inputfile,treename,fgeofile,nspills);
+  eventLoader->initialize(inputfile,treename,fgeofile,fNSpillsSimulated);
   if(nentries <=  min_entries){
     int temp = min_entries;
     min_entries = nentries;
@@ -160,6 +158,7 @@ void ReadDatacard(std::string datacard){
     delete xml;
     return;  
   }
+
   XMLNodePointer_t root_node = xml->DocGetRootElement(xmldoc);
   fGeometryFile          = util::XML2String(xml,root_node,"GeometryFile");
   fSimTargetVolume       = util::XML2String(xml,root_node,"SimTargetVolume");
@@ -175,7 +174,7 @@ void ReadDatacard(std::string datacard){
   fMagneticFieldStrength = util::XML2Dbl(xml,root_node,"MagneticFieldStrength");
   fTrackingVerbose       = (int)util::XML2Dbl(xml,root_node,"TrackingVerbose");
   fSimEcalVolume         = (int)util::XML2Dbl(xml,root_node,"SimEcalVolume");
-  fPOTSimulated          = util::XML2Dbl(xml,root_node,"POTSimulated");
+  fNSpillsSimulated      = (int)util::XML2Dbl(xml,root_node,"NSpillsSimulated");
 
   xml->FreeDoc(xmldoc);
   delete xml;
