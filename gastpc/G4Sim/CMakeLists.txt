@@ -1,15 +1,8 @@
-### CMakeLists.cxx -- gastpc/Simulation
+### CMakeLists.cxx -- gastpc/G4Sim
 
-add_executable(GasTPCSimulation GasTPCSimulation.cxx
-                                RunManager.cxx
-                                MaterialsList.cxx
-                                DuneGArNDDetConstr.cxx
-                                DuneGArNDMagnetYokeGeometry.cxx
-                                DuneGArNDMagnetCoilGeometry.cxx
-                                DuneGArNDVesselGeometry.cxx
-                                DuneGArNDEcalModuleGeometry.cxx
-                                BeamSpillGenerator.cxx
-                                GHepReader.cxx)
+file(GLOB G4Sim_SRCS "*.cxx")
+
+add_executable(GasTPCSimulation ${G4Sim_SRCS})
 
 target_link_libraries(GasTPCSimulation ${ROOT_LIBRARIES}
                                        ${Geant4_LIBRARIES})
