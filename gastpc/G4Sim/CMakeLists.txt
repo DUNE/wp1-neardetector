@@ -6,5 +6,7 @@ add_executable(GasTPCSimulation ${G4Sim_SRCS})
 
 target_link_libraries(GasTPCSimulation ${ROOT_LIBRARIES}
                                        ${Geant4_LIBRARIES}
-                                       ${GENIE_LIBRARIES})
+                                       ${GENIE_LIBRARIES}
+				       ${LIBXML2_LIBRARIES}
+				       ${Log4cpp_LIBRARIES})
 
