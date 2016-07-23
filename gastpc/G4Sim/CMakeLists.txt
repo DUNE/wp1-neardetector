@@ -5,5 +5,6 @@ file(GLOB G4Sim_SRCS "*.cxx")
 add_executable(GasTPCSimulation ${G4Sim_SRCS})
 
 target_link_libraries(GasTPCSimulation ${ROOT_LIBRARIES}
-                                       ${Geant4_LIBRARIES})
+                                       ${Geant4_LIBRARIES}
+                                       ${GENIE_LIBRARIES})
 
