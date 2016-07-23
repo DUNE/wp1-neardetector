@@ -14,6 +14,8 @@
 
 class TChain;
 
+namespace genie { class NtpMCEventRecord; }
+
 
 class GHepReader: public BeamSpillSource
 {
@@ -26,7 +28,14 @@ public:
   virtual void FillG4Event(G4Event*);
 
 private:
+  void Initialize(const G4String&);
+
+private:
   TChain* ifiles_;
+  genie::NtpMCEventRecord* mcrec_;
+
+  G4int max_entries_;
+  G4int current_entry_;
 
 };
 
