@@ -13,11 +13,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_MODULE_PATH "${GASTPC_SOURCE_DIR}/cmake" "${CMAKE_MODULE_PATH}")
 
 ### Look for external dependencies
-find_package(Geant4 REQUIRED gdml vis_opengl_x11)
-find_package(ROOT REQUIRED EGPythia6 MathCore Tree RIO Hist Matrix Physics Geom XMLIO)
+find_package(Geant4 REQUIRED vis_opengl_x11)
+find_package(ROOT REQUIRED)
 find_package(GENIE REQUIRED)
-find_package(LibXml2)
-find_package(Log4cpp)
+#find_package(LibXml2)
+#find_package(Log4cpp)
 
 include(${Geant4_USE_FILE})
 

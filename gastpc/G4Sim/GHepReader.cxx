@@ -47,7 +47,10 @@ void GHepReader::FillG4Event(G4Event*)
 
   genie::EventRecord& gevtrec = *(mcrec_->event);
 
+  genie::Interaction* inter = gevtrec.Summary();
+  const genie::Target& target = inter->InitState().Tgt();
 
+  G4cout << "Target Z = " << target.Z() << G4endl;
 
 
   /*
