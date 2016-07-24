@@ -9,6 +9,10 @@
 #include "GHepReader.h"
 
 #include <G4Event.hh>
+#include <G4LorentzVector.hh>
+#include <G4SystemOfUnits.hh>
+#include <G4ParticleDefinition.hh>
+#include <G4ParticleTable.hh>
 
 #include <TChain.h>
 #include <TCollection.h>
@@ -16,6 +20,8 @@
 #include <Ntuple/NtpMCEventRecord.h>
 #include <EVGCore/EventRecord.h>
 #include <GHEP/GHepParticle.h>
+
+#include <map>
 
 
 
@@ -54,8 +60,8 @@ void GHepReader::FillG4Event(G4Event* event)
     // G4PrimaryVertex*.  Note that the map must use CLHEP's
     // LorentzVector, and not ROOT's, since ROOT does not define an
     // operator< for its physics vectors.
-    std::map<G4LorentVector, G4PrimaryVertex*> vertex_map;
-    std::map<G4LorentVector, G4PrimaryVertex*>::const_iterator vm_iter; 
+    std::map<G4LorentzVector, G4PrimaryVertex*> vertex_map;
+    std::map<G4LorentzVector, G4PrimaryVertex*>::const_iterator vm_iter; 
 
 
   G4cout << "GHepReader::FillG4Event()" << G4endl;
@@ -81,7 +87,7 @@ void GHepReader::FillG4Event(G4Event* event)
 
 
 
-    G4LorentVector xyzt;
+    G4LorentzVector xyzt;
 
     xyzt.setX( gpart->Vx()*fermi + vtx_position->X()*meter );
     xyzt.setY( gpart->Vy()*fermi + vtx_position->Y()*meter );
@@ -95,7 +101,7 @@ void GHepReader::FillG4Event(G4Event* event)
     if (result == vertex_map.end()) {
       // The vertex does not exits. Therefore, create a new one and 
       // add it to both the map and the event.
-      vertex = new G4PrimaryVertex(xyzt.X(), xyzt.Y(), xyzt.Z(), xyzt.T());
+      vertex = new G4PrimaryVertex(xyzt.x(), xyzt.y(), xyzt.z(), xyzt.t());
       event->AddPrimaryVertex(vertex);
       vertex_map[xyzt] = vertex;
     }
@@ -105,7 +111,7 @@ void GHepReader::FillG4Event(G4Event* event)
     }
 
     G4ParticleDefinition* particle_def = 
-      G4ParticleDefinition::GetParticleTable()->FindParticle(gpart->Pdg());
+      G4ParticleTable::GetParticleTable()->FindParticle(gpart->Pdg());
 
     if (!particle_def) {
       G4cerr << "PDG code " << gpart->Pdg() << " not found." << G4endl;
