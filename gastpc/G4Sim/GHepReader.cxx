@@ -11,9 +11,11 @@
 #include <G4Event.hh>
 
 #include <TChain.h>
+#include <TCollection.h>
 
 #include <Ntuple/NtpMCEventRecord.h>
 #include <EVGCore/EventRecord.h>
+#include <GHEP/GHepParticle.h>
 
 
 
@@ -45,13 +47,23 @@ void GHepReader::FillG4Event(G4Event*)
   current_entry_++;
   ifiles_->GetEntry(current_entry_);
 
-  genie::EventRecord& gevtrec = *(mcrec_->event);
+  genie::EventRecord* record = mcrec_->event;
 
-  genie::Interaction* inter = gevtrec.Summary();
-  const genie::Target& target = inter->InitState().Tgt();
+  //genie::Interaction* inter = gevtrec.Summary();
+  //const genie::Target& target = inter->InitState().Tgt();
 
-  G4cout << "Target Z = " << target.Z() << G4endl;
+  //G4cout << "Target Z = " << target.Z() << G4endl;
 
+  TLorentzVector* vtx_position = record->Vertex();
+
+  TIter gpart_iter(record);
+  genie::GHepParticle* gpart = 0;
+
+  while ((gpart = dynamic_cast<genie::GHepParticle*>(gpart_iter.Next()))) {
+
+    if (gpart->Status() != 1) continue;
+
+  }
 
   /*
   // Decide how many interactions we are supposed to read from the file
