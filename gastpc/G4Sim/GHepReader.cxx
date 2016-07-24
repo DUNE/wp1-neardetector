@@ -40,8 +40,24 @@ void GHepReader::Initialize(const G4String& path)
 }
 
 
-void GHepReader::FillG4Event(G4Event*)
+void GHepReader::FillG4Event(G4Event* event)
 {
+   // A G4Event organizes its particles in terms of "vertices" and  
+    // "particles", like HepMC.  Unfortunately, ROOT doesn't use
+    // HepMC, so the MCTruth objects aren't organized that way.
+    // For most of the work that we'll ever do, there'll be only one
+    // vertex in the event.  However, just in case there are multiple
+    // vertices (e.g., overlays, double vertex studies) I want the
+    // code to function properly.
+  
+    // So create a map of particle positions and associated
+    // G4PrimaryVertex*.  Note that the map must use CLHEP's
+    // LorentzVector, and not ROOT's, since ROOT does not define an
+    // operator< for its physics vectors.
+    std::map<G4LorentVector, G4PrimaryVertex*> vertex_map;
+    std::map<G4LorentVector, G4PrimaryVertex*>::const_iterator vm_iter; 
+
+
   G4cout << "GHepReader::FillG4Event()" << G4endl;
 
   current_entry_++;
@@ -62,6 +78,47 @@ void GHepReader::FillG4Event(G4Event*)
   while ((gpart = dynamic_cast<genie::GHepParticle*>(gpart_iter.Next()))) {
 
     if (gpart->Status() != 1) continue;
+
+
+
+    G4LorentVector xyzt;
+
+    xyzt.setX( gpart->Vx()*fermi + vtx_position->X()*meter );
+    xyzt.setY( gpart->Vy()*fermi + vtx_position->Y()*meter );
+    xyzt.setZ( gpart->Vz()*fermi + vtx_position->Z()*meter );
+
+    // Check whether a vertex corresponding to that position and time
+    // exists already in the event
+    G4PrimaryVertex* vertex = 0;
+    auto result = vertex_map.find(xyzt);
+
+    if (result == vertex_map.end()) {
+      // The vertex does not exits. Therefore, create a new one and 
+      // add it to both the map and the event.
+      vertex = new G4PrimaryVertex(xyzt.X(), xyzt.Y(), xyzt.Z(), xyzt.T());
+      event->AddPrimaryVertex(vertex);
+      vertex_map[xyzt] = vertex;
+    }
+    else {
+      // The vertex exists already. No need to create a new one.
+      vertex = (*result).second; 
+    }
+
+    G4ParticleDefinition* particle_def = 
+      G4ParticleDefinition::GetParticleTable()->FindParticle(gpart->Pdg());
+
+    if (!particle_def) {
+      G4cerr << "PDG code " << gpart->Pdg() << " not found." << G4endl;
+      continue;
+    }
+
+    // Create a new primary particle and add it to the vertex
+    G4PrimaryParticle* particle = new G4PrimaryParticle(particle_def, 
+                                                        gpart->Px() * GeV, 
+                                                        gpart->Py() * GeV, 
+                                                        gpart->Pz() * GeV);
+
+    vertex->SetPrimary(particle);
 
   }
 
