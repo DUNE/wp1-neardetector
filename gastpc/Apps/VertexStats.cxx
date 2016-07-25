@@ -8,15 +8,22 @@
 
 #include <TChain.h>
 #include <TGeoManager.h>
+#include <TGeoNode.h>
+#include <TGeoVolume.h>
+#include <TLorentzVector.h>
 
-#include <Ntuple/NtpMCTreeHeader.h>
+#include <Ntuple/NtpMCEventRecord.h>
+#include <EVGCore/EventRecord.h>
 
+#include <iostream>
 
 
 TChain* OpenGenieFiles(const std::string& filename)
 {
   TChain* chain = new TChain("gtree");
-  chain->Add(filename);
+  int num_files;
+  num_files = chain->Add(filename.c_str());
+  std::cout << num_files << std::endl;
   return chain;
 }
 
@@ -25,39 +32,50 @@ TChain* OpenGenieFiles(const std::string& filename)
 int main(int argc, char const *argv[])
 {
   std::string geom_file = "geometry.gdml";
-  std::string genie_files = "";
+  std::string genie_files = "neutrino.862806.*";
 
-  TChain* chain = OpenGenieFiles(genie_files);
+  TChain* chain = new TChain("gtree");
+  chain->Add(genie_files.c_str());
 
   genie::NtpMCEventRecord* mcrec = 0;
-  chain->SetBranchAddress("gmrec", &mcrec);
+  chain->SetBranchAddress("gmcrec", &mcrec);
 
   TGeoManager* geomgr = new TGeoManager();
-  geomgr->Import(geom_file);
+  geomgr->Import(geom_file.c_str());
+
+  std::cout << "Loaded geometry" << std::endl;
 
   TFile* current_file = 0;
   double total_pot = 0.;
 
-  for (unsigned int i=0; i<chain->GetEntries(); i++) {
+  std::cout << "Number of entries in TChain: " << chain->GetEntries() << std::endl;
+
+  for (int i=0; i<chain->GetEntries(); i++) {
+
+    std::cout << "entry no. " << i << std::endl;
 
     chain->GetEntry(i);
 
-    if (current_file != chain->GetFile()) {
-      total_pot += chain.GetWeight();
-      current_file = chain->GetFile();
-    }
+    std::cout << "POT: " << chain->GetWeight() << std::endl;
 
-    EventRecord* record = mcrec->event;
+    genie::EventRecord* record = mcrec->event;
 
     TLorentzVector* vertex_position = record->Vertex();
-    std::cout << vertex_position << std::endl;
 
-    //Interaction* inter = event->Summary();
+    geomgr->SetCurrentPoint(vertex_position->X() * 100.,
+			    vertex_position->Y() * 100.,
+			    vertex_position->Z() * 100.);
 
+    TGeoNode* node = geomgr->FindNode();
+    std::cout << "Name: " << node->GetName() << std::endl;
+    TGeoMatrix* matrix = node->GetMatrix();
+    const Double_t* tr = matrix->GetTranslation();
 
-
+    std::cout << "X = " << tr[0] << " Y = " << tr[1] << " Z = " << tr[2] << std::endl;
 
   }
+
+  std::cout << total_pot << std::endl;
 
   return 0;
 }
