@@ -105,6 +105,7 @@ int main(int argc, char** argv)
   double total_pot = 0.;
   TFile* current_file = 0;
   std::map<TGeoNode*, DetVol> node_map;
+  std::map<int, int> target_map;
 
   for (int i=0; i<chain->GetEntries(); i++) {
 
@@ -158,17 +159,24 @@ int main(int argc, char** argv)
       (*it).second.num_vertices++;
     }
 
+    // Store now statistics about the target nucleus
+    genie::Interaction* interaction = record->Summary();
+    const genie::Target& tgt = interaction->InitState().Tgt();
+    target_map[tgt.Z()] += 1;
   }
+
+  // Write results in the output file
 
   std::ofstream ofile;
   ofile.open(output_file_, std::ios::trunc);
 
-  ofile << "Total POT: " << total_pot << std::endl;
+  ofile << "Total POT analyzed: " << total_pot << std::endl;
+
+  ofile << "Vertex distribution per geometry volumes:\n" << std::endl;
 
   ofile << "\n----------" << std::endl;
 
   for (auto kv: node_map) {
-    
     ofile << " Name: " << kv.second.name << std::endl;
     ofile << " Position (cm) = (" << kv.second.position.x() << ", "
 	                                    << kv.second.position.y() << ", " 
@@ -177,6 +185,15 @@ int main(int argc, char** argv)
     ofile << " Num. vertices: " << kv.second.num_vertices << std::endl;
     ofile << "----------" << std::endl;
   }
+
+  ofile << "\n\nVertex distribution per target nucleus:\n" << std::endl;
+  ofile << "Target Z\t" << "Num. interactions" << std::endl;
+
+  for (auto kv: target_map) {
+    ofile << kv.first << "\t" << kv.second << std::endl;
+  }
+
+  ofile.close();
 
   delete geomgr;
   delete chain;
