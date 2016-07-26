@@ -81,8 +81,8 @@ TGeoManager* LoadGeometry(const std::string& filename)
 TChain* OpenGenieFiles(const std::string& filename)
 {
   TChain* chain = new TChain("gtree");
-  int num_files;
-  num_files = chain->Add(filename.c_str());
+  int num_files = chain->Add(filename.c_str());
+  std::cout << "Added " << num_files << " to the chain." << std::endl;
   return chain;
 }
 
@@ -138,6 +138,8 @@ int main(int argc, char** argv)
       } 
     }  
 
+    // Create an entry for this geometry node if we have not seen it before.
+    // Update the vertex statistics otherwise.
     auto it = node_map.find(node);
     if (it == node_map.end()) {
       DetVol dv;
@@ -157,7 +159,9 @@ int main(int argc, char** argv)
     std::cout << "----------" << std::endl;
     std::cout << " Name: " << kv.second.name << std::endl;
     std::cout << " Position (cm) = (" << kv.second.position.x() << ", "
-	      << kv.second.position.y() << ", " << kv.second.position.z() << ")" << std::endl;
+	                                    << kv.second.position.y() << ", " 
+                                      << kv.second.position.z() << ")" 
+                                      << std::endl;
     std::cout << " Num. vertices: " << kv.second.num_vertices << std::endl;
   }
 
