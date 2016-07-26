@@ -20,8 +20,9 @@
 
 
 namespace {
-  std::string geometry_file_("");
-  std::string genie_files_("");
+  std::string geometry_file_(""); ///< Filename of input geometry
+  std::string genie_files_(""); ///< Filename of input genie files
+
   struct DetVol {
     std::string name;
     TVector3 position;
@@ -82,7 +83,6 @@ TChain* OpenGenieFiles(const std::string& filename)
   TChain* chain = new TChain("gtree");
   int num_files;
   num_files = chain->Add(filename.c_str());
-  std::cout << num_files << std::endl;
   return chain;
 }
 
@@ -90,27 +90,30 @@ TChain* OpenGenieFiles(const std::string& filename)
 int main(int argc, char** argv)
 {
   ParseCmdLineOptions(argc, argv);
+
   TGeoManager* geomgr = LoadGeometry(geometry_file_);
+
   TChain* chain = OpenGenieFiles(genie_files_);
-
-
   genie::NtpMCEventRecord* mcrec = 0;
   chain->SetBranchAddress("gmcrec", &mcrec);
 
-  std::cout << "Loaded geometry" << std::endl;
-
-  TFile* current_file = 0;
   double total_pot = 0.;
-
-  std::cout << "Number of entries in TChain: " << chain->GetEntries() << std::endl;
-
+  TFile* current_file = 0;
   std::map<TGeoNode*, DetVol> node_map;
 
   for (int i=0; i<chain->GetEntries(); i++) {
 
     // Load a new entry from the chain
-    chain->GetEntry(i); 
+    chain->GetEntry(i);
     genie::EventRecord* record = mcrec->event;
+
+    // Check whether we are reading a new file. If so, add its weight
+    // (POT) to the total for this job.
+    TFile* new_file = chain->GetFile();
+    if (new_file != current_file) {
+      total_pot += chain->GetWeight();
+      current_file = new_file;
+    }
 
     // Locate the interaction vertex in the geometry. 
     // (Quantities stored by GENIE are expressed in the SI, while ROOT's
@@ -120,10 +123,20 @@ int main(int argc, char** argv)
                                       record->Vertex()->Y() * 100.,
                                       record->Vertex()->Z() * 100.);
 
+    // The method above locates the deepest node in the geometry hierarchy.
+    // In some cases (ECAL layers and TPC), however, we want to compute 
+    // the statistics for a volume higher in the hierarchy.
+
     if (geomgr->GetLevel() > 2) {
-      geomgr->CdUp();
-      node = geomgr->GetCurrentNode();
-    }
+      // GAS is the only volume of level 3 for which we want to compute
+      // vertex statistics. For the rest, go one level up.
+      std::string node_name(node->GetName());
+      std::size_t found = node_name.find("GAS");
+      if (found == std::string::npos) {
+        geomgr->CdUp();
+        node = geomgr->GetCurrentNode();
+      } 
+    }  
 
     auto it = node_map.find(node);
     if (it == node_map.end()) {
@@ -148,5 +161,8 @@ int main(int argc, char** argv)
     std::cout << " Num. vertices: " << kv.second.num_vertices << std::endl;
   }
 
-  return 0;
+  delete geomgr;
+  delete chain;
+
+  return EXIT_SUCCESS;
 }
