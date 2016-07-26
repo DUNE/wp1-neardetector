@@ -16,13 +16,14 @@
 #include <EVGCore/EventRecord.h>
 
 #include <iostream>
+#include <fstream>
 #include <getopt.h>
 
 
 namespace {
-  std::string geometry_file_(""); ///< Filename of input geometry
-  std::string genie_files_(""); ///< Filename of input genie files
-
+  std::string geometry_file_("");         ///< Filename of input geometry
+  std::string genie_files_("");           ///< Filename of input genie files
+  std::string output_file_("output.txt"); ///< Filename of output file
   struct DetVol {
     std::string name;
     TVector3 position;
@@ -40,6 +41,7 @@ void ParseCmdLineOptions(int argc, char** argv)
     {
       {"geometry",    required_argument, 0, 'g'},
       {"genie_files", required_argument, 0, 'i'},
+      {"output_file", required_argument, 0, 'o'},
       {0, 0, 0, 0}
     };
 
@@ -55,6 +57,9 @@ void ParseCmdLineOptions(int argc, char** argv)
         break;
       case 'i':
         genie_files_ = std::string(optarg);
+        break;
+      case 'o':
+        output_file_ = std::string(optarg);
         break;
       case '?':
         exit(EXIT_FAILURE);
@@ -155,14 +160,22 @@ int main(int argc, char** argv)
 
   }
 
+  std::ofstream ofile;
+  ofile.open(output_file_, std::ios::trunc);
+
+  ofile << "Total POT: " << total_pot << std::endl;
+
+  ofile << "\n----------" << std::endl;
+
   for (auto kv: node_map) {
-    std::cout << "----------" << std::endl;
-    std::cout << " Name: " << kv.second.name << std::endl;
-    std::cout << " Position (cm) = (" << kv.second.position.x() << ", "
+    
+    ofile << " Name: " << kv.second.name << std::endl;
+    ofile << " Position (cm) = (" << kv.second.position.x() << ", "
 	                                    << kv.second.position.y() << ", " 
                                       << kv.second.position.z() << ")" 
                                       << std::endl;
-    std::cout << " Num. vertices: " << kv.second.num_vertices << std::endl;
+    ofile << " Num. vertices: " << kv.second.num_vertices << std::endl;
+    ofile << "----------" << std::endl;
   }
 
   delete geomgr;
