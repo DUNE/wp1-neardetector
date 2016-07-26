@@ -172,7 +172,7 @@ int main(int argc, char** argv)
 
   ofile << "Total POT analyzed: " << total_pot << std::endl;
 
-  ofile << "Vertex distribution per geometry volumes:\n" << std::endl;
+  ofile << "\nVertex distribution per geometry volumes:" << std::endl;
 
   ofile << "\n----------" << std::endl;
 
@@ -187,7 +187,7 @@ int main(int argc, char** argv)
   }
 
   ofile << "\n\nVertex distribution per target nucleus:\n" << std::endl;
-  ofile << "Target Z\t" << "Num. interactions" << std::endl;
+  ofile << "Z\t" << "Num. interactions" << std::endl;
 
   for (auto kv: target_map) {
     ofile << kv.first << "\t" << kv.second << std::endl;
