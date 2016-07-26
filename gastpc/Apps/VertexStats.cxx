@@ -132,6 +132,7 @@ int main(int argc, char** argv)
       const Double_t* xyz = node->GetMatrix()->GetTranslation();
       dv.position.SetXYZ(xyz[0], xyz[1], xyz[2]);
       dv.num_vertices = 1;
+      node_map[node] = dv;
     }
     else {
       (*it).second.num_vertices++;
@@ -140,7 +141,11 @@ int main(int argc, char** argv)
   }
 
   for (auto kv: node_map) {
-    std::cout << "Name: " << kv.second.name << std::endl;
+    std::cout << "----------" << std::endl;
+    std::cout << " Name: " << kv.second.name << std::endl;
+    std::cout << " Position (cm) = (" << kv.second.position.x() << ", "
+	      << kv.second.position.y() << ", " << kv.second.position.z() << ")" << std::endl;
+    std::cout << " Num. vertices: " << kv.second.num_vertices << std::endl;
   }
 
   return 0;
