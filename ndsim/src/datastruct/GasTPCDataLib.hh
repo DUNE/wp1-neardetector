@@ -66,7 +66,7 @@ class ParticleDescrShortRecord {
 
   ParticleDescrShortRecord &operator=(const ParticleDescrShortRecord &p);
 
-  void printToStream(ostream& stream);
+  void printToStream(std::ostream& stream);
 
  protected:
   int pdg_,charge_;
@@ -91,7 +91,7 @@ class ParticleDescrRecord : public ParticleDescrShortRecord {
 
   ParticleDescrRecord& operator=(const ParticleDescrRecord &p);
 
-  void printToStream(ostream& stream);
+  void printToStream(std::ostream& stream);
 
  protected:
   TLorentzVector pos_;
@@ -122,7 +122,7 @@ class BaseEventRecord : public namedRecord {
     pos_ = e.getPosition(); return *this;
   }
 
-  void printToStream(ostream& stream);
+  void printToStream(std::ostream& stream);
 
  protected:
   TLorentzVector pos_;
@@ -145,7 +145,7 @@ class NeutrinoHit : public namedRecord {
   void setPosition(TLorentzVector v)                  {neutrino_.setPosition(v);}
   void setPDG(int pdg)                                {neutrino_.setPDG(pdg);}
 
-  void printToStream(ostream& stream);
+  void printToStream(std::ostream& stream);
 
  private:
   ParticleDescrRecord neutrino_;
@@ -178,7 +178,7 @@ class PionDecayEvent : public BaseEventRecord {
 
   void setInFlight(bool f)                            {inFlight_ = f;}
 
-  void printToStream(ostream& stream);
+  void printToStream(std::ostream& stream);
 
  private:
   ParticleDescrShortRecord neutrino_;
@@ -287,7 +287,7 @@ class NeutrinoEvent : public BaseEventRecord {
 
   void SetSpillNumber(int spill) {spillnum_ = spill;};
 
-  void printToStream(ostream& stream);
+  void printToStream(std::ostream& stream);
 
  private:
   //ParticleDescrShortRecord                 fspl_;          // Final state primary lepton.
@@ -345,7 +345,7 @@ class GeantBasicParticle : public ParticleDescrRecord{
   void setTrackID(int id)		{trackID =id;};
   void setParentID(int id)		{parentID =id;};
 
-  void printToStream(ostream& stream) const;
+  void printToStream(std::ostream& stream) const;
 
  protected:
 
@@ -398,7 +398,7 @@ class GeantParticle : public GeantBasicParticle {
   void setEnterVolume(bool b){entervolume =b;};
   //void setHitsDataPtr(SimulData * hitsPtr) {hitsData = hitsPtr;};
 
-  void printToStream(ostream& stream);
+  void printToStream(std::ostream& stream);
 
  protected:
   int eventID;
@@ -791,7 +791,7 @@ class SDHit : public BaseEventRecord{
   //void setParent(GeantBasicParticle p)	   {parentParticle = p;};
   //GeantBasicParticle getParent() const     {return parentParticle;};
 
-  void printToStream(ostream& stream);
+  void printToStream(std::ostream& stream);
 
 protected:
   //ParticleDescrRecord fss_;
@@ -813,7 +813,7 @@ class tpcFidHit : public SDHit {
   tpcFidHit() {name_ = "tpcFidHit";}
   virtual ~tpcFidHit() {}
 
-  void printToStream(ostream& stream);
+  void printToStream(std::ostream& stream);
 
  private:
  
@@ -834,7 +834,7 @@ class scintHit : public SDHit {
   int getEcalNumber()	const	{return ecalNumber;};
   void setEcalNumber(int no)  {ecalNumber = no;};
 
-  void printToStream(ostream& stream);
+  void printToStream(std::ostream& stream);
 
  private:
   int layerNumber, ecalNumber;
@@ -849,7 +849,7 @@ class MINDHit : public SDHit {
   MINDHit() {name_ = "MINDHit";}
   virtual ~MINDHit() {}
 
-  void printToStream(ostream& stream);
+  void printToStream(std::ostream& stream);
 
  private:
   ClassDef(MINDHit, 1);
@@ -886,7 +886,7 @@ class SimulData  : public namedRecord {
   void clearTpcFidHits()			{HitCollection().swap(tpc_hits_);tpc_hits_.resize(0);}
   void clearScintHits()				{ScintHitCollection().swap(scint_hits_);scint_hits_.resize(0);}
 
-  void printToStream(ostream& stream);
+  void printToStream(std::ostream& stream);
 
  private:
   int 			eventID;
@@ -907,7 +907,7 @@ class MemTestRecord : public namedRecord {
   void setData(double d) {data_ = d;}
   double getData() const {return data_;}
 
-  void printToStream(ostream& stream) {
+  void printToStream(std::ostream& stream) {
     stream << "MemTestRecord  data: " << data_ << std::endl;
   }
 

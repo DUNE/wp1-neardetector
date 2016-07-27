@@ -77,7 +77,7 @@ ParticleDescrRecord& ParticleDescrRecord::operator=(const ParticleDescrRecord &p
 }
 ///////////////////////////////////////////////////////////////////////////////
 
-void ParticleDescrRecord::printToStream(ostream& stream) {
+void ParticleDescrRecord::printToStream(std::ostream& stream) {
   ParticleDescrShortRecord::printToStream(stream);
 
   TLorentzVector pos = getPosition() * (1./CLHEP::m);
@@ -88,7 +88,7 @@ void ParticleDescrRecord::printToStream(ostream& stream) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void ParticleDescrShortRecord::printToStream(ostream& stream) {
+void ParticleDescrShortRecord::printToStream(std::ostream& stream) {
   TLorentzVector p4 = getP4() * (1./CLHEP::GeV);
   stream << " pdg : " << getPDG() <<std::endl;
   stream << " p4(Px,Py,Pz,E)[GeV] : (" << p4.X() << ", " 
@@ -97,7 +97,7 @@ void ParticleDescrShortRecord::printToStream(ostream& stream) {
 }
 ///////////////////////////////////////////////////////////////////////////////
 
-void BaseEventRecord::printToStream(ostream& stream) {
+void BaseEventRecord::printToStream(std::ostream& stream) {
   TLorentzVector pos = getPosition() * (1./CLHEP::m);
   stream << "\n pos(x,y,z,t)[m] : (" << pos.X() << ", " 
   << pos.Y() << ", " << pos.Z() << ", " << pos.T() << ")"
@@ -108,7 +108,7 @@ void BaseEventRecord::printToStream(ostream& stream) {
 NeutrinoHit::NeutrinoHit(ParticleDescrRecord nu)
 : neutrino_(nu) {name_ = "nuHits";}
 
-void NeutrinoHit::printToStream(ostream& stream) {
+void NeutrinoHit::printToStream(std::ostream& stream) {
   stream << "------ NeutrinoHit ------" << std::endl;
 
   neutrino_.printToStream(stream);
@@ -123,7 +123,7 @@ PionDecayEvent::PionDecayEvent(ParticleDescrShortRecord nu,
 : neutrino_(nu), chargedLepton_(chLepton),
   BaseEventRecord::BaseEventRecord(pos) {name_ = "piDecays";}
 
-void PionDecayEvent::printToStream(ostream& stream) {
+void PionDecayEvent::printToStream(std::ostream& stream) {
   stream << "----- PionDecayEvent ----" << std::endl;
 
   if(inFlight()) { stream << " decay in flight" << std::endl;}
@@ -150,7 +150,7 @@ MuonDecayEvent::MuonDecayEvent(ParticleDescrShortRecord numu,
 }
 ///////////////////////////////////////////////////////////////////////////////
 
-void NeutrinoEvent::printToStream(ostream& stream) {
+void NeutrinoEvent::printToStream(std::ostream& stream) {
   
   TLorentzVector eventVertex = this->getPosition()*(1./CLHEP::mm);
 
@@ -172,7 +172,7 @@ void NeutrinoEvent::printToStream(ostream& stream) {
 }
 ////////////////////////////////////////////////////////////////////////////
 
-void SDHit::printToStream(ostream& stream) {
+void SDHit::printToStream(std::ostream& stream) {
   stream << "----- " << this->getRecordName() << " -----" << std::endl;
   BaseEventRecord::printToStream(stream);
 
@@ -182,7 +182,7 @@ void SDHit::printToStream(ostream& stream) {
 
 ////////////////////////////////////////////////////////////////////////////
 
-void tpcFidHit::printToStream(ostream& stream) {
+void tpcFidHit::printToStream(std::ostream& stream) {
   stream << "----- " << this->getRecordName() << " -----" << std::endl;
   BaseEventRecord::printToStream(stream);
   stream << " Edep :" << Edep_*(1./CLHEP::GeV) << " [GeV]" << std::endl;
@@ -190,7 +190,7 @@ void tpcFidHit::printToStream(ostream& stream) {
 }
 ////////////////////////////////////////////////////////////////////////////
 
-void scintHit::printToStream(ostream& stream) {
+void scintHit::printToStream(std::ostream& stream) {
   stream << "\n----- " << this->getRecordName() << " -----" << std::endl;
   stream << "*** pdg : " << PDG; 
   BaseEventRecord::printToStream(stream);
@@ -199,12 +199,12 @@ void scintHit::printToStream(ostream& stream) {
 }
 ////////////////////////////////////////////////////////////////////////////
 
-void GeantBasicParticle::printToStream(ostream& stream) const {
+void GeantBasicParticle::printToStream(std::ostream& stream) const {
   stream << "\n --- PDG : " << this->getPDG() << ", TrackID: " << this->getTrackID() << ", ParentID: " << this->getParentID() <<std::endl;
 }
 ////////////////////////////////////////////////////////////////////////////
 
-void GeantParticle::printToStream(ostream& stream) {
+void GeantParticle::printToStream(std::ostream& stream) {
   stream << "\n pdg : " << getPDG() << ", trackID: " << trackID << ", parentID: " << parentID <<std::endl;
 
   TLorentzVector p4 = getP4() * (1./CLHEP::GeV);
@@ -224,7 +224,7 @@ bool GeantDaughterParticle::isPrimary() const{
 }
 */
 ///////////////////////////////////////////////////////////////////////////////
-void MINDHit::printToStream(ostream& stream) {
+void MINDHit::printToStream(std::ostream& stream) {
   stream << "----- " << this->getRecordName() << " -----" << std::endl;
   BaseEventRecord::printToStream(stream);
   stream << std::endl;
@@ -251,7 +251,7 @@ double SimulData::getTotalEDep(std::string hits_name) const{
 }
 ////////////////////////////////////////////////////////////////////////////
 
-void SimulData::printToStream(ostream& stream) {
+void SimulData::printToStream(std::ostream& stream) {
 
   stream << "\n----- " << this->getRecordName() << " -----" ;
   stream << "\n * TPC Hits: " << tpc_hits_.size()  << ", edep [GeV]: "<< this->getTotalEDep("tpc");
