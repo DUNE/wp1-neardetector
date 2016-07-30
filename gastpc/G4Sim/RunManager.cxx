@@ -10,6 +10,8 @@
 
 #include "DuneGArNDDetConstr.h"
 #include "BeamSpillGenerator.h"
+#include "ParticleGunGenerator.h"
+#include "PersistencyManager.h"
 
 #include <G4UImanager.hh>
 #include <G4VModularPhysicsList.hh>
@@ -26,7 +28,10 @@ RunManager::RunManager(): G4RunManager()
 
   this->SetUserInitialization(new DuneGArNDDetConstr);
 
-  this->SetUserAction(new BeamSpillGenerator());
+  //this->SetUserAction(new BeamSpillGenerator());
+  this->SetUserAction(new ParticleGunGenerator());
+
+  PersistencyManager::Initialize();
 }
 
 
