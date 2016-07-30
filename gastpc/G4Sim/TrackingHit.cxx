@@ -47,3 +47,24 @@ G4int TrackingHit::operator==(const TrackingHit& other) const
 {
   return (this == &other) ? 1 : 0;
 }
+
+
+void TrackingHit::SetPositionAndTime(G4double x, G4double y, G4double z, 
+                                     G4double t)
+{
+  xyzt_.setX(x);
+  xyzt_.setY(y);
+  xyzt_.setZ(z);
+  xyzt_.setT(t);
+}
+
+
+const G4LorentzVector& TrackingHit::GetPositionAndTime() const
+{
+  return xyzt_;
+}
+
+
+
+
+
