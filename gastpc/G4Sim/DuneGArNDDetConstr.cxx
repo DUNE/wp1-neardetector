@@ -12,6 +12,7 @@
 #include "DuneGArNDMagnetCoilGeometry.h"
 #include "DuneGArNDVesselGeometry.h"
 #include "DuneGArNDEcalModuleGeometry.h"
+#include "UniformMagneticField.h"
 
 #include <G4GenericMessenger.hh>
 #include <G4NistManager.hh>
@@ -23,6 +24,8 @@
 #include <G4VisAttributes.hh>
 #include <G4SubtractionSolid.hh>
 #include <G4GDMLParser.hh>
+#include <G4FieldManager.hh>
+#include <G4AutoDelete.hh>
 
 
 
@@ -156,6 +159,14 @@ void DuneGArNDDetConstr::DefineEnvelopeAndMagnet()
     new G4PVPlacement(0, G4ThreeVector(0.,0.,detenv_length/2.),
       "NEAR_DETECTOR_ENV", detenv_logic_vol, hall_phys_vol_, 0, false, 0);
 
+  UniformMagneticField* magfield = new UniformMagneticField();
+  G4FieldManager* fieldmgr = new G4FieldManager();
+  fieldmgr->SetDetectorField(magfield);
+  fieldmgr->CreateChordFinder(magfield);
+  detenv_logic_vol->SetFieldManager(fieldmgr, true);
+
+  G4AutoDelete::Register(magfield);
+  G4AutoDelete::Register(fieldmgr);
 
   // MAGNET YOKE ///////////////////////////////////////////
 
@@ -279,6 +290,7 @@ void DuneGArNDDetConstr::DefineVessel()
   new G4PVPlacement(0, G4ThreeVector(0., 0., origin_z), "VESSEL",
     vessel_geom.GetLogicalVolume(), detenv_phys_vol_, false, 0, true);
 }
+
 
 
 // void DuneGArNDDetConstr::DefineCommands()
