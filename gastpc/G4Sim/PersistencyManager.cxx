@@ -63,6 +63,8 @@ void PersistencyManager::CloseFile()
 
 G4bool PersistencyManager::Store(const G4Event*)
 {
+  if (!store_current_event_) return false;
+
   return true;
 }
 

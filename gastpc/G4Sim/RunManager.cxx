@@ -12,6 +12,9 @@
 #include "BeamSpillGenerator.h"
 #include "ParticleGunGenerator.h"
 #include "PersistencyManager.h"
+#include "DefaultRunAction.h"
+#include "DefaultTrackingAction.h"
+#include "DefaultSteppingAction.h"
 
 #include <G4UImanager.hh>
 #include <G4VModularPhysicsList.hh>
@@ -30,6 +33,10 @@ RunManager::RunManager(): G4RunManager()
 
   //this->SetUserAction(new BeamSpillGenerator());
   this->SetUserAction(new ParticleGunGenerator());
+
+  this->SetUserAction(new DefaultRunAction());
+  this->SetUserAction(new DefaultTrackingAction());
+  this->SetUserAction(new DefaultSteppingAction());
 
   PersistencyManager::Initialize();
 }
