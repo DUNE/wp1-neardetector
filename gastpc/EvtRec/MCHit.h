@@ -6,8 +6,8 @@
 /// \date    Creation: 30 July 2016
 // -------------------------------------------------------------------
 
-#ifndef MCHIT_H
-#define MCHIT_H
+#ifndef GASTPC_MCHIT_H
+#define GASTPC_MCHIT_H
 
 #include <Rtypes.h>
 #include <TVector3.h>

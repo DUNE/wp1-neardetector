@@ -8,5 +8,7 @@
 
 #pragma link C++ class gastpc::EventRecord+;
 #pragma link C++ class gastpc::MCParticle+;
+#pragma link C++ class gastpc::MCHit+;
+#pragma link C++ class gastpc::MCTrack+;
 
 #endif
