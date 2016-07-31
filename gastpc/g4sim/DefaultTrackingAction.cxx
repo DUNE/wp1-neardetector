@@ -10,13 +10,20 @@
 
 #include "Trajectory.h"
 #include "TrajectoryMap.h"
+#include "PersistencyManager.h"
 
 #include <G4Track.hh>
 #include <G4TrackingManager.hh>
+#include <G4VPersistencyManager.hh>
+
 
 
 void DefaultTrackingAction::PreUserTrackingAction(const G4Track* track)
 {
+  PersistencyManager* pm = dynamic_cast<PersistencyManager*>
+    (G4VPersistencyManager::GetPersistencyManager());
+  pm->StoreCurrentEvent(true);
+
   G4VTrajectory* trj = new Trajectory(track);
   this->fpTrackingManager->SetStoreTrajectory(true);
   this->fpTrackingManager->SetTrajectory(trj);

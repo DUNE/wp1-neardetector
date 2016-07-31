@@ -9,6 +9,7 @@
 #include "DuneGArNDVesselGeometry.h"
 
 #include "MaterialsList.h"
+#include "TrackingSD.h"
 
 #include <G4Tubs.hh>
 #include <G4Box.hh>
@@ -16,6 +17,7 @@
 #include <G4PVPlacement.hh>
 #include <G4SystemOfUnits.hh>
 #include <G4VisAttributes.hh>
+#include <G4SDManager.hh>
 
 
 
@@ -67,6 +69,10 @@ void DuneGArNDVesselGeometry::DefineVolumes()
   
   new G4PVPlacement(0, G4ThreeVector(), tpc_logic_vol, "TPC", gas_logic_vol, 
     false, 0, true);
+
+  TrackingSD* tsd = new TrackingSD("/DUNEGARND/TPC", "");
+  tpc_logic_vol->SetSensitiveDetector(tsd);
+  G4SDManager::GetSDMpointer()->AddNewDetector(tsd);
 
   //G4VisAttributes* vis = new G4VisAttributes();
   //vis->SetColor(0.5,0.5,0.5);

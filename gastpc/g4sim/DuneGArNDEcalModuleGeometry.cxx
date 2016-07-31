@@ -8,6 +8,8 @@
 
 #include "DuneGArNDEcalModuleGeometry.h"
 
+#include "TrackingSD.h"
+
 #include <G4Material.hh>
 #include <G4SubtractionSolid.hh>
 #include <G4Box.hh>
@@ -15,7 +17,7 @@
 #include <G4PVPlacement.hh>
 #include <G4NistManager.hh>
 #include <G4SystemOfUnits.hh>
-
+#include <G4SDManager.hh>
 
 
 DuneGArNDEcalModuleGeometry::DuneGArNDEcalModuleGeometry(
@@ -58,6 +60,10 @@ void DuneGArNDEcalModuleGeometry::DefineVolumes()
 
   G4LogicalVolume* scint_layer_logic_vol = 
     new G4LogicalVolume(scint_layer_solid_vol, plastic_scint, "ECAL_SCINT");
+
+  // TrackingSD* tsd = new TrackingSD("/DUNEGARND/ECAL_SCINT", "");
+  // scint_layer_logic_vol->SetSensitiveDetector(tsd);
+  // G4SDManager::GetSDMpointer()->AddNewDetector(tsd);
 
   // ABSORBER LAYER ////////////////////////////////////////
 

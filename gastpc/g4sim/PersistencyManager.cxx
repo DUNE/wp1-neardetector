@@ -11,6 +11,8 @@
 #include "RootFileWriter.h"
 
 #include <G4GenericMessenger.hh>
+#include <G4Event.hh>
+#include <G4TrajectoryContainer.hh>
 
 
 
@@ -61,9 +63,12 @@ void PersistencyManager::CloseFile()
 }
 
 
-G4bool PersistencyManager::Store(const G4Event*)
+G4bool PersistencyManager::Store(const G4Event* event)
 {
   if (!store_current_event_) return false;
+
+  G4TrajectoryContainer* trjc = event->GetTrajectoryContainer();
+  G4cout << "Number of stored trajectories: " << trjc->size() << G4endl;
 
   return true;
 }
