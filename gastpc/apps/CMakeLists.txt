@@ -1,9 +1,26 @@
 ### CMakeLists.txt -- gastpc/Apps
 
+##############################
+
 add_executable(VertexStats VertexStats.cxx)
 
 target_link_libraries(VertexStats ${GENIE_LIBRARIES}
-				  ${Log4cpp_LIBRARIES}
-				  ${LIBXML2_LIBRARIES}
+				                          ${Log4cpp_LIBRARIES}
+				                          ${LIBXML2_LIBRARIES}
                                   ${ROOT_LIBRARIES})
 
+##############################
+
+add_executable(GasTPCG4Sim GasTPCG4Sim.cxx)
+
+target_link_libraries(GasTPCG4Sim G4Sim
+                                  ${Geant4_LIBRARIES}
+                                  ${ROOT_LIBRARIES}
+                                  ${GENIE_LIBRARIES}
+                                  ${Log4cpp_LIBRARIES}
+                                  ${LIBXML2_LIBRARIES})
+
+##############################
+
+install(TARGETS VertexStats GasTPCG4Sim
+        RUNTIME DESTINATION bin)

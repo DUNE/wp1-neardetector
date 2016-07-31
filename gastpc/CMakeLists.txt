@@ -1,7 +1,8 @@
-include_directories(EvtRec)
-include_directories(G4Sim)
+include_directories(evtrec)
+include_directories(g4sim)
 
-add_subdirectory(G4Sim)
-add_subdirectory(Apps)
-add_subdirectory(EvtRec)
+add_subdirectory(g4sim)
+add_subdirectory(apps)
+add_subdirectory(evtrec)
+add_subdirectory(config)
 
