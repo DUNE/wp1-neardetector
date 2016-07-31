@@ -6,44 +6,38 @@
 /// \date    Creation: 12 Mar 2016
 // -------------------------------------------------------------------
 
-#ifndef ROOT_FILE_WRITER
-#define ROOT_FILE_WRITER
+#ifndef GASTPC_ROOT_FILE_WRITER_H
+#define GASTPC_ROOT_FILE_WRITER_H
 
 #include <string>
+
+namespace gastpc { class EventRecord; }
+namespace gastpc { class RootFileWriter; }
 
 class TFile;
 class TTree;
 
-namespace gastpc {
 
-  class EventRecord;
+/// TODO: Class description
 
+class gastpc::RootFileWriter
+{
+public:
+  /// Constructor
+  RootFileWriter();
+  /// Destructor
+  ~RootFileWriter();
 
-  /// TODO: Class description
+  void OpenFile(const std::string&);
 
-  class RootFileWriter
-  {
-  public:
-    /// Constructor
-    RootFileWriter();
-    /// Destructor
-    ~RootFileWriter();
+  void CloseFile();
 
-    bool OpenFile(const std::string&);
+  void Write(gastpc::EventRecord&);
 
-    void CloseFile();
-
-    void Write(EventRecord&);
-
-
-
-  private:
-    TFile* file_; ///< Output ROOT file
-    TTree* tree_;
-
-    EventRecord* evtrec_;
-  };
-
-} // namespace gastpc
+private:
+  gastpc::EventRecord* evtrec_; ///< Pointer to transient event record
+  TFile* file_; ///< Output ROOT file
+  TTree* tree_; ///< Output tree
+};
 
 #endif

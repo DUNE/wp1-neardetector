@@ -28,10 +28,8 @@ namespace gastpc {
   }
 
 
-  bool RootFileWriter::OpenFile(const std::string& filename)
+  void RootFileWriter::OpenFile(const std::string& filename)
   {
-    if (file_) delete file_;
-
     std::string option = "RECREATE";
 
     file_ = new TFile(filename.c_str(), option.c_str());
@@ -39,12 +37,10 @@ namespace gastpc {
     if (!file_ || file_->IsZombie()) {
       std::cerr << "RootFileWriter::Initialize()"
                 << " -- Error opening ROOT file." << std::endl;
-      return false;
     }
 
     tree_ = new TTree("GasTPC", "GasTPC event tree.");
-
-    return true;
+    tree_->Branch("EventRecord", "gastpc::EventRecord", &evtrec_, 32000, 0);
   }
 
 
