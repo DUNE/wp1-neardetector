@@ -23,16 +23,17 @@
 
 
 
-RunManager::RunManager(): G4RunManager()
+RunManager::RunManager(const std::string& detector_tag,
+                       const std::string& generator_tag): 
+  G4RunManager()
 {
   G4VModularPhysicsList* physlist = new QGSP_BERT();
   physlist->RegisterPhysics(new G4StepLimiterPhysics());
   this->SetUserInitialization(physlist);
 
-  this->SetUserInitialization(new DuneGArNDDetConstr);
+  this->SetUserInitialization(CreateDetectorConstruction(detector_tag));
 
-  //this->SetUserAction(new BeamSpillGenerator());
-  this->SetUserAction(new ParticleGunGenerator());
+  this->SetUserAction(CreatePrimaryGenerator(generator_tag));
 
   this->SetUserAction(new DefaultRunAction());
   this->SetUserAction(new DefaultTrackingAction());
@@ -64,3 +65,26 @@ void RunManager::SetRandomSeed(G4int seed) const
   if (seed < 0) CLHEP::HepRandom::setTheSeed(time(0));
   else CLHEP::HepRandom::setTheSeed(seed);
 }
+
+
+G4VUserDetectorConstruction* 
+  RunManager::CreateDetectorConstruction(const std::string& /*tag*/)
+{
+  // if      (tag == "") return (new );
+  // else if (tag == "") return (new );
+  return (new DuneGArNDDetConstr());
+}
+
+
+G4VUserPrimaryGeneratorAction*
+  RunManager::CreatePrimaryGenerator(const std::string& tag)
+{
+  if      (tag == "BEAM_SPILL") return (new BeamSpillGenerator());
+  else if (tag == "PARTICLE_GUN") return (new ParticleGunGenerator());
+  else {
+    G4String msg = "User provided an unknown geometry tag: " + tag;
+    G4Exception("CreatePrimaryGenerator()", "RunManager", FatalException, msg);
+    return 0;
+  }
+}
+

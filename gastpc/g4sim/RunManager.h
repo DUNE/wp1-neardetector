@@ -10,6 +10,10 @@
 #define GASTPC_RUN_MANAGER_H
 
 #include <G4RunManager.hh>
+#include <string>
+
+class G4VUserDetectorConstruction;
+class G4VUserPrimaryGeneratorAction;
 
 
 
@@ -17,26 +21,26 @@ class RunManager: public G4RunManager
 {
 public:
   /// Constructor
-  RunManager();
+  RunManager(const std::string& detector_tag, 
+             const std::string& generator_tag);
+
   /// Destructor
   virtual ~RunManager();
 
+  ///
   virtual void Initialize();
-
-  void SetPhysicsList(const G4String&);
-
-  void SetGeometry(const G4String&);
-
-  void SetPrimaryGenerator(const G4String&);
 
   ///
   void ExecuteMacroFile(const G4String&);
 
 private:
+  G4VUserDetectorConstruction* CreateDetectorConstruction(const std::string&);
+
+  G4VUserPrimaryGeneratorAction* CreatePrimaryGenerator(const std::string&);
+
   /// Set a seed for the random number generator
   /// If a negative integer is given, the system time is set as seed.
   void SetRandomSeed(G4int) const;
-
 };
 
 #endif
