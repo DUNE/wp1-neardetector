@@ -14,7 +14,7 @@ ClassImp(gastpc::MCHit);
 namespace gastpc {
 
   MCHit::MCHit(): 
-    amplitude_(0.), time_(0.), position_(TVector3()), mcparticle_(0)
+    amplitude_(0.), xyzt_(TLorentzVector()), mcparticle_(0)
   {
   }
 
