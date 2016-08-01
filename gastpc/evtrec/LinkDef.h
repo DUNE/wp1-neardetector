@@ -11,4 +11,6 @@
 #pragma link C++ class gastpc::MCHit+;
 #pragma link C++ class gastpc::MCTrack+;
 
+#pragma link C++ class std::vector<gastpc::MCParticle*>+;
+
 #endif

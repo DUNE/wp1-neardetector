@@ -13,7 +13,6 @@
 
 namespace gastpc { class EventRecord; }
 namespace gastpc { class RootFileWriter; }
-
 class TFile;
 class TTree;
 
@@ -27,12 +26,15 @@ public:
   RootFileWriter();
   /// Destructor
   ~RootFileWriter();
-
-  void OpenFile(const std::string&);
-
+  /// Open a ROOT file containing gastpc::EventRecord objects
+  bool OpenFile(const std::string& filename, 
+                const std::string& option="RECREATE");  
+  /// Close the current file
   void CloseFile();
-
+  /// Write an EventRecord in current file
   void Write(gastpc::EventRecord&);
+  /// Check whether there is a file currently open
+  bool IsFileOpen() const;
 
 private:
   gastpc::EventRecord* evtrec_; ///< Pointer to transient event record

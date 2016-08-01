@@ -22,5 +22,12 @@ target_link_libraries(GasTPCG4Sim G4Sim
 
 ##############################
 
-install(TARGETS VertexStats GasTPCG4Sim
+add_executable(TestIOEvtRec TestIOEvtRec.cxx)
+
+target_link_libraries(TestIOEvtRec GasTPCEvtRec
+                                   ${ROOT_LIBRARIES})
+
+##############################
+
+install(TARGETS VertexStats GasTPCG4Sim TestIOEvtRec
         RUNTIME DESTINATION bin)

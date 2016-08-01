@@ -16,3 +16,7 @@ target_link_libraries(GasTPCEvtRec ${ROOT_LIBRARIES}
 install(TARGETS GasTPCEvtRec
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
+
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/G__EvtRec_rdict.pcm"
+              "${CMAKE_CURRENT_BINARY_DIR}/libEvtRec.rootmap" 
+        DESTINATION lib)

@@ -13,49 +13,62 @@
 #include <TFile.h>
 #include <TTree.h>
 
-#include <iostream>
-
 
 namespace gastpc {
 
-  RootFileWriter::RootFileWriter(): file_(0), tree_(0), evtrec_(0)
+  RootFileWriter::RootFileWriter(): evtrec_(0), file_(0), tree_(0)
   {
   }
 
 
   RootFileWriter::~RootFileWriter()
   {
+    if (IsFileOpen()) {
+      CloseFile();
+      delete file_;
+    }
   }
 
 
-  void RootFileWriter::OpenFile(const std::string& filename)
+  bool RootFileWriter::OpenFile(const std::string& filename,
+                                const std::string& option)
   {
-    std::string option = "RECREATE";
+    // Close the previous open file, if any
+    if (IsFileOpen()) CloseFile();
 
+    // Create new ROOT file. Return false if something did not work.
     file_ = new TFile(filename.c_str(), option.c_str());
+    if (!file_ || file_->IsZombie()) return false;
 
-    if (!file_ || file_->IsZombie()) {
-      std::cerr << "RootFileWriter::Initialize()"
-                << " -- Error opening ROOT file." << std::endl;
-    }
-
-    tree_ = new TTree("GasTPC", "GasTPC event tree.");
+    // Create EventRecord tree
+    evtrec_ = 0;
+    tree_ = new TTree("EventRecord", "gastpc::EventRecord tree.");
     tree_->Branch("EventRecord", "gastpc::EventRecord", &evtrec_, 32000, 0);
+
+    return true;
   }
 
 
   void RootFileWriter::CloseFile()
   {
-    if (!file_ || !file_->IsOpen()) return;
-
-    file_->Write();
-    file_->Close();
+    if (IsFileOpen()) {
+      file_->Write();
+      file_->Close();
+    }
   }
 
 
   void RootFileWriter::Write(EventRecord& er)
   {
     evtrec_ = &er;
+    tree_->Fill();
+  }
+
+
+  bool RootFileWriter::IsFileOpen() const
+  {
+    if (!file_) return false;
+    else return file_->IsOpen();
   }
 
 } // namespace gastpc
