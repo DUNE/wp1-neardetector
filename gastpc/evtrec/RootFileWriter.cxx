@@ -33,8 +33,8 @@ namespace gastpc {
   bool RootFileWriter::OpenFile(const std::string& filename,
                                 const std::string& option)
   {
-    // Close the previous open file, if any
-    if (IsFileOpen()) CloseFile();
+    // Close any previously opened file
+    CloseFile();
 
     // Create new ROOT file. Return false if something did not work.
     file_ = new TFile(filename.c_str(), option.c_str());

@@ -13,9 +13,6 @@
 #include <TFile.h>
 #include <TTree.h>
 
-#include <iostream>
-
-
 
 namespace gastpc {
 
@@ -26,24 +23,32 @@ namespace gastpc {
 
   RootFileReader::~RootFileReader()
   {
+    CloseFile();
   }
 
 
-  void RootFileReader::OpenFile(const std::string& filename)
+  bool RootFileReader::OpenFile(const std::string& filename)
   {
-    if (file_) delete file_;
+    // Close any previously opened file
+    CloseFile();
 
+    // Create a new ROOT file. Return false if something goes wrong.
     file_ = new TFile(filename.c_str());
+    if (!file_ || file_->IsZombie()) return false;
+
+    // Fetch the EventRecord tree from the file and sync the branch 
+    // address to the transient record
     tree_ = (TTree*) file_->Get("EventRecord");
+    evtrec_ = 0;
     tree_->SetBranchAddress("EventRecord", &evtrec_);
-    std::cout << "RootFileReader::OpenFile" << std::endl;
-    std::cout << tree_->GetEntries() << std::endl;
+
+    return true;
   }
 
 
   void RootFileReader::CloseFile()
   {
-    file_->Close();
+    if (IsFileOpen()) file_->Close();
   }
 
 
@@ -51,6 +56,20 @@ namespace gastpc {
   {
     tree_->GetEntry(i);
     return *evtrec_;
+  }
+
+
+  int RootFileReader::GetNumberOfEntries() const
+  {
+    if (tree_) return tree_->GetEntries();
+    else return 0;
+  }
+
+
+  bool RootFileReader::IsFileOpen() const
+  {
+    if (!file_) return false;
+    else return file_->IsOpen();
   }
 
 } // namespace gastpc
