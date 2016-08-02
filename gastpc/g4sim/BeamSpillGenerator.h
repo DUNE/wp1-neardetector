@@ -17,7 +17,7 @@ class G4GenericMessenger;
 class BeamSpillSource;
 
 
-/// TODO. Add class description
+/// TODO: Class description
 
 class BeamSpillGenerator: public G4VUserPrimaryGeneratorAction
 {
@@ -27,8 +27,11 @@ public:
   /// Destructor
   virtual ~BeamSpillGenerator();
 
+  /// Add a GHEP source to the primary generator.
+  /// (Similar methods could exist for other source types.)
   void AddGHepSource(G4String, G4double);
   
+  ///
   virtual void GeneratePrimaries(G4Event*);
 
 private:

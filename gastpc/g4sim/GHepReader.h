@@ -12,10 +12,12 @@
 #include "BeamSpillSource.h"
 #include <G4String.hh>
 
+namespace genie { class NtpMCEventRecord; }
 class TChain;
 
-namespace genie { class NtpMCEventRecord; }
 
+
+/// TODO: Class description
 
 class GHepReader: public BeamSpillSource
 {
@@ -25,18 +27,17 @@ public:
   /// Destructor
   virtual ~GHepReader();
 
-  virtual void FillG4Event(G4Event*);
+  virtual void GeneratePrimaryVertices(G4Event*);
 
 private:
   void Initialize(const G4String&);
 
 private:
-  TChain* ifiles_;
-  genie::NtpMCEventRecord* mcrec_;
+  TChain* ghep_chain_;   ///< Collection of input ghep files
+  G4long num_entries_;   ///< Total number of entries in chain
+  G4long current_entry_; ///< Last entry number we've read from the source
 
-  G4int max_entries_;
-  G4int current_entry_;
-
+  genie::NtpMCEventRecord* gmcrec_;
 };
 
 #endif

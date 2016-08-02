@@ -9,21 +9,36 @@
 #ifndef GASTPC_BEAM_SPILL_SOURCE_H
 #define GASTPC_BEAM_SPILL_SOURCE_H
 
+class LBNFBeamTimeDistribution;
 class G4Event;
 
 
 class BeamSpillSource
 {
 public:
-  /// Constructor
-  BeamSpillSource();
+  /// Default constructor
+  BeamSpillSource(double mean=0.);
   /// Destructor
   virtual ~BeamSpillSource();
 
-  virtual void FillG4Event(G4Event*) = 0;
+  /// Method invoked in the primary generator at the beggining of each event
+  virtual void GeneratePrimaryVertices(G4Event*) = 0;
+
+  /// Set the mean number of interactions per spill from this source
+  void SetMean(double);
+  /// Return the mean number of interactions per spill due to this source
+  double GetMean() const;
+
+protected:
+  int NumberOfInteractions() const;
+  double TimeOffset() const;
+
+protected:
+  double mean_; ///< Mean number of interactions per spill from this source
+  LBNFBeamTimeDistribution* time_pdf_; ///< Spill time distribution for LBNF
 };
 
-inline BeamSpillSource::BeamSpillSource() {}
-inline BeamSpillSource::~BeamSpillSource() {}
+inline void BeamSpillSource::SetMean(double m) { mean_ = m; }
+inline double BeamSpillSource::GetMean() const { return mean_; }
 
 #endif
