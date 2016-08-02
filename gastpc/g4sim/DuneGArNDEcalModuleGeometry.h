@@ -11,7 +11,10 @@
 
 #include "BaseGeometry.h"
 #include <G4Types.hh>
+#include <G4String.hh>
 
+
+/// TODO: Class description
 
 class DuneGArNDEcalModuleGeometry: public BaseGeometry
 {
@@ -30,10 +33,14 @@ public:
                                      G4double abs_thickness, 
                                      G4double scint_thickness);
   
+  void SetUniqueName(const G4String&);
+
 private:
   void DefineVolumes();
 
 private:
+  G4String unique_name_;
+
   G4double width_;  ///< Width of ECAL module
   G4double height_; ///< Height of ECAL module
   G4double depth_;  ///< Depth of ECAL module
@@ -43,15 +50,20 @@ private:
   G4double scint_thickness_; ///< Thickness of scintillator layers
 };
 
+// Inline definitions //////////////////////////////////////
+
+inline void DuneGArNDEcalModuleGeometry::SetUniqueName(const G4String& name)
+  { unique_name_ = name; }
+
 inline G4double DuneGArNDEcalModuleGeometry::GetModuleWidth() const
-{ return width_; }
+  { return width_; }
 inline G4double DuneGArNDEcalModuleGeometry::GetModuleHeight() const
-{ return height_; }
+  { return height_; }
 inline G4double DuneGArNDEcalModuleGeometry::GetModuleDepth() const
-{ return depth_; }
+  { return depth_; }
 
 inline G4double DuneGArNDEcalModuleGeometry::CalculateThickness(
   G4int num_layers, G4double abs_thickness, G4double scint_thickness)
-{ return (num_layers * scint_thickness + (num_layers-1) * abs_thickness); }
+  { return (num_layers * scint_thickness + (num_layers-1) * abs_thickness); }
 
 #endif

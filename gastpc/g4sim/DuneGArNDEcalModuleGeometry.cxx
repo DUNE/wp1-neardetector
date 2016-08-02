@@ -23,7 +23,7 @@
 DuneGArNDEcalModuleGeometry::DuneGArNDEcalModuleGeometry(
   G4double width, G4double height, 
   G4int num_layers, G4double abs_thickness, G4double scint_thickness):
-  BaseGeometry(),
+  BaseGeometry(), unique_name_("ECAL_MODULE"),
   width_(width), height_(height), num_layers_(num_layers),
   abs_thickness_(abs_thickness), scint_thickness_(scint_thickness)
 {
@@ -42,12 +42,12 @@ void DuneGArNDEcalModuleGeometry::DefineVolumes()
   // ECAL MODULE -- ENVELOPE ///////////////////////////////
 
   G4Box* ecal_module_solid_vol =
-    new G4Box("ECAL_MODULE", width_/2., height_/2., depth_/2.);
+    new G4Box(unique_name_, width_/2., height_/2., depth_/2.);
 
   G4Material* air = G4NistManager::Instance()->FindOrBuildMaterial("G4_AIR");
 
   G4LogicalVolume* ecal_module_logic_vol = 
-    new G4LogicalVolume(ecal_module_solid_vol, air, "ECAL_MODULE");
+    new G4LogicalVolume(ecal_module_solid_vol, air, unique_name_);
   this->SetLogicalVolume(ecal_module_logic_vol);
 
   // SCINTILLATOR LAYER ////////////////////////////////////
@@ -61,9 +61,10 @@ void DuneGArNDEcalModuleGeometry::DefineVolumes()
   G4LogicalVolume* scint_layer_logic_vol = 
     new G4LogicalVolume(scint_layer_solid_vol, plastic_scint, "ECAL_SCINT");
 
-  // TrackingSD* tsd = new TrackingSD("/DUNEGARND/ECAL_SCINT", "");
-  // scint_layer_logic_vol->SetSensitiveDetector(tsd);
-  // G4SDManager::GetSDMpointer()->AddNewDetector(tsd);
+  G4String sdname = "/DUNE/" + unique_name_ + "/ECAL_SCINT";
+  TrackingSD* tsd = new TrackingSD(sdname, "");
+  scint_layer_logic_vol->SetSensitiveDetector(tsd);
+  G4SDManager::GetSDMpointer()->AddNewDetector(tsd);
 
   // ABSORBER LAYER ////////////////////////////////////////
 

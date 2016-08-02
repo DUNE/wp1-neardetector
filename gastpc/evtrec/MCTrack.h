@@ -24,7 +24,7 @@ public:
   /// Default constructor
   MCTrack();
   /// Destructor
-  ~MCTrack();
+  virtual ~MCTrack();
   
   void AddHit(gastpc::MCHit*);
 

@@ -206,6 +206,7 @@ void DuneGArNDDetConstr::DefineCalorimeters()
   DuneGArNDEcalModuleGeometry 
     upstream_ecal_geom(width, height, upstream_ecal_num_layers_,
       upstream_ecal_abs_thickness_, upstream_ecal_scint_thickness_);
+  upstream_ecal_geom.SetUniqueName("UPSTREAM_ECAL");
 
   G4double origin_z = -magnet_yoke_length_/2. + magnet_coil_thickness_ + 
     upstream_ecal_geom.GetModuleDepth()/2.;
@@ -219,6 +220,7 @@ void DuneGArNDDetConstr::DefineCalorimeters()
   DuneGArNDEcalModuleGeometry 
     downstream_ecal_geom(width, height, downstream_ecal_num_layers_,
       downstream_ecal_abs_thickness_, downstream_ecal_scint_thickness_);
+  downstream_ecal_geom.SetUniqueName("DOWNSTREAM_ECAL");
 
   origin_z = magnet_yoke_length_/2. - magnet_coil_thickness_ -
     downstream_ecal_geom.GetModuleDepth()/2.;
@@ -236,6 +238,7 @@ void DuneGArNDDetConstr::DefineCalorimeters()
   DuneGArNDEcalModuleGeometry
     barrel_ecal_geom(width, height, barrel_ecal_num_layers_,
       barrel_ecal_abs_thickness_, barrel_ecal_scint_thickness_);
+  barrel_ecal_geom.SetUniqueName("BARREL_ECAL");
 
   G4RotationMatrix* rot_horz = new G4RotationMatrix();
   rot_horz->rotateY(CLHEP::pi/2.);
