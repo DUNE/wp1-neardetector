@@ -17,38 +17,83 @@
 #include <TFile.h>
 #include <TTree.h>
 
+#include <iostream>
 
-int main() 
+
+
+void PrintUsage()
 {
-  TFile fgenie("whatever.ghep.root");
-  TTree* tgenie = (TTree*) fgenie.Get("gtree");
+  std::cerr << "Usage: ./TestIOGenieRec <input_file>" << std::endl;
+  std::exit(EXIT_FAILURE);
+}
+
+
+void PrintVertexInfo(genie::NtpMCEventRecord* gmcrec) 
+{
+  TLorentzVector* vtx = gmcrec->event->Vertex();
+  std::cout << " - Vertex position: "
+            << " (" << vtx->X() 
+            << ", " << vtx->Y()
+            << ", " << vtx->Z()
+            << ") m" << std::endl;
+}
+
+
+void CreateFile(const std::string& genie_filename,
+                const std::string& output_filename)
+{
+  std::cout << "CreateFile()" << std::endl;
+
+  // Open GENIE ghep file and read the first entry of the event tree
+  TFile genie_file(genie_filename.c_str());
+  TTree* tree_genie = dynamic_cast<TTree*>(genie_file.Get("gtree"));
   genie::NtpMCEventRecord* gmcrec = 0;
-  tgenie->SetBranchAddress("gmcrec", &gmcrec);
+  tree_genie->SetBranchAddress("gmcrec", &gmcrec);
+  tree_genie->GetEntry(0);
 
-  tgenie->GetEntry(0);
+  PrintVertexInfo(gmcrec);
 
-  gastpc::EventRecord evtrec;
+  // Create a GasTPC EventRecord that includes a neutrino interaction
+  // with the above GENIE record
   gastpc::NuInteraction* nuint = new gastpc::NuInteraction();
   nuint->SetGenieRecord(gmcrec);
+  gastpc::EventRecord evtrec;
   evtrec.Add(nuint);
+
+  // Write the event record in an output file
   gastpc::RootFileWriter wr;
-
-  std::string filename = "test_output.root";
-
-  wr.OpenFile(filename);
+  wr.OpenFile(output_filename);
   wr.Write(evtrec);
   wr.CloseFile();
+}
 
-  gastpc::RootFileReader rd;
-  rd.OpenFile(filename);
 
-  gastpc::EventRecord evtrec2 = rd.Read(0);
-  std::vector<gastpc::NuInteraction*> nuints = evtrec2.GetNuInteractions();
-  genie::NtpMCEventRecord* gmcrec2 = nuints[0]->GetGenieRecord();
-  genie::EventRecord* record = gmcrec2->event;
-  TLorentzVector* vtx = record->Vertex();
+void ReadFile(const std::string& filename)
+{
+  std::cout << "ReadFile()" << std::endl;
 
-  std::cout << "Vertex: " << vtx->Y() << std::endl;
+  gastpc::RootFileReader r;
+  r.OpenFile(filename);
+
+  gastpc::EventRecord evtrec = r.Read(0);
+  genie::NtpMCEventRecord* gmcrec = 
+    (evtrec.GetNuInteractions())[0]->GetGenieRecord();
+
+  PrintVertexInfo(gmcrec);
+}
+
+
+int main(int argc, char* argv[])
+{
+  if (argc < 2) PrintUsage();
+
+  // Let's assume that the second parameter is indeed the name
+  // of an input GENIE file
+  std::string genie_filename(argv[1]);
+  std::string output_filename("test_output.root");
+
+  CreateFile(genie_filename, output_filename);
+  ReadFile(output_filename);
 
   return EXIT_SUCCESS;
 }
