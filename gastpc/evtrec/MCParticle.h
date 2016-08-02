@@ -76,7 +76,7 @@ public:
   ///
   void SetMother(gastpc::MCParticle*);
   ///
-  gastpc::MCParticle* GetMother();
+  gastpc::MCParticle* GetMother() const;
   ///
   void AddDaughter(gastpc::MCParticle*);
   ///
@@ -116,8 +116,10 @@ inline int  gastpc::MCParticle::GetMCID() const { return mcid_; }
 inline void gastpc::MCParticle::SetPDGCode(int pdg) { pdg_code_ = pdg; }
 inline int  gastpc::MCParticle::GetPDGCode() const { return pdg_code_; }
 
-inline gastpc::MCParticle* gastpc::MCParticle::GetMother() { return mother_; }
-inline void gastpc::MCParticle::SetMother(gastpc::MCParticle* p) { mother_ = p; }
+inline gastpc::MCParticle* gastpc::MCParticle::GetMother() const 
+  { return mother_; }
+inline void gastpc::MCParticle::SetMother(gastpc::MCParticle* p) 
+  { mother_ = p; }
 
 inline void gastpc::MCParticle::AddDaughter(gastpc::MCParticle* p)
   { daughters_.push_back(p); }

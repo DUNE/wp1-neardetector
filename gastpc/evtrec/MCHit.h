@@ -26,25 +26,25 @@ public:
   /// Destructor
   virtual ~MCHit();
 
-  /// Return particle associated to this hit
-  const gastpc::MCParticle& GetParticle() const;
   /// Set particle that generated the hit
   void SetParticle(gastpc::MCParticle*);
+  /// Return particle associated to this hit
+  gastpc::MCParticle* GetParticle() const;
 
   ///
   void SetAmplitude(double);
   ///
   double GetAmplitude() const;
 
-  ///
+  /// Set position and time associated to this hit
   void SetXYZT(double, double, double, double);
-  ///
+  /// Return hit's position and time
   const TLorentzVector& GetXYZT() const;
 
 private:
-  double amplitude_;               ///< Hit signal amplitude (e.g. edep)
-  TLorentzVector xyzt_;            ///< Hit position and time
-  gastpc::MCParticle* mcparticle_; ///< Pointer to associated particle
+  double amplitude_;        ///< Hit signal amplitude (e.g. edep)
+  TLorentzVector xyzt_;     ///< Hit position and time
+  gastpc::MCParticle* mcp_; ///< Pointer to associated particle
 
   ClassDef(gastpc::MCHit, 1)
 };
@@ -54,13 +54,9 @@ private:
 inline void gastpc::MCHit::SetAmplitude(double a) { amplitude_ = a; }
 inline double gastpc::MCHit::GetAmplitude() const { return amplitude_; }
 
-inline void gastpc::MCHit::SetParticle(gastpc::MCParticle* p) 
-  { mcparticle_ = p; }
-inline const gastpc::MCParticle& gastpc::MCHit::GetParticle() const 
-  { return *mcparticle_; } 
+inline void gastpc::MCHit::SetParticle(gastpc::MCParticle* p) { mcp_ = p; }
+inline gastpc::MCParticle* gastpc::MCHit::GetParticle() const { return mcp_; } 
 
-inline void gastpc::MCHit::SetXYZT(double x, double y, double z, double t)
-  { xyzt_.SetXYZT(x,y,z,t); }
 inline const TLorentzVector& gastpc::MCHit::GetXYZT() const { return xyzt_; } 
 
 #endif

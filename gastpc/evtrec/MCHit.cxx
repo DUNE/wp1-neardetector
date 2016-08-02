@@ -14,7 +14,7 @@ ClassImp(gastpc::MCHit);
 namespace gastpc {
 
   MCHit::MCHit(): 
-    amplitude_(0.), xyzt_(TLorentzVector()), mcparticle_(0)
+    amplitude_(0.), xyzt_(TLorentzVector()), mcp_(0)
   {
   }
 
@@ -23,5 +23,10 @@ namespace gastpc {
   {
   }
 
-} // namespace gastpc
 
+  void MCHit::SetXYZT(double x, double y, double z, double t)
+  {
+    xyzt_.SetXYZT(x, y, z, t);
+  }
+
+} // namespace gastpc
