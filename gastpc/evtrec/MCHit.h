@@ -55,7 +55,7 @@ inline void gastpc::MCHit::SetAmplitude(double a) { amplitude_ = a; }
 inline double gastpc::MCHit::GetAmplitude() const { return amplitude_; }
 
 inline void gastpc::MCHit::SetParticle(gastpc::MCParticle* p) 
-  { mcparticle_ = p; };
+  { mcparticle_ = p; }
 inline const gastpc::MCParticle& gastpc::MCHit::GetParticle() const 
   { return *mcparticle_; } 
 
