@@ -1,8 +1,18 @@
 ### CMakeLists.cxx -- gastpc/EvtRec
 
-file(GLOB EvtRec_SRCS "*.cxx")
-file(GLOB EvtRec_HDRS "*.h")
-list(REMOVE_ITEM EvtRec_HDRS ${CMAKE_CURRENT_SOURCE_DIR}/LinkDef.h)
+set(EvtRec_HDRS   EventRecord.h
+                  NuInteraction.h
+                  MCParticle.h
+                  MCTrack.h
+                  MCHit.h )
+
+set(EvtRec_SRCS   EventRecord.cxx
+                  NuInteraction.cxx
+                  MCParticle.cxx
+                  MCTrack.cxx
+                  MCHit.cxx 
+                  RootFileReader.cxx 
+                  RootFileWriter.cxx )
 
 root_generate_dictionary(G__EvtRec ${EvtRec_HDRS} LINKDEF LinkDef.h)
 
