@@ -26,6 +26,11 @@ public:
   /// Destructor
   virtual ~MCParticle();
 
+  ///
+  void SetPrimary(bool);
+  ///
+  bool IsPrimary() const;
+
   /// Set Monte Carlo ID number for the particle
   void SetMCID(int);
   /// Return Monte Carlo ID for the particle
@@ -101,6 +106,9 @@ private:
 };
 
 // Inline definitions //////////////////////////////////////
+
+inline void gastpc::MCParticle::SetPrimary(bool b) { primary_ = b; }
+inline bool gastpc::MCParticle::IsPrimary() const { return primary_; }
 
 inline void gastpc::MCParticle::SetMCID(int id) { mcid_ = id; }
 inline int  gastpc::MCParticle::GetMCID() const { return mcid_; }
