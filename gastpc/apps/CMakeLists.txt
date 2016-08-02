@@ -29,5 +29,15 @@ target_link_libraries(TestIOEvtRec GasTPCEvtRec
 
 ##############################
 
-install(TARGETS VertexStats GasTPCG4Sim TestIOEvtRec
+add_executable(TestIOGenieRec TestIOGenieRec.cxx)
+
+target_link_libraries(TestIOGenieRec GasTPCEvtRec
+                                     ${ROOT_LIBRARIES}
+                                     ${GENIE_LIBRARIES}
+                                     ${Log4cpp_LIBRARIES}
+                                     ${LIBXML2_LIBRARIES})
+
+##############################
+
+install(TARGETS VertexStats GasTPCG4Sim TestIOEvtRec TestIOGenieRec
         RUNTIME DESTINATION bin)

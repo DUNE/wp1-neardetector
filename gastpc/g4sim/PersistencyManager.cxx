@@ -159,6 +159,16 @@ void PersistencyManager::StoreTrajectories(G4TrajectoryContainer* tc,
 }
 
 
+// void PersistencyManager::StoreDetectorHits(G4HCofThisEvent* hce,
+//                                            gastpc::EventRecord& evtrec)
+// {
+//   if (!hce) return;
+
+//   G4SDManager* sdmgr = G4SDManager::GetSDMpointer();
+//   G4HCtable* 
+// }
+
+
 G4bool PersistencyManager::Store(const G4VPhysicalVolume*)
 {
   return true;

@@ -14,7 +14,10 @@
 namespace gastpc { class EventRecord; }
 namespace gastpc { class MCParticle; }
 namespace gastpc { class MCTrack; }
+namespace gastpc { class NuInteraction; }
 
+
+/// TODO: Class description
 
 class gastpc::EventRecord
 {
@@ -26,13 +29,16 @@ public:
 
   void Add(gastpc::MCParticle*);
   void Add(gastpc::MCTrack*);
+  void Add(gastpc::NuInteraction*);
 
   const std::vector<gastpc::MCParticle*>& GetMCParticles() const;
   const std::vector<gastpc::MCTrack*>& GetMCTracks() const;
+  const std::vector<gastpc::NuInteraction*>& GetNuInteractions() const;
 
 private:
   std::vector<gastpc::MCParticle*> mcparticles_;
   std::vector<gastpc::MCTrack*> mctracks_;
+  std::vector<gastpc::NuInteraction*> nuints_;
 
   ClassDef(gastpc::EventRecord, 1)
 };

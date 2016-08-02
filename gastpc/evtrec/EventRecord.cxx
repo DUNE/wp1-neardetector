@@ -8,6 +8,7 @@
 
 #include "EventRecord.h"
 
+#include "NuInteraction.h"
 #include "MCParticle.h"
 #include "MCTrack.h"
 
@@ -39,6 +40,12 @@ namespace gastpc {
   }
 
 
+  void EventRecord::Add(NuInteraction* p)
+  {
+    nuints_.push_back(p);
+  }
+
+
   const std::vector<MCParticle*>& EventRecord::GetMCParticles() const
   {
     return mcparticles_;
@@ -48,6 +55,12 @@ namespace gastpc {
   const std::vector<MCTrack*>& EventRecord::GetMCTracks() const
   {
     return mctracks_;
+  }
+
+
+  const std::vector<NuInteraction*>& EventRecord::GetNuInteractions() const
+  {
+    return nuints_;
   }
 
 } // namespace gastpc
