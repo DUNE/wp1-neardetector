@@ -70,7 +70,7 @@ void DuneGArNDVesselGeometry::DefineVolumes()
   new G4PVPlacement(0, G4ThreeVector(), tpc_logic_vol, "TPC", gas_logic_vol, 
     false, 0, true);
 
-  TrackingSD* tsd = new TrackingSD("/DUNEGARND/TPC", "");
+  TrackingSD* tsd = new TrackingSD("/DUNEGARND/TPC");
   tpc_logic_vol->SetSensitiveDetector(tsd);
   G4SDManager::GetSDMpointer()->AddNewDetector(tsd);
 

@@ -10,9 +10,10 @@
 
 #include "BeamSpillSource.h"
 #include "GHepReader.h"
+#include "EventGenerationInfo.h"
 
 #include <G4GenericMessenger.hh>
-
+#include <G4Event.hh>
 
 
 BeamSpillGenerator::BeamSpillGenerator()
@@ -41,5 +42,6 @@ void BeamSpillGenerator::AddGHepSource(G4String path, G4double mean)
 
 void BeamSpillGenerator::GeneratePrimaries(G4Event* event)
 {
+  event->SetUserInformation(new EventGenerationInfo());
   for (BeamSpillSource* s: sources_) s->GeneratePrimaryVertices(event);
 }

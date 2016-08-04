@@ -26,10 +26,11 @@ public:
   /// Destructor
   virtual ~MCTrack();
   
-  void AddHit(gastpc::MCHit*);
-
+  /// Add a hit to the track
+  void Add(gastpc::MCHit*);
+  /// Return the hits forming this track
   const std::vector<gastpc::MCHit*>& GetHits() const;
-
+  /// Drop all hits in the track
   void ClearHits();
 
   double GetEnergy() const;
@@ -38,20 +39,34 @@ public:
   double GetLenght() const;
   void SetLength(double);
 
+  void SetLabel(const std::string&);
+  const std::string& GetLabel() const;
+
+  void SetParticle(gastpc::MCParticle*);
+  gastpc::MCParticle* GetParticle() const;
+
 private:
   double energy_; ///< Total energy of the track
   double length_; ///< Track length
 
+  std::string label_;
+
   std::vector<gastpc::MCHit*> mchits_; ///< Hit collection
 
-  gastpc::MCParticle* mcparticle_; ///< Pointer to associated particle
+  gastpc::MCParticle* mcp_; ///< Pointer to associated particle
 
   ClassDef(gastpc::MCTrack, 1)
 };
+
+// Inline definitions ////////////////////////////
 
 inline void gastpc::MCTrack::SetEnergy(double e) { energy_ = e; }
 inline double gastpc::MCTrack::GetEnergy() const { return energy_; }
 inline void gastpc::MCTrack::SetLength(double l) { length_ = l; }
 inline double gastpc::MCTrack::GetLenght() const { return length_; }
+inline void gastpc::MCTrack::SetLabel(const std::string& l) { label_ = l; }
+inline const std::string& gastpc::MCTrack::GetLabel() const { return label_; }
+inline void gastpc::MCTrack::SetParticle(gastpc::MCParticle* p) { mcp_ = p; }
+inline gastpc::MCParticle* gastpc::MCTrack::GetParticle() const { return mcp_; }
 
 #endif

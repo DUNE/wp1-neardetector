@@ -12,11 +12,10 @@
 
 
 
-TrackingSD::TrackingSD(const G4String& name,
-                       const G4String& collection_name):
-  G4VSensitiveDetector(name), hits_collection_(0)
+TrackingSD::TrackingSD(const G4String& detector_name):
+  G4VSensitiveDetector(detector_name), hc_(0)
 {
-  collectionName.insert(collection_name);
+  collectionName.insert(HitCollectionUniqueName());
 }
 
 
@@ -27,11 +26,10 @@ TrackingSD::~TrackingSD()
 
 void TrackingSD::Initialize(G4HCofThisEvent* hce)
 {
-  hits_collection_ = 
-    new TrackingHitsCollection(SensitiveDetectorName, collectionName[0]);
-
-  G4int hcid = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
-  hce->AddHitsCollection(hcid, hits_collection_);
+  hc_ = new TrackingHitsCollection(this->GetName(),this->GetCollectionName(0));
+  G4int hcid = G4SDManager::GetSDMpointer()->
+    GetCollectionID(this->GetName() + "/" + this->GetCollectionName(0));
+  hce->AddHitsCollection(hcid, hc_);
 }
 
 
@@ -49,7 +47,7 @@ G4bool TrackingSD::ProcessHits(G4Step* step, G4TouchableHistory*)
                           step->GetPostStepPoint()->GetPosition().z(),
                           step->GetTrack()->GetGlobalTime());
 
-  hits_collection_->insert(hit);
+  hc_->insert(hit);
 
   return true;
 }

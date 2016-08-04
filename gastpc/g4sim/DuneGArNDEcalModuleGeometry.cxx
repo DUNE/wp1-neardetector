@@ -62,7 +62,7 @@ void DuneGArNDEcalModuleGeometry::DefineVolumes()
     new G4LogicalVolume(scint_layer_solid_vol, plastic_scint, "ECAL_SCINT");
 
   G4String sdname = "/DUNE/" + unique_name_ + "/ECAL_SCINT";
-  TrackingSD* tsd = new TrackingSD(sdname, "");
+  TrackingSD* tsd = new TrackingSD(sdname);
   scint_layer_logic_vol->SetSensitiveDetector(tsd);
   G4SDManager::GetSDMpointer()->AddNewDetector(tsd);
 

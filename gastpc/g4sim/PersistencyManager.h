@@ -16,11 +16,14 @@
 namespace gastpc { class RootFileWriter; }
 namespace gastpc { class EventRecord; }
 namespace gastpc { class MCParticle; }
+namespace gastpc { class MCTrack; }
 class G4GenericMessenger;
 class G4Event;
 class G4Run;
 class G4VPhysicalVolume;
 class G4TrajectoryContainer;
+class G4HCofThisEvent;
+class G4VHitsCollection;
 
 
 /// TODO: Class description
@@ -54,7 +57,9 @@ private:
   ///
   virtual G4bool Store(const G4VPhysicalVolume*);
 
-  void StoreTrajectories(G4TrajectoryContainer*, gastpc::EventRecord&);
+  void ProcessTrajectories(G4TrajectoryContainer*, gastpc::EventRecord&);
+  void ProcessDetectorHits(G4HCofThisEvent*, gastpc::EventRecord&);
+  void ProcessTrackingHits(G4VHitsCollection*, gastpc::EventRecord&);
 
   virtual G4bool Retrieve(G4Event*&);
   virtual G4bool Retrieve(G4Run*&);
@@ -67,18 +72,23 @@ private:
 
   G4bool store_current_event_;
 
-  std::map<int, gastpc::MCParticle*> mcparticles_map_;
+  std::map<G4int, gastpc::MCParticle*> mcparticles_map_;
+  std::map<G4int, gastpc::MCTrack*> mctracks_map_;
 };
 
 // Inline definitions //////////////////////////////////////
 
-inline G4bool PersistencyManager::Retrieve(G4Event*&) { return false; }
-inline G4bool PersistencyManager::Retrieve(G4Run*&) { return false; }
-inline G4bool PersistencyManager::Retrieve(G4VPhysicalVolume*&) { return false; }
-
-inline G4bool PersistencyManager::Store(const G4Run*) { return false; }
-
 inline void PersistencyManager::StoreCurrentEvent(G4bool b) 
-  { store_current_event_ = b; }
+{ store_current_event_ = b; }
+
+inline G4bool PersistencyManager::Store(const G4Run*) 
+{ return false; }
+
+inline G4bool PersistencyManager::Retrieve(G4Run*&) 
+{ return false; }
+inline G4bool PersistencyManager::Retrieve(G4Event*&) 
+{ return false; }
+inline G4bool PersistencyManager::Retrieve(G4VPhysicalVolume*&) 
+{ return false; }
 
 #endif

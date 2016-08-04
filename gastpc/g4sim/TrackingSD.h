@@ -10,22 +10,29 @@
 #define TRACKING_SD_H
 
 #include <G4VSensitiveDetector.hh>
+#include <G4String.hh>
 #include "TrackingHit.h"
 
 
 class TrackingSD: public G4VSensitiveDetector
 {
 public:
-  TrackingSD(const G4String& name,
-             const G4String& collection_name);
+  /// Constructor
+  TrackingSD(const G4String& detector_name);
+  /// Destructor
   virtual ~TrackingSD();
   
   virtual void Initialize(G4HCofThisEvent*);
   virtual G4bool ProcessHits(G4Step*, G4TouchableHistory*);
   virtual void EndOfEvent(G4HCofThisEvent*);
 
+  static G4String HitCollectionUniqueName();
+
 private:
-  TrackingHitsCollection* hits_collection_;
+  TrackingHitsCollection* hc_;
 };
+
+inline G4String TrackingSD::HitCollectionUniqueName() 
+  { return G4String("TrackingHitsCollection"); }
 
 #endif  

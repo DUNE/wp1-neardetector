@@ -15,7 +15,7 @@ ClassImp(gastpc::MCTrack);
 namespace gastpc {
 
   MCTrack::MCTrack(): 
-    energy_(0.), length_(0.)
+    energy_(0.), length_(0.), label_(""), mcp_(0)
   {
   }
 
@@ -25,7 +25,7 @@ namespace gastpc {
   }
 
 
-  void MCTrack::AddHit(MCHit* hit)
+  void MCTrack::Add(MCHit* hit)
   {
     mchits_.push_back(hit);
   }
