@@ -29,6 +29,8 @@ RunManager::RunManager(const std::string& detector_tag,
                        const std::string& generator_tag): 
   G4RunManager(), msg_(0)
 {
+  DefineCommands();
+
   G4VModularPhysicsList* physlist = new QGSP_BERT();
   physlist->RegisterPhysics(new G4StepLimiterPhysics());
   this->SetUserInitialization(physlist);
