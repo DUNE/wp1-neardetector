@@ -16,7 +16,7 @@
 
 
 BeamSpillSource::BeamSpillSource(double mean): 
-  mean_(0.), time_pdf_(0)
+  mean_(mean), time_pdf_(0)
 {
   time_pdf_ = new LBNFBeamTimeDistribution();
 }

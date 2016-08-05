@@ -3,7 +3,7 @@
 /// \brief  
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
-/// \date    Creation: 7 June 2016
+/// \date    Creation: 6 June 2016
 // -------------------------------------------------------------------
 
 #ifndef GASTPC_BEAM_SPILL_SOURCE_H
@@ -12,6 +12,8 @@
 class LBNFBeamTimeDistribution;
 class G4Event;
 
+
+/// TODO: Class description
 
 class BeamSpillSource
 {
