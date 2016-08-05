@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   LBNFBeamTimeDistribution.cxx
-/// \brief  
+/// \brief  LBNF beam spill time distribution
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 6 June 2016
@@ -8,6 +8,7 @@
 
 #include "LBNFBeamTimeDistribution.h"
 
+#include <globals.hh>
 #include <G4SystemOfUnits.hh>
 #include <Randomize.hh>
 
@@ -23,6 +24,8 @@ LBNFBeamTimeDistribution::LBNFBeamTimeDistribution():
   filled_buckets_per_batch_(81),
   disallowed_batch_mask_(6,0) // don't disallow any
 {
+  std::vector<G4double> batch_intensity(6, 1.0); // 6 equal batches
+  CalculateCPDF(batch_intensity);
 }
 
 
@@ -31,57 +34,52 @@ LBNFBeamTimeDistribution::~LBNFBeamTimeDistribution()
 }
 
 
-void LBNFBeamTimeDistribution::CalculateCPDF()
+void LBNFBeamTimeDistribution::CalculateCPDF(const std::vector<G4double>& bi)
 {
   cpdf_batch_.clear();
   G4double sum = 0;
+  size_t nbi = bi.size();
 
-  std::vector<double> batch_intensity(6, 1.0);
-
-  for (size_t i=0; i<batch_intensity.size(); ++i) {
-    sum += batch_intensity[i];
+  for (size_t i=0; i<nbi; ++i) {
+    sum += bi[i];
     cpdf_batch_.push_back(sum);
   }
 
   // normalize to unit probability
-  for (size_t i=0; i < batch_intensity.size(); ++i) {
-    cpdf_batch_[i] /= sum;
-  }
+  for (size_t i=0; i<nbi; ++i) cpdf_batch_[i] /= sum;
 
   // make sure the mask vector keeps up (but never make it smaller)
   // allowing all new batches
-  if ( batch_intensity.size() > disallowed_batch_mask_.size() ) 
-    disallowed_batch_mask_.resize(batch_intensity.size(), 0);
+  if (nbi > disallowed_batch_mask_.size()) 
+    disallowed_batch_mask_.resize(nbi, 0);
 }
 
 
 G4double LBNFBeamTimeDistribution::TimeOffset()
 {
-  // calculate in small to large
+  // We'll calculate the components of the time offset from small to large
 
-  // pick a time within a bucket
+  // First, pick a time within a bucket
   G4double offset = G4RandGauss::shoot(0.0, bucket_time_sigma_);
 
-  // pick a bucket within a batch
-  // assume all ~ buckets constant in batch until we have another model
+  // Second, pick a bucket within a batch
   G4int bucket_num = 
     std::floor(G4RandFlat::shoot(0., filled_buckets_per_batch_));
   offset +=  time_betw_buckets_ * G4double(bucket_num);
 
-  // pick a batch
-  bool   disallowed = true;
+  // Third, pick a batch
+  G4bool disallowed = true;
   size_t ibatch = 0; 
   size_t nbatch = cpdf_batch_.size();
-  double r = 2;
+  G4double r = 2;
   while (disallowed) {
     r = G4RandFlat::shoot();
-    for (ibatch=0; ibatch < nbatch; ++ibatch) {
+    for (ibatch=0; ibatch<nbatch; ++ibatch) 
       if (r <= cpdf_batch_[ibatch]) break;
-    }
     disallowed = (disallowed_batch_mask_[ibatch] != 0);
   }
-  offset += time_betw_buckets_*G4double(buckets_per_batch_)*G4double(ibatch);
+  offset += time_betw_buckets_ * G4double(buckets_per_batch_) * G4double(ibatch);
 
-  // finally the global offset
+  // Finally, add the global offset
   return (offset + global_offset_);
 }
