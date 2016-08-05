@@ -16,6 +16,8 @@
 #include "DefaultTrackingAction.h"
 #include "DefaultSteppingAction.h"
 
+#include <globals.hh>
+#include <G4GenericMessenger.hh>
 #include <G4UImanager.hh>
 #include <G4VModularPhysicsList.hh>
 #include <QGSP_BERT.hh>
@@ -25,7 +27,7 @@
 
 RunManager::RunManager(const std::string& detector_tag,
                        const std::string& generator_tag): 
-  G4RunManager()
+  G4RunManager(), msg_(0)
 {
   G4VModularPhysicsList* physlist = new QGSP_BERT();
   physlist->RegisterPhysics(new G4StepLimiterPhysics());
@@ -60,7 +62,7 @@ void RunManager::ExecuteMacroFile(const G4String& filename)
 }
 
 
-void RunManager::SetRandomSeed(G4int seed) const
+void RunManager::SetRandomSeed(G4int seed)
 {
   if (seed < 0) CLHEP::HepRandom::setTheSeed(time(0));
   else CLHEP::HepRandom::setTheSeed(seed);
@@ -68,11 +70,16 @@ void RunManager::SetRandomSeed(G4int seed) const
 
 
 G4VUserDetectorConstruction* 
-  RunManager::CreateDetectorConstruction(const std::string& /*tag*/)
+  RunManager::CreateDetectorConstruction(const std::string& tag)
 {
-  // if      (tag == "") return (new );
-  // else if (tag == "") return (new );
-  return (new DuneGArNDDetConstr());
+  if      (tag == "DUNE") return (new DuneGArNDDetConstr());
+//  else if (tag == "") return ;
+  else {
+    G4String error_msg =  "Unknown detector construction class: " + tag;
+    G4Exception("RunManager::CreateDetectorConstruction()", "ERROR",
+      FatalException, error_msg);
+    return 0;
+  }
 }
 
 
@@ -82,9 +89,18 @@ G4VUserPrimaryGeneratorAction*
   if      (tag == "BEAM_SPILL") return (new BeamSpillGenerator());
   else if (tag == "PARTICLE_GUN") return (new ParticleGunGenerator());
   else {
-    G4String msg = "User provided an unknown geometry tag: " + tag;
-    G4Exception("CreatePrimaryGenerator()", "RunManager", FatalException, msg);
+    G4String error_msg = "Unknown primary generator class: " + tag;
+    G4Exception("RunManager::CreatePrimaryGenerator()", "ERROR", 
+      FatalException, error_msg);
     return 0;
   }
 }
+
+
+void RunManager::DefineCommands()
+{
+  msg_ = new G4GenericMessenger(this, "/gastpc/manager/");
+  msg_->DeclareMethod("random_seed", &RunManager::SetRandomSeed, "");
+}
+
 

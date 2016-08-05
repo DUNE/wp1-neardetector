@@ -14,8 +14,10 @@
 
 class G4VUserDetectorConstruction;
 class G4VUserPrimaryGeneratorAction;
+class G4GenericMessenger;
 
 
+/// TODO: Class description
 
 class RunManager: public G4RunManager
 {
@@ -33,6 +35,9 @@ public:
   ///
   void ExecuteMacroFile(const G4String&);
 
+  ///
+  void DefineCommands();
+
 private:
   G4VUserDetectorConstruction* CreateDetectorConstruction(const std::string&);
 
@@ -40,7 +45,11 @@ private:
 
   /// Set a seed for the random number generator
   /// If a negative integer is given, the system time is set as seed.
-  void SetRandomSeed(G4int) const;
+  void SetRandomSeed(G4int);
+
+private:
+  G4GenericMessenger* msg_;
+
 };
 
 #endif
