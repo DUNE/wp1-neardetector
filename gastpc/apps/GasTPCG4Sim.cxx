@@ -105,7 +105,7 @@ int main(int argc, char** argv)
   std::cerr << "Initialize()" << std::endl;
 
   RunManager* runmgr = new RunManager(detector_, generator_);
-  //runmgr->ExecuteMacroFile(macro_filename);
+  runmgr->ExecuteMacroFile(cfg_filename_);
   runmgr->Initialize();
 
   std::cerr << "Initialize()" << std::endl;
