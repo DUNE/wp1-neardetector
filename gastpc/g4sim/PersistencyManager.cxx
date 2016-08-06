@@ -40,7 +40,6 @@ PersistencyManager::PersistencyManager():
 
 PersistencyManager::~PersistencyManager()
 {
-  CloseFile();
   delete writer_;
   delete msg_;
 }
