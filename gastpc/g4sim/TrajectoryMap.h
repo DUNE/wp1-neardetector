@@ -6,12 +6,13 @@
 /// \date    Creation: 30 July 2016
 // -------------------------------------------------------------------
 
-#ifndef __TRAJECTORY_MAP__
-#define __TRAJECTORY_MAP__
+#ifndef TRAJECTORY_MAP_H
+#define TRAJECTORY_MAP_H
 
 #include <map>
 class G4VTrajectory;
 
+/// TODO: Class description
 
 class TrajectoryMap
 {
@@ -31,7 +32,7 @@ private:
   ~TrajectoryMap();
 
 private:
-  static std::map<int, G4VTrajectory*> _map;
+  static std::map<int, G4VTrajectory*> map_;
 };
 
 #endif
