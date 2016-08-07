@@ -29,8 +29,8 @@ public:
   virtual G4VPhysicalVolume* Construct();
 
 private:
-  ///
-  //void DefineCommands();
+  /// Define user configuration commands via a generic messenger class
+  void DefineCommands();
 
   ///
   void DefineHall();
@@ -71,6 +71,8 @@ private:
   G4double magnet_coil_height_;    ///< Internal height of magnet coils
   G4double magnet_coil_length_;    ///< Internal length of magnet coils
   G4double magnet_coil_thickness_; ///< Thickness of magnet coils
+
+  G4double magfield_strength_; /// Magnetic field strength
 
   G4VPhysicalVolume* hall_phys_vol_;   ///< Physical volume of near det. hall
   G4VPhysicalVolume* detenv_phys_vol_; ///< Physical volume wrapping the ND

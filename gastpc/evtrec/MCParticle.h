@@ -11,9 +11,11 @@
 
 #include <Rtypes.h>
 #include <TLorentzVector.h>
+#include <iostream>
 #include <string>
 
 namespace gastpc { class MCParticle; }
+namespace gastpc { class NuInteraction; }
 
 
 /// TODO: Class description
@@ -25,6 +27,9 @@ public:
   MCParticle();
   /// Destructor
   virtual ~MCParticle();
+
+  //
+  void Info(std::ostream& s=std::cout) const;
 
   ///
   void SetPrimary(bool);
@@ -82,6 +87,9 @@ public:
   ///
   const std::vector<gastpc::MCParticle*>& GetDaughters() const;
 
+  void SetInteraction(gastpc::NuInteraction*);
+  gastpc::NuInteraction* GetInteraction() const;
+
 private:
   bool primary_; ///< Is this particle a primary?
   
@@ -98,6 +106,8 @@ private:
 
   std::string initial_volume_;
   std::string final_volume_;
+
+  gastpc::NuInteraction* interaction_; ///< Pointer to interaction record
 
   gastpc::MCParticle* mother_; ///< Pointer to mother particle
   std::vector<gastpc::MCParticle*> daughters_;
@@ -149,5 +159,12 @@ inline void gastpc::MCParticle::SetFinalVolume(const std::string& name)
   { final_volume_ = name; }
 inline const std::string& gastpc::MCParticle::GetFinalVolume() const
   { return final_volume_; }
+
+inline void gastpc::MCParticle::SetInteraction(gastpc::NuInteraction* i)
+  { interaction_ = i; }
+inline gastpc::NuInteraction* gastpc::MCParticle::GetInteraction() const
+ { return interaction_; }
+
+std::ostream& operator << (std::ostream&, const gastpc::MCParticle&);
 
 #endif

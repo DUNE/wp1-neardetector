@@ -60,6 +60,7 @@ private:
   void ProcessTrajectories(G4TrajectoryContainer*, gastpc::EventRecord&);
   void ProcessDetectorHits(G4HCofThisEvent*, gastpc::EventRecord&);
   void ProcessTrackingHits(G4VHitsCollection*, gastpc::EventRecord&);
+  void ProcessPrimaryGenerationInfo(const G4Event*, gastpc::EventRecord&);
 
   virtual G4bool Retrieve(G4Event*&);
   virtual G4bool Retrieve(G4Run*&);

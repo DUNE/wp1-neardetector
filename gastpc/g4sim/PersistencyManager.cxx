@@ -12,15 +12,22 @@
 #include "TrajectoryMap.h"
 #include "TrackingHit.h"
 #include "TrackingSD.h"
+#include "EventGenerationInfo.h"
+#include "PrimaryParticleInfo.h"
 
 #include "RootFileWriter.h"
 #include "EventRecord.h"
+#include "NuInteraction.h"
 #include "MCParticle.h"
 #include "MCTrack.h"
 #include "MCHit.h"
 
+#include <Ntuple/NtpMCEventRecord.h>
+
 #include <G4GenericMessenger.hh>
 #include <G4Event.hh>
+#include <G4PrimaryVertex.hh>
+#include <G4PrimaryParticle.hh>
 #include <G4TrajectoryContainer.hh>
 #include <G4ParticleDefinition.hh>
 #include <G4SDManager.hh>
@@ -87,10 +94,17 @@ G4bool PersistencyManager::Store(const G4Event* event)
 
   gastpc::EventRecord evtrec;
 
+  G4cout << "Here" << G4endl;
+
   ProcessTrajectories(event->GetTrajectoryContainer(), evtrec);
+  ProcessPrimaryGenerationInfo(event, evtrec);
   ProcessDetectorHits(event->GetHCofThisEvent(), evtrec);
 
+  G4cout << "Here" << G4endl;
+
   writer_->Write(evtrec);
+
+  G4cout << "Here" << G4endl;
 
   // Get ready for the following event
   TrajectoryMap::Clear();
@@ -98,6 +112,52 @@ G4bool PersistencyManager::Store(const G4Event* event)
   mctracks_map_.clear();
 
   return true;
+}
+
+
+void PersistencyManager::ProcessPrimaryGenerationInfo(const G4Event* event,
+                                                      gastpc::EventRecord& er)
+{
+  EventGenerationInfo* eg_info =
+    dynamic_cast<EventGenerationInfo*>(event->GetUserInformation());
+
+  std::vector<gastpc::NuInteraction*> nuints;
+  G4int mcid = -1;
+
+  for (genie::NtpMCEventRecord* gmcrec: eg_info->GetEntries()) {
+
+    ++mcid;
+
+    gastpc::NuInteraction* nuint = new gastpc::NuInteraction();
+    nuint->SetGenieRecord(gmcrec);
+    nuint->SetMCID(mcid);
+    er.Add(nuint);
+    nuints.push_back(nuint);
+  }
+
+  for (G4int i=0; i<event->GetNumberOfPrimaryVertex(); ++i) {
+
+    G4PrimaryVertex* vertex = event->GetPrimaryVertex(i);
+
+    for (G4int j=0; j<vertex->GetNumberOfParticle(); ++j) {
+
+      G4PrimaryParticle* particle = vertex->GetPrimary(j);
+      auto result = mcparticles_map_.find(particle->GetTrackID());
+      if (result != mcparticles_map_.end()) {
+        PrimaryParticleInfo* pp_info =
+          dynamic_cast<PrimaryParticleInfo*>(particle->GetUserInformation());
+        gastpc::MCParticle* mcp = result->second;
+        mcp->SetInteraction(nuints[pp_info->GetInteractionID()]);
+        nuints[pp_info->GetInteractionID()]->AddParticle(mcp);
+      }
+      else {
+        // We seem to have found a primary particle that didn't make it
+        // to the tracking stage
+        G4cerr << "Something went wrong" << G4endl;
+        continue;
+      }
+    }
+  }
 }
 
 
@@ -128,7 +188,7 @@ void PersistencyManager::ProcessTrajectories(G4TrajectoryContainer* tc,
     mcpart->SetFinalXYZT(xyz.x(), xyz.y(), xyz.z(), time);
 
     mcpart->SetInitialVolume(trj->GetInitialVolume());
-    mcpart->SetFinalVolume(trj->GetDecayVolume());
+    mcpart->SetFinalVolume(trj->GetFinalVolume());
 
     G4double mass = trj->GetParticleDefinition()->GetPDGMass();
     G4ThreeVector mom = trj->GetInitialMomentum();

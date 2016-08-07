@@ -13,6 +13,7 @@
 #include "ParticleGunGenerator.h"
 #include "PersistencyManager.h"
 #include "DefaultRunAction.h"
+#include "DefaultEventAction.h"
 #include "DefaultTrackingAction.h"
 #include "DefaultSteppingAction.h"
 
@@ -40,6 +41,7 @@ RunManager::RunManager(const std::string& detector_tag,
   this->SetUserAction(CreatePrimaryGenerator(generator_tag));
 
   this->SetUserAction(new DefaultRunAction());
+  this->SetUserAction(new DefaultEventAction());
   this->SetUserAction(new DefaultTrackingAction());
   this->SetUserAction(new DefaultSteppingAction());
 
@@ -48,7 +50,12 @@ RunManager::RunManager(const std::string& detector_tag,
 
 
 RunManager::~RunManager()
-{}
+{
+  PersistencyManager* current = dynamic_cast<PersistencyManager*>
+    (G4VPersistencyManager::GetPersistencyManager());
+  current->CloseFile();
+
+}
 
 
 void RunManager::Initialize()
@@ -66,6 +73,7 @@ void RunManager::ExecuteMacroFile(const G4String& filename)
 
 void RunManager::SetRandomSeed(G4int seed)
 {
+  G4cerr << "RunManager::SetRandomSeed(): " << seed << G4endl;
   if (seed < 0) CLHEP::HepRandom::setTheSeed(time(0));
   else CLHEP::HepRandom::setTheSeed(seed);
 }
@@ -74,8 +82,7 @@ void RunManager::SetRandomSeed(G4int seed)
 G4VUserDetectorConstruction* 
   RunManager::CreateDetectorConstruction(const std::string& tag)
 {
-  if      (tag == "DUNE") return (new DuneGArNDDetConstr());
-//  else if (tag == "") return ;
+  if (tag == "DUNE") return (new DuneGArNDDetConstr());
   else {
     G4String error_msg =  "Unknown detector construction class: " + tag;
     G4Exception("RunManager::CreateDetectorConstruction()", "ERROR",

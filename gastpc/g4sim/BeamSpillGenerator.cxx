@@ -33,8 +33,6 @@ BeamSpillGenerator::~BeamSpillGenerator()
 
 void BeamSpillGenerator::AddGHepSource(G4String path, G4double mean)
 {
-  // This method adds a GHEP source to the generator.
-  // (Similar methods)
   GHepReader* ghep_source = new GHepReader(path, mean);
   sources_.push_back(ghep_source);
 }

@@ -18,7 +18,7 @@ namespace gastpc {
     primary_(false), mcid_(-1), pdg_code_(0), 
     initial_xyzt_(TLorentzVector()), final_xyzt_(TLorentzVector()),
     initial_4P_(TLorentzVector()), final_4P_(TLorentzVector()),
-    mother_(0)
+    interaction_(0), mother_(0)
   {
   }
 
@@ -52,4 +52,19 @@ namespace gastpc {
   }
 
 
+  void MCParticle::Info(std::ostream& os) const 
+  {
+    os << "MCParticle::Info()" << std::endl;
+    os << " - MC ID: " << this->GetMCID() << std::endl;
+    os << " - PDG code: " << this->GetPDGCode() << std::endl;
+  }
+
 } // namespace gastpc
+
+
+std::ostream& operator << (std::ostream& os, const gastpc::MCParticle& obj)
+{
+  obj.Info(os);
+  return os;
+}
+

@@ -8,6 +8,9 @@
 
 #include "GHepReader.h"
 
+#include "EventGenerationInfo.h"
+#include "PrimaryParticleInfo.h"
+
 #include <G4Event.hh>
 #include <G4LorentzVector.hh>
 #include <G4SystemOfUnits.hh>
@@ -63,26 +66,38 @@ void GHepReader::GeneratePrimaryVertices(G4Event* event)
   // create using the map defined below.
   std::map<G4LorentzVector, G4PrimaryVertex*> vertex_map;
 
-  // Decide how many interactions we'll read
-  
+  // Decide how many interactions we'll read from this source
   G4int num_interactions;
-
   if (mean_ <= 0.) 
     num_interactions = 1;
   else 
     num_interactions = BeamSpillSource::NumberOfInteractions();
 
-  for (G4int i=0; i < num_interactions; ++i) {
+  // Fetch the event generation info class in which we'll store a copy
+  // of the GHEP record
+  EventGenerationInfo* eg_info = 
+    dynamic_cast<EventGenerationInfo*>(event->GetUserInformation());
 
-    ++current_entry_;
+  for (G4int i=0; i<num_interactions; ++i) {
+
+    G4cout << "Interaction no. " << i << G4endl;
+
     ghep_chain_->GetEntry(current_entry_);
     genie::EventRecord* record = gmcrec_->event;
 
+    // Copy the GHEP record into the event generation info object
+    // (I use here the Copy() method because using the copy constructor
+    // results at runtime in a segmentaion violation.)
+    genie::NtpMCEventRecord* gmcrec_copy = new genie::NtpMCEventRecord();
+    gmcrec_copy->Copy(*gmcrec_);
+    eg_info->AddEntry(gmcrec_copy);
+
+    // Generate a time offset for this interaction
+    G4double time_offset = BeamSpillSource::TimeOffset();
+    G4cout << "time offset (ns): " << time_offset/ns << G4endl;
+
     // Get the common vertex position and time in the GHEP record
     TLorentzVector* xyzt = record->Vertex();
-
-    // Get a time offset for this interaction
-    G4double time_offset = BeamSpillSource::TimeOffset();
 
     // Loop through the particles in the GHEP record
     genie::GHepParticle* gpart = 0;
@@ -94,12 +109,14 @@ void GHepReader::GeneratePrimaryVertices(G4Event* event)
 
       // Find out the particle id using the PDG code
       G4int pdgcode = gpart->Pdg();
+
+      // Skip GENIE's pseudo particles
+      if (pdgcode >= 2000000000) continue;
+
       G4ParticleDefinition* gpart_def =
         G4ParticleTable::GetParticleTable()->FindParticle(pdgcode);
 
-      // Skip the particle if we its PDG code was not recognized
-      // (probably a GENIE unphysical particle)
-      if (!gpart_def) continue;
+      if (!gpart_def) continue; // Make sure the pointer is defined
 
       // Get the position and time of the current GHEP particle 
       // (the common position is in meters; the relative one, in fermis)
@@ -123,6 +140,7 @@ void GHepReader::GeneratePrimaryVertices(G4Event* event)
         event->AddPrimaryVertex(vertex);
       }
       else {
+        // We've seen this vertex before
         vertex = (*result).second;
       }
 
@@ -132,20 +150,28 @@ void GHepReader::GeneratePrimaryVertices(G4Event* event)
                                                         gpart->Py()*GeV,
                                                         gpart->Pz()*GeV);
 
+    // Add a user info object to the primary particle so that we are able
+    // to trace it back to the GHEP record that originated it
+    PrimaryParticleInfo* pp_info = new PrimaryParticleInfo();
+    pp_info->SetInteractionID((eg_info->GetEntries().size())-1);
+    particle->SetUserInformation(pp_info);
+    std::cout << "Interaction ID: " << pp_info->GetInteractionID() << G4endl;
+
     // Add more info to the Geant4 particle
     particle->SetCharge(gpart->Charge());
     if (gpart->PolzIsSet()) {
       TVector3 polz;
       gpart->GetPolarization(polz);
-      particle->SetPolarization(polz.x(),
-                                polz.y(),
-                                polz.z());
+      particle->SetPolarization(polz.x(), polz.y(), polz.z());
     }
 
     // Add the particle to the vertex
     vertex->SetPrimary(particle);
     }
 
+    // Get ready to read the following entry if need it.
+    // If we've reached the end-of-file, rewind to the beginning.
+    ++current_entry_;
     if (current_entry_ == num_entries_) current_entry_ = 0;
   }
 }

@@ -14,5 +14,9 @@
 
 #pragma link C++ class std::vector<gastpc::MCParticle*>;
 #pragma link C++ class std::vector<gastpc::NuInteraction*>;
+#pragma link C++ class std::vector<gastpc::MCTrack*>;
+#pragma link C++ class std::vector<gastpc::MCHit*>;
+
+#pragma link C++ function operator<<(ostream&, const gastpc::MCParticle&);
 
 #endif

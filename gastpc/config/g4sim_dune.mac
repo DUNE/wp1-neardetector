@@ -1,4 +1,7 @@
 /gastpc/manager/random_seed 0
 
-/gastpc/persistency/output_file output.root
+#/gastpc/persistency/output_file output.root
 
+/gastpc/generator/add_ghep_source 
+
+/gastpc/field/field_strength 0.4 tesla

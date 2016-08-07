@@ -26,6 +26,8 @@
 #include <G4GDMLParser.hh>
 #include <G4FieldManager.hh>
 #include <G4AutoDelete.hh>
+#include <G4ProductionCuts.hh>
+#include <G4Region.hh>
 
 
 
@@ -57,9 +59,10 @@ DuneGArNDDetConstr::DuneGArNDDetConstr():
   magnet_yoke_thickness_(60.*cm),
   // MAGNET COIL
   magnet_coil_width_(0.), magnet_coil_height_(0.), magnet_coil_length_(0.),
-  magnet_coil_thickness_(20.*cm)
+  magnet_coil_thickness_(20.*cm),
+  magfield_strength_(0.4*tesla)
 {
-  //DefineCommands();
+  DefineCommands();
 }
 
 
@@ -159,7 +162,7 @@ void DuneGArNDDetConstr::DefineEnvelopeAndMagnet()
     new G4PVPlacement(0, G4ThreeVector(0.,0.,detenv_length/2.),
       "NEAR_DETECTOR_ENV", detenv_logic_vol, hall_phys_vol_, 0, false, 0);
 
-  UniformMagneticField* magfield = new UniformMagneticField();
+  UniformMagneticField* magfield = new UniformMagneticField(magfield_strength_);
   G4FieldManager* fieldmgr = new G4FieldManager();
   fieldmgr->SetDetectorField(magfield);
   fieldmgr->CreateChordFinder(magfield);
@@ -177,6 +180,11 @@ void DuneGArNDDetConstr::DefineEnvelopeAndMagnet()
   new G4PVPlacement(0, G4ThreeVector(), "MAGNET_YOKE", 
     yoke_geom.GetLogicalVolume(), detenv_phys_vol_, false, 0, true);
 
+  G4Region* magnet_region = new G4Region("MAGNET_YOKE");
+  G4ProductionCuts* prodcuts = new G4ProductionCuts();
+  prodcuts->SetProductionCut(3.*cm);
+  magnet_region->AddRootLogicalVolume(yoke_geom.GetLogicalVolume());
+  magnet_region->SetProductionCuts(prodcuts);
 
   // MAGNET COILS //////////////////////////////////////////
 
@@ -198,6 +206,9 @@ void DuneGArNDDetConstr::DefineEnvelopeAndMagnet()
 
 void DuneGArNDDetConstr::DefineCalorimeters()
 {
+  G4ProductionCuts* prodcuts = new G4ProductionCuts();
+  prodcuts->SetProductionCut(100.*cm);
+
   // UPSTREAM ECAL /////////////////////////////////////////
 
   G4double width = vessel_diameter_ + 2.*vessel_barrel_thickness_ ;
@@ -227,6 +238,10 @@ void DuneGArNDDetConstr::DefineCalorimeters()
 
   new G4PVPlacement(0, G4ThreeVector(0., 0., origin_z), "DOWNSTREAM_ECAL",
     downstream_ecal_geom.GetLogicalVolume(), detenv_phys_vol_, false, 0, true);
+
+  G4Region* dsecal_region = new G4Region("DOWNSTREAM_ECAL");
+  dsecal_region->SetProductionCuts(prodcuts);
+  dsecal_region->AddRootLogicalVolume(downstream_ecal_geom.GetLogicalVolume());
 
   // BARREL ECAL ///////////////////////////////////////////
 
@@ -275,6 +290,7 @@ void DuneGArNDDetConstr::DefineCalorimeters()
   new G4PVPlacement(rot_vert, G4ThreeVector(-origin_x, origin_y, origin_z),
     "BARREL_ECAL_3", barrel_ecal_geom.GetLogicalVolume(), detenv_phys_vol_, 
     false, 3, true);
+
 }
 
 
@@ -296,13 +312,18 @@ void DuneGArNDDetConstr::DefineVessel()
 
 
 
-// void DuneGArNDDetConstr::DefineCommands()
-// {
-//   // Define configuration commands using a generic messenger.
-//   // (The default values for the properties are set in the constructor's
-//   // initialization list above.)
+void DuneGArNDDetConstr::DefineCommands()
+{
+  // Define configuration commands using a generic messenger.
+  // (The default values for the properties are set in the constructor's
+  // initialization list above.)
 
-//   msg_ = new G4GenericMessenger(this, "/gastpc/geometry/");
+  msg_ = new G4GenericMessenger(this, "/gastpc/geometry/");
+
+  G4GenericMessenger::Command& magfield_strength_cmd =
+    msg_->DeclarePropertyWithUnit("magfield_strength", "tesla", 
+      magfield_strength_, "Magnetic field strength.");
+  magfield_strength_cmd.SetRange("value>0.");
 
 //   G4GenericMessenger::Command& hall_size_cmd = 
 //     msg_->DeclarePropertyWithUnit("hall_size", "m", hall_size_);
@@ -354,5 +375,5 @@ void DuneGArNDDetConstr::DefineVessel()
 //                                   "Thickness of vessel endcaps.");
 //   vessel_endcap_thickness_cmd.SetRange("value>0.");
 
-// }
+}
 

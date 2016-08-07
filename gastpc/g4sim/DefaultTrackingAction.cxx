@@ -24,7 +24,8 @@ void DefaultTrackingAction::PreUserTrackingAction(const G4Track* track)
     (G4VPersistencyManager::GetPersistencyManager());
   pm->StoreCurrentEvent(true);
 
-  G4VTrajectory* trj = new Trajectory(track);
+  Trajectory* trj = new Trajectory(track);
+  trj->RecordTrajectoryPoints(true);
   this->fpTrackingManager->SetStoreTrajectory(true);
   this->fpTrackingManager->SetTrajectory(trj);
 }
@@ -39,6 +40,5 @@ void DefaultTrackingAction::PostUserTrackingAction(const G4Track* track)
   // Record final time and position of the track
   trj->SetFinalPosition(track->GetPosition());
   trj->SetFinalTime(track->GetGlobalTime());
-  trj->SetTrackLength(track->GetTrackLength());
-  trj->SetDecayVolume(track->GetVolume()->GetName());
+  trj->SetFinalVolume(track->GetVolume()->GetName());
 }
