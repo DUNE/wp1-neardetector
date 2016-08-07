@@ -14,7 +14,7 @@
 
 
 UniformMagneticField::UniformMagneticField():
-  G4MagneticField(), msg_(0), field_strength_(0.4*tesla)
+  G4MagneticField(), msg_(0), field_strength_(0.)
 {
   DefineCommands();
 }

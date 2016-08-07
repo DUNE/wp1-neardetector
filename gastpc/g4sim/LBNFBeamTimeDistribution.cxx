@@ -81,5 +81,9 @@ G4double LBNFBeamTimeDistribution::TimeOffset()
   offset += time_betw_buckets_ * G4double(buckets_per_batch_) * G4double(ibatch);
 
   // Finally, add the global offset
-  return (offset + global_offset_);
+  offset += global_offset_;
+  //if (offset < 0.) offset = 0.;
+
+  return offset;
+
 }
