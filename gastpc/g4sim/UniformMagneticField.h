@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   UniformMagneticField.h
-/// \brief  
+/// \brief  Uniform magnetic field in the direction of the Y axis
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 30 July 2016
@@ -14,10 +14,13 @@
 class G4GenericMessenger;
 
 
+/// Definition of a uniform magnetic field in the direction of the Y axis
+/// (typically, the direction of the electric drift field).
+
 class UniformMagneticField: public G4MagneticField
 {
 public:
-  UniformMagneticField();
+  UniformMagneticField(G4double field_strength=0.);
   virtual ~UniformMagneticField();
   
   virtual void GetFieldValue(const G4double point[4], double* field) const;
@@ -26,10 +29,6 @@ public:
   G4double GetFieldStrength() const;
 
 private:
-  void DefineCommands();
-
-private:
-  G4GenericMessenger* msg_;
   G4double field_strength_;
 };
 
