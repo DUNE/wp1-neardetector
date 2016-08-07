@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   Trajectory.cxx
-/// \brief  
+/// \brief  Transient record of a Geant4 particle/track.
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 30 July 2016
@@ -19,30 +19,33 @@
 G4ThreadLocal G4Allocator<Trajectory>* TrajectoryAllocator = 0;
 
 
-Trajectory::Trajectory(const G4Track* track):
-  G4VTrajectory()
+Trajectory::Trajectory(const G4Track* track): 
+  G4VTrajectory(), 
+  pdef_(track->GetDefinition()), 
+  track_id_(track->GetTrackID()), 
+  mother_id_(track->GetParentID()),
+  initial_momentum_(track->GetMomentum()),
+  initial_position_(track->GetVertexPosition()),
+  final_position_(G4ThreeVector()),
+  initial_time_(track->GetGlobalTime()),
+  final_time_(0.),
+  creator_process_(""),
+  initial_volume_(""),
+  final_volume_(""),
+  rec_trjpoints_(true)
 {
-  pdef_ = track->GetDefinition();
-  track_id_ = track->GetTrackID();
-  mother_id_ = track->GetParentID();
+  // Set creator process
+  if (mother_id_ == 0) creator_process_ = "none";
+  else creator_process_ = track->GetCreatorProcess()->GetProcessName();
 
-  if (mother_id_ == 0)
-    creator_process_ = "none";
-  else
-    creator_process_ = track->GetCreatorProcess()->GetProcessName();
-
-  _initial_momentum = track->GetMomentum();
-  _initial_position = track->GetVertexPosition();
-  _initial_time = track->GetGlobalTime();
-  _initial_volume = track->GetLogicalVolumeAtVertex()->GetName();
+  // Set name of volume where particle was created
+  initial_volume_ = track->GetVolume()->GetName();
 
   _trjpoints = new TrajectoryPointContainer();
 
   // Add this trajectory in the map, but only if no other
   // trajectory for this track id has been registered yet
-  if (!TrajectoryMap::Get(track->GetTrackID()))
-    TrajectoryMap::Add(this);
-
+  if (!TrajectoryMap::Get(track->GetTrackID())) TrajectoryMap::Add(this);
 }
 
 
@@ -73,19 +76,15 @@ G4int Trajectory::GetPDGEncoding() const
 }
 
 
-
 G4double Trajectory::GetCharge() const
 {
   return pdef_->GetPDGCharge();
 }
 
 
-
-
-
 void Trajectory::AppendStep(const G4Step* step)
 {
-  if (!_record_trjpoints) return;
+  if (!rec_trjpoints_) return;
 
   TrajectoryPoint* point = 
     new TrajectoryPoint(step->GetPostStepPoint()->GetPosition(),
@@ -98,7 +97,7 @@ void Trajectory::MergeTrajectory(G4VTrajectory* second)
 {
   if (!second) return;
 
-  if (!_record_trjpoints) return;
+  if (!rec_trjpoints_) return;
 
   Trajectory* tmp = (Trajectory*) second;
   G4int entries = tmp->GetPointEntries();

@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   Trajectory.h
-/// \brief  
+/// \brief  Transient record of a Geant4 particle/track.
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 30 July 2016
@@ -30,10 +30,11 @@ class Trajectory: public G4VTrajectory
 public:
   /// Constructor given a track
   Trajectory(const G4Track*);
-  /// Destructor
-  virtual ~Trajectory();
   /// Copy constructor
   Trajectory(const Trajectory&);
+  /// Destructor
+  virtual ~Trajectory();
+
   /// Equality operator
   int operator ==(const Trajectory&) const;
   /// Memory allocation operator
@@ -41,96 +42,95 @@ public:
   /// Memory deallocation operator
   void operator delete(void*);
 
-    /// Return pointer to the particle definition 
-    /// associated to the track
-    G4ParticleDefinition* GetParticleDefinition();
-    /// Return name of the particle
-    G4String GetParticleName() const;
-    /// Return charge of the particle
-    G4double GetCharge() const;
-    /// Return PDG code of the particle
-    G4int GetPDGEncoding () const;
+public:
 
-    // Return name of the track creator process
-    G4String GetCreatorProcess() const;
+  // Setters & Getters
 
-    /// Return id number of the associated track
-    G4int GetTrackID() const;
-    /// Return id number of the parent track
-    G4int GetParentID() const;
+  /// Return pointer to the particle definition 
+  /// associated to the track
+  G4ParticleDefinition* GetParticleDefinition();
+  /// Return name of the particle
+  G4String GetParticleName() const;
+  /// Return charge of the particle
+  G4double GetCharge() const;
+  /// Return PDG code of the particle
+  G4int GetPDGEncoding () const;
 
-    // Return initial three-momentum
-    G4ThreeVector GetInitialMomentum() const;
-    // Return initial position (creation vertex) 
-    // in global coordinates
-    G4ThreeVector GetInitialPosition() const;
-    // Return creation time with respect to
-    // the start-of-event time
-    G4double GetInitialTime() const;
+  /// Return name of the physical process that created the track
+  const G4String& GetCreatorProcess() const;
 
-    G4ThreeVector GetFinalPosition() const;
-    void SetFinalPosition(const G4ThreeVector&);
+  /// Return id number of the associated track
+  G4int GetTrackID() const;
+  /// Return id number of the parent track
+  G4int GetParentID() const;
 
-    G4double GetFinalTime() const;
-    void SetFinalTime(G4double);
+  /// Return initial three-momentum
+  G4ThreeVector GetInitialMomentum() const;
+  /// Return initial position (creation vertex) in global coordinates
+  G4ThreeVector GetInitialPosition() const;
+  /// Return final position (decay vertex) in global coordinates
+  G4ThreeVector GetFinalPosition() const;
+  /// Return final position (decay vertex) in global coordinates
+  void SetFinalPosition(const G4ThreeVector&);
+  /// Return creation time with respect to the start-of-event time
+  G4double GetInitialTime() const;
+  /// Return decay time with respect to the start-of-event time
+  G4double GetFinalTime() const;
+  /// Set decay time with respect to the start-of-event time
+  void SetFinalTime(G4double);
 
-    G4double GetTrackLength() const;
-    void SetTrackLength(G4double);
+  const G4String& GetInitialVolume() const;
 
-    G4double GetEnergyDeposit() const;
-    void SetEnergyDeposit(G4double);
+  const G4String& GetFinalVolume() const;
+  void SetFinalVolume(const G4String&);
+
+  // Trajectory points
+
+  ///
+  void RecordTrajectoryPoints(G4bool);
+  /// Return the number of trajectory points
+  virtual int GetPointEntries() const;
+  /// Return the i-th point in the trajectory
+  virtual G4VTrajectoryPoint* GetPoint(G4int i) const;
+  ///
+  virtual void AppendStep(const G4Step*);
+  ///
+  virtual void MergeTrajectory(G4VTrajectory*);
+  ///
+  virtual void ShowTrajectory(std::ostream&) const;
+  ///
+  virtual void DrawTrajectory() const;
   
-    G4String GetInitialVolume() const;
+private:
+  /// The default constructor is private. A trajectory can
+  /// only be constructed associated to a track.
+  Trajectory();
 
-    G4String GetDecayVolume() const;
-    void SetDecayVolume(G4String);
+private:
+  G4ParticleDefinition* pdef_; //< Pointer to the particle definition
 
-    // Trajectory points
+  G4int track_id_;  ///< Identification number of the track
+  G4int mother_id_; ///< Identification number of the parent particle
 
-    /// Return the number of trajectory points
-    virtual int GetPointEntries() const;
-    /// Return the i-th point in the trajectory
-    virtual G4VTrajectoryPoint* GetPoint(G4int i) const;
-    ///
-    virtual void AppendStep(const G4Step*);
-    ///
-    virtual void MergeTrajectory(G4VTrajectory*);
+  G4ThreeVector initial_momentum_;
 
-    virtual void ShowTrajectory(std::ostream&) const;
+  G4ThreeVector initial_position_;
+  G4ThreeVector final_position_;
 
-    virtual void DrawTrajectory() const;
-  
-  private:
-    /// The default constructor is private. A trajectory can
-    /// only be constructed associated to a track.
-    Trajectory();
-  private:
-    G4ParticleDefinition* pdef_; //< Pointer to the particle definition
+  G4double initial_time_;
+  G4double final_time_;
 
-    G4int track_id_;  ///< Identification number of the track
-    G4int mother_id_; ///< Identification number of the parent particle
+  G4String creator_process_;
 
-    G4ThreeVector _initial_momentum;
+  G4String initial_volume_;
+  G4String final_volume_;
 
-    G4ThreeVector _initial_position;
-    G4ThreeVector _final_position;
+  G4bool rec_trjpoints_;
 
-    G4double _initial_time;
-    G4double _final_time;
-
-    G4double _length;
-    G4double _edep;
-
-    G4String creator_process_;
-
-    G4String _initial_volume;
-    G4String _decay_volume;
-
-    G4bool _record_trjpoints;
-
-    TrajectoryPointContainer* _trjpoints;
-
+  TrajectoryPointContainer* _trjpoints;
 };
+
+// Inline definitions //////////////////////////////////////
 
 extern G4TRACKING_DLL G4ThreadLocal 
   G4Allocator<Trajectory>* TrajectoryAllocator;
@@ -157,7 +157,7 @@ inline G4VTrajectoryPoint* Trajectory::GetPoint(G4int i) const
 { return (*_trjpoints)[i]; }
 
 inline G4ThreeVector Trajectory::GetInitialMomentum() const
-{ return _initial_momentum; }
+{ return initial_momentum_; }
 
 inline G4int Trajectory::GetTrackID() const
 { return track_id_; }
@@ -166,42 +166,36 @@ inline G4int Trajectory::GetParentID() const
 { return mother_id_; }
 
 inline G4ThreeVector Trajectory::GetInitialPosition() const
-{ return _initial_position; }
+{ return initial_position_; }
 
 inline G4ThreeVector Trajectory::GetFinalPosition() const
-{ return _final_position; }
+{ return final_position_; }
 
 inline void Trajectory::SetFinalPosition(const G4ThreeVector& x)
-{ _final_position = x; }
+{ final_position_ = x; }
 
 inline G4double Trajectory::GetInitialTime() const
-{ return _initial_time; }
+{ return initial_time_; }
 
 inline G4double Trajectory::GetFinalTime() const
-{ return _final_time; }
+{ return final_time_; }
 
 inline void Trajectory::SetFinalTime(G4double t)
-{ _final_time = t; }
+{ final_time_ = t; }
 
-inline G4double Trajectory::GetTrackLength() const { return _length; }
-
-inline void Trajectory::SetTrackLength(G4double l) { _length = l; }
-
-inline G4double Trajectory::GetEnergyDeposit() const { return _edep; }
-
-inline void Trajectory::SetEnergyDeposit(G4double e) { _edep = e; }
-
-inline G4String Trajectory::GetCreatorProcess() const
+inline const G4String& Trajectory::GetCreatorProcess() const
 { return creator_process_; }
 
-inline G4String Trajectory::GetInitialVolume() const
-{ return _initial_volume; }
+inline const G4String& Trajectory::GetInitialVolume() const
+{ return initial_volume_; }
 
-inline G4String Trajectory::GetDecayVolume() const
-{ return _decay_volume; }
+inline const G4String& Trajectory::GetFinalVolume() const
+{ return final_volume_; }
 
-inline void Trajectory::SetDecayVolume(G4String dv)
-{ _decay_volume = dv; }
+inline void Trajectory::SetFinalVolume(const G4String& v)
+{ final_volume_ = v; }
 
+inline void Trajectory::RecordTrajectoryPoints(G4bool b) 
+{ rec_trjpoints_ = b; }
 
 #endif
