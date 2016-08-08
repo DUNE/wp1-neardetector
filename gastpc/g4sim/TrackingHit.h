@@ -20,14 +20,20 @@
 class TrackingHit: public G4VHit
 {
 public:
+  /// Default constructor
   TrackingHit();
+  /// Copy constructor
   TrackingHit(const TrackingHit&);
+  /// Destructor
   virtual ~TrackingHit();
 
+  /// Assignment operator
   const TrackingHit& operator=(const TrackingHit&);
+  /// Equality operator
   G4int operator==(const TrackingHit&) const;
-
+  /// Memory allocation
   inline void* operator new(size_t);
+  /// Memory deallocation
   inline void operator delete(void*);
 
   void SetTrackID(G4int);
@@ -45,9 +51,13 @@ private:
   G4LorentzVector xyzt_;
 };
 
+////////////////////////////////////////////////////////////
+
 typedef G4THitsCollection<TrackingHit> TrackingHitsCollection;
 
 extern G4ThreadLocal G4Allocator<TrackingHit>* TrackingHitAllocator;
+
+// Inline definitions //////////////////////////////////////
 
 inline void* TrackingHit::operator new(size_t)
 { 

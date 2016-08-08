@@ -28,16 +28,16 @@ TrackingHit::~TrackingHit()
 TrackingHit::TrackingHit(const TrackingHit& other): G4VHit()
 {
   track_id_ = other.track_id_;
-  edep_ = other.edep_;
-  xyzt_ = other.xyzt_;
+  edep_     = other.edep_;
+  xyzt_     = other.xyzt_;
 }
 
 
 const TrackingHit& TrackingHit::operator=(const TrackingHit& other)
 {
   track_id_ = other.track_id_;
-  edep_ = other.edep_;
-  xyzt_ = other.xyzt_;
+  edep_     = other.edep_;
+  xyzt_     = other.xyzt_;
 
   return *this;
 }
