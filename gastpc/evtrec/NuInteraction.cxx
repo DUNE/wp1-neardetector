@@ -26,6 +26,8 @@ namespace gastpc {
 
   NuInteraction::~NuInteraction()
   {
+    gheprec_->Clear();
+    delete gheprec_;
   }
 
 
