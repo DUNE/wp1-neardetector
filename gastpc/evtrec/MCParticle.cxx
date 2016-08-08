@@ -25,6 +25,22 @@ namespace gastpc {
 
   MCParticle::~MCParticle()
   {
+    this->Clear();
+  }
+
+
+  void MCParticle::Clear()
+  {
+    primary_ = false;
+    mcid_ = -1;
+    pdg_code_ = 0;
+    initial_xyzt_ = TLorentzVector();
+    final_xyzt_ = TLorentzVector();
+    initial_4P_ = TLorentzVector();
+    final_4P_ = TLorentzVector();
+    interaction_ = 0;
+    mother_ = 0;
+    daughters_.clear();
   }
 
 
@@ -54,9 +70,9 @@ namespace gastpc {
 
   void MCParticle::Info(std::ostream& os) const 
   {
-    os << "MCParticle::Info()" << std::endl;
-    os << " - MC ID: " << this->GetMCID() << std::endl;
-    os << " - PDG code: " << this->GetPDGCode() << std::endl;
+    // os << "MCParticle::Info()" << std::endl;
+    // os << " - MC ID: " << this->GetMCID() << std::endl;
+    // os << " - PDG code: " << this->GetPDGCode() << std::endl;
   }
 
 } // namespace gastpc

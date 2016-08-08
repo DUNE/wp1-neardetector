@@ -7,7 +7,7 @@
 // -------------------------------------------------------------------
 
 #include "MCTrack.h"
-
+#include "MCHit.h"
 
 ClassImp(gastpc::MCTrack);
 
@@ -15,13 +15,23 @@ ClassImp(gastpc::MCTrack);
 namespace gastpc {
 
   MCTrack::MCTrack(): 
-    energy_(0.), length_(0.), label_(""), mcp_(0)
+    energy_(0.), length_(0.), mcp_(0)
   {
   }
 
 
   MCTrack::~MCTrack()
   {
+    this->Clear();
+  }
+
+
+  void MCTrack::Clear()
+  {
+    for (MCHit* mch: mchits_) delete mch;
+    mchits_.clear();
+    energy_ = 0.;
+    length_ = 0.;
   }
 
 
@@ -35,12 +45,5 @@ namespace gastpc {
   {
     return mchits_;
   }
-
-
-  void MCTrack::ClearHits()
-  {
-    mchits_.clear();
-  }
-
 
 } // namespace gastpc
