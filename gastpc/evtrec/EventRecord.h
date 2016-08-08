@@ -35,6 +35,9 @@ public:
   const std::vector<gastpc::MCTrack*>& GetMCTracks() const;
   const std::vector<gastpc::NuInteraction*>& GetNuInteractions() const;
 
+  /// Drestoy all objects in the event record
+  void Clear();
+
 private:
   std::vector<gastpc::MCParticle*> mcparticles_;
   std::vector<gastpc::MCTrack*> mctracks_;

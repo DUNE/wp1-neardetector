@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------
-/// \file   EventRecord.h
+/// \file   EventRecord.cxx
 /// \brief  
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
@@ -18,13 +18,26 @@ ClassImp(gastpc::EventRecord);
 namespace gastpc {
 
   EventRecord::EventRecord()
-  {}
+  {
+  }
 
 
   EventRecord::~EventRecord()
   {
+    this->Clear();
+  }
+
+
+  void EventRecord::Clear()
+  {
+    for (MCParticle* mcp: mcparticles_) delete mcp;
     mcparticles_.clear();
+
+    for (MCTrack* mct: mctracks_) delete mct;
     mctracks_.clear();
+
+    for (NuInteraction* nuint: nuints_) delete nuint;
+    nuints_.clear();
   }
 
 
