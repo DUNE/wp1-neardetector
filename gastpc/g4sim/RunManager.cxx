@@ -23,6 +23,7 @@
 #include <G4VModularPhysicsList.hh>
 #include <QGSP_BERT.hh>
 #include <G4StepLimiterPhysics.hh>
+#include <FTFP_BERT.hh>
 
 
 
@@ -32,7 +33,8 @@ RunManager::RunManager(const std::string& detector_tag,
 {
   DefineCommands();
 
-  G4VModularPhysicsList* physlist = new QGSP_BERT();
+  G4VModularPhysicsList* physlist = new FTFP_BERT(); //new QGSP_BERT();
+    //new G4EmStandardPhysics_option3();
   physlist->RegisterPhysics(new G4StepLimiterPhysics());
   this->SetUserInitialization(physlist);
 
@@ -54,7 +56,7 @@ RunManager::~RunManager()
   PersistencyManager* current = dynamic_cast<PersistencyManager*>
     (G4VPersistencyManager::GetPersistencyManager());
   current->CloseFile();
-
+  delete msg_;
 }
 
 
