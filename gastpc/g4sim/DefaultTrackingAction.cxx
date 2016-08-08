@@ -22,23 +22,26 @@ void DefaultTrackingAction::PreUserTrackingAction(const G4Track* track)
 {
   PersistencyManager* pm = dynamic_cast<PersistencyManager*>
     (G4VPersistencyManager::GetPersistencyManager());
-  pm->StoreCurrentEvent(true);
 
-  Trajectory* trj = new Trajectory(track);
-  trj->RecordTrajectoryPoints(true);
-  this->fpTrackingManager->SetStoreTrajectory(true);
-  this->fpTrackingManager->SetTrajectory(trj);
+  if (pm) {
+    pm->StoreCurrentEvent(true);
+    Trajectory* trj = new Trajectory(track);
+    trj->RecordTrajectoryPoints(true);
+    this->fpTrackingManager->SetStoreTrajectory(true);
+    this->fpTrackingManager->SetTrajectory(trj);
+  }
 }
 
 
 void DefaultTrackingAction::PostUserTrackingAction(const G4Track* track)
 {
-  Trajectory* trj = (Trajectory*) TrajectoryMap::Get(track->GetTrackID());
+  Trajectory* trj = 
+    dynamic_cast<Trajectory*>(TrajectoryMap::Get(track->GetTrackID()));
 
-  if (!trj) return;
-
-  // Record final time and position of the track
-  trj->SetFinalPosition(track->GetPosition());
-  trj->SetFinalTime(track->GetGlobalTime());
-  trj->SetFinalVolume(track->GetVolume()->GetName());
+  if (trj) {
+    // Set some end-of-tracking properties of the trajectory
+    trj->SetFinalPosition(track->GetPosition());
+    trj->SetFinalTime(track->GetGlobalTime());
+    trj->SetFinalVolume(track->GetVolume()->GetName());
+  }
 }
