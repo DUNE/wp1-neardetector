@@ -18,6 +18,7 @@
 #include <G4SystemOfUnits.hh>
 #include <G4VisAttributes.hh>
 #include <G4SDManager.hh>
+#include <G4UserLimits.hh>
 
 
 
@@ -73,6 +74,9 @@ void DuneGArNDVesselGeometry::DefineVolumes()
   TrackingSD* tsd = new TrackingSD("/DUNEGARND/TPC");
   tpc_logic_vol->SetSensitiveDetector(tsd);
   G4SDManager::GetSDMpointer()->AddNewDetector(tsd);
+
+  G4UserLimits* step_limit = new G4UserLimits(7.5*mm);
+  tpc_logic_vol->SetUserLimits(step_limit);
 
   //G4VisAttributes* vis = new G4VisAttributes();
   //vis->SetColor(0.5,0.5,0.5);

@@ -8,6 +8,8 @@ project(GASTPC)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wno-overloaded-virtual -Wno-shadow")
+
 ### Append to the CMAKE_MODULE_PATH variable the path to the directory
 ### with additional CMake modules
 set(CMAKE_MODULE_PATH "${GASTPC_SOURCE_DIR}/cmake" "${CMAKE_MODULE_PATH}")

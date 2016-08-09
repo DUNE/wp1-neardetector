@@ -34,8 +34,15 @@
 DuneGArNDDetConstr::DuneGArNDDetConstr(): 
   G4VUserDetectorConstruction(),
   msg_(0),
+  magfield_strength_(0.4*tesla),
   // HALL
   hall_size_(20.*m),
+  // MAGNET YOKE
+  magnet_yoke_width_(0.), magnet_yoke_height_(0.), magnet_yoke_length_(0.),
+  magnet_yoke_thickness_(60.*cm),
+  // MAGNET COIL
+  magnet_coil_width_(0.), magnet_coil_height_(0.), magnet_coil_length_(0.),
+  magnet_coil_thickness_(20.*cm), 
   // VESSEL
   vessel_diameter_(3.5*m), 
   vessel_length_(6.5*m),
@@ -45,22 +52,15 @@ DuneGArNDDetConstr::DuneGArNDDetConstr():
   // BARREL ECAL
   barrel_ecal_abs_thickness_(3.5*mm), 
   barrel_ecal_scint_thickness_(10.*mm),
-  barrel_ecal_num_layers_(16),
+  barrel_ecal_num_layers_(18),
   // UPSTREAM ECAL
   upstream_ecal_abs_thickness_(3.5*mm), 
   upstream_ecal_scint_thickness_(10.*mm),
-  upstream_ecal_num_layers_(16),
+  upstream_ecal_num_layers_(18),
   // DOWNSTREAM ECAL
   downstream_ecal_abs_thickness_(1.75*mm), 
   downstream_ecal_scint_thickness_(10.*mm), 
-  downstream_ecal_num_layers_(60),
-  // MAGNET YOKE
-  magnet_yoke_width_(0.), magnet_yoke_height_(0.), magnet_yoke_length_(0.),
-  magnet_yoke_thickness_(60.*cm),
-  // MAGNET COIL
-  magnet_coil_width_(0.), magnet_coil_height_(0.), magnet_coil_length_(0.),
-  magnet_coil_thickness_(20.*cm),
-  magfield_strength_(0.4*tesla)
+  downstream_ecal_num_layers_(60)
 {
   DefineCommands();
 }
@@ -79,8 +79,10 @@ G4VPhysicalVolume* DuneGArNDDetConstr::Construct()
   DefineCalorimeters();
   DefineVessel();
 
-  G4GDMLParser parser;
-  parser.Write("geometry.gdml", hall_phys_vol_, true);
+  if (gdml_output_filename_ != "") {
+    G4GDMLParser parser;
+    parser.Write(gdml_output_filename_, hall_phys_vol_, true);
+  }
 
   return hall_phys_vol_;
 }
@@ -162,6 +164,8 @@ void DuneGArNDDetConstr::DefineEnvelopeAndMagnet()
     new G4PVPlacement(0, G4ThreeVector(0.,0.,detenv_length/2.),
       "NEAR_DETECTOR_ENV", detenv_logic_vol, hall_phys_vol_, 0, false, 0);
 
+  // MAGNETIC FIELD ////////////////////////////////////////
+
   UniformMagneticField* magfield = new UniformMagneticField(magfield_strength_);
   G4FieldManager* fieldmgr = new G4FieldManager();
   fieldmgr->SetDetectorField(magfield);
@@ -180,12 +184,6 @@ void DuneGArNDDetConstr::DefineEnvelopeAndMagnet()
   new G4PVPlacement(0, G4ThreeVector(), "MAGNET_YOKE", 
     yoke_geom.GetLogicalVolume(), detenv_phys_vol_, false, 0, true);
 
-  G4Region* magnet_region = new G4Region("MAGNET_YOKE");
-  G4ProductionCuts* prodcuts = new G4ProductionCuts();
-  prodcuts->SetProductionCut(3.*cm);
-  magnet_region->AddRootLogicalVolume(yoke_geom.GetLogicalVolume());
-  magnet_region->SetProductionCuts(prodcuts);
-
   // MAGNET COILS //////////////////////////////////////////
 
   magnet_coil_width_  = magnet_yoke_width_/4.;
@@ -201,14 +199,24 @@ void DuneGArNDDetConstr::DefineEnvelopeAndMagnet()
     new G4PVPlacement(0, G4ThreeVector(origin_x, 0., 0.), "MAGNET_COIL",
       coil_geom.GetLogicalVolume(), detenv_phys_vol_, false, 0, true);
   }
+
+  // Production cuts ///////////////////////////////////////
+
+  G4ProductionCuts* prodcuts = new G4ProductionCuts();
+  prodcuts->SetProductionCut(5.*cm); // For all particles
+
+  G4Region* yoke_region = new G4Region("MAGNET_YOKE");
+  yoke_region->AddRootLogicalVolume(yoke_geom.GetLogicalVolume());
+  yoke_region->SetProductionCuts(prodcuts);
+
+  G4Region* coils_region = new G4Region("MAGNET_COILS");
+  coils_region->AddRootLogicalVolume(coil_geom.GetLogicalVolume());
+  coils_region->SetProductionCuts(prodcuts);  
 }
 
 
 void DuneGArNDDetConstr::DefineCalorimeters()
 {
-  G4ProductionCuts* prodcuts = new G4ProductionCuts();
-  prodcuts->SetProductionCut(100.*cm);
-
   // UPSTREAM ECAL /////////////////////////////////////////
 
   G4double width = vessel_diameter_ + 2.*vessel_barrel_thickness_ ;
@@ -238,10 +246,6 @@ void DuneGArNDDetConstr::DefineCalorimeters()
 
   new G4PVPlacement(0, G4ThreeVector(0., 0., origin_z), "DOWNSTREAM_ECAL",
     downstream_ecal_geom.GetLogicalVolume(), detenv_phys_vol_, false, 0, true);
-
-  G4Region* dsecal_region = new G4Region("DOWNSTREAM_ECAL");
-  dsecal_region->SetProductionCuts(prodcuts);
-  dsecal_region->AddRootLogicalVolume(downstream_ecal_geom.GetLogicalVolume());
 
   // BARREL ECAL ///////////////////////////////////////////
 
@@ -316,64 +320,126 @@ void DuneGArNDDetConstr::DefineCommands()
 {
   // Define configuration commands using a generic messenger.
   // (The default values for the properties are set in the constructor's
-  // initialization list above.)
+  // initialization list above, since the corresponding methods of the
+  // messenger do not seem to work properly.)
 
   msg_ = new G4GenericMessenger(this, "/gastpc/geometry/");
+
+  // Magnetic field //////////////////////////////
 
   G4GenericMessenger::Command& magfield_strength_cmd =
     msg_->DeclarePropertyWithUnit("magfield_strength", "tesla", 
       magfield_strength_, "Magnetic field strength.");
-  magfield_strength_cmd.SetRange("value>0.");
+  magfield_strength_cmd.SetRange("value>=0.");
 
-//   G4GenericMessenger::Command& hall_size_cmd = 
-//     msg_->DeclarePropertyWithUnit("hall_size", "m", hall_size_);
-//   hall_size_cmd.SetRange("value>0.");
+  // Hall ////////////////////////////////////////
 
-//   G4GenericMessenger::Command& magnet_yoke_dims_cmd =
-//     msg_->DeclarePropertyWithUnit("magnet_yoke_dims", "m", magnet_yoke_dims_, 
-//                                   "Inner dimensions of magnet yoke.");
-//   magnet_yoke_dims_cmd.SetRange("valueX>0. && valueY>0. && valueZ>0.");
+  G4GenericMessenger::Command& hall_size_cmd = 
+    msg_->DeclarePropertyWithUnit("hall_size", "m", hall_size_);
+  hall_size_cmd.SetRange("value>0.");
 
-//   G4GenericMessenger::Command& magnet_yoke_thickn_cmd = 
-//     msg_->DeclarePropertyWithUnit("magnet_yoke_thickness", "m",
-//                                   magnet_yoke_thickness_,
-//                                   "Thickness of magnet yoke.");
-//   magnet_yoke_thickn_cmd.SetRange("value>0.");
+  // Magnet yoke /////////////////////////////////
 
-//   G4GenericMessenger::Command& magnet_coil_dims_cmd =
-//     msg_->DeclarePropertyWithUnit("magnet_coil_dims", "m", magnet_coil_dims_,
-//                                   "Inner dimensions of a magnet coil.");
-//   magnet_coil_dims_cmd.SetRange("valueX>0. && ºvalueY>0. && valueZ>0.");
+  G4GenericMessenger::Command& magnet_yoke_thickn_cmd = 
+    msg_->DeclarePropertyWithUnit("magnet_yoke_thickness", "m",
+      magnet_yoke_thickness_, "Thickness of magnet yoke.");
+  magnet_yoke_thickn_cmd.SetRange("value>0.");
 
-//   G4GenericMessenger::Command& magnet_coil_thickn_cmd = 
-//     msg_->DeclarePropertyWithUnit("magnet_coil_thickness", "m",
-//                                   magnet_coil_thickness_,
-//                                   "Thickness of a magnet coil.");
-//   magnet_coil_thickn_cmd.SetRange("value>0.");
+  // Magnet coils ////////////////////////////////
 
-//   G4GenericMessenger::Command& vessel_diam_cmd =
-//     msg_->DeclarePropertyWithUnit("vessel_diam", "cm",
-//                                   vessel_diam_,
-//                                   "Internal diameter of pressure vessel.");
-//   vessel_diam_cmd.SetRange("value>0.");
+  G4GenericMessenger::Command& magnet_coil_thickn_cmd = 
+    msg_->DeclarePropertyWithUnit("magnet_coil_thickness", "m",
+      magnet_coil_thickness_, "Thickness of magnet coil.");
+  magnet_coil_thickn_cmd.SetRange("value>0.");
 
-//   G4GenericMessenger::Command& vessel_length_cmd =
-//     msg_->DeclarePropertyWithUnit("vessel_length", "cm",
-//                                   vessel_length_,
-//                                   "Internal length of pressure vessel.");
-//   vessel_length_cmd.SetRange("value>0.");
+  // Pressure vessel /////////////////////////////
 
-//   G4GenericMessenger::Command& vessel_barrel_thickness_cmd =
-//     msg_->DeclarePropertyWithUnit("vessel_barrel_thickness", "cm",
-//                                   vessel_barrel_thickness_,
-//                                   "Thickness of vessel barrel.");
-//   vessel_barrel_thickness_cmd.SetRange("value>0.");
+  G4GenericMessenger::Command& vessel_diam_cmd =
+    msg_->DeclarePropertyWithUnit("vessel_diam", "cm",
+      vessel_diameter_, "Internal diameter of pressure vessel.");
+  vessel_diam_cmd.SetRange("value>0.");
 
-//   G4GenericMessenger::Command& vessel_endcap_thickness_cmd =
-//     msg_->DeclarePropertyWithUnit("vessel_endcap_thickness", "cm",
-//                                   vessel_endcap_thickness_,
-//                                   "Thickness of vessel endcaps.");
-//   vessel_endcap_thickness_cmd.SetRange("value>0.");
+  G4GenericMessenger::Command& vessel_length_cmd =
+    msg_->DeclarePropertyWithUnit("vessel_length", "cm",
+      vessel_length_, "Internal length of pressure vessel.");
+  vessel_length_cmd.SetRange("value>0.");
 
+  G4GenericMessenger::Command& vessel_barrel_thickness_cmd =
+    msg_->DeclarePropertyWithUnit("vessel_barrel_thickness", "cm",
+      vessel_barrel_thickness_, "Thickness of vessel barrel.");
+  vessel_barrel_thickness_cmd.SetRange("value>0.");
+
+  G4GenericMessenger::Command& vessel_endcap_thickness_cmd =
+    msg_->DeclarePropertyWithUnit("vessel_endcap_thickness", "cm",
+      vessel_endcap_thickness_, "Thickness of vessel endcaps.");
+  vessel_endcap_thickness_cmd.SetRange("value>0.");
+
+  // Electromagnetic calorimeters (ECALs) ////////
+
+  G4GenericMessenger::Command& vessel_ecal_gap_cmd =
+    msg_->DeclarePropertyWithUnit("vessel_ecal_gap", "cm",
+      vessel_ecal_gap_, "Size of the gap between vessel and ECALs.");
+  vessel_ecal_gap_cmd.SetRange("value>=0.");
+
+
+  G4GenericMessenger::Command& barrel_ecal_abs_thickness_cmd =
+    msg_->DeclarePropertyWithUnit("barrel_ecal_abs_thickness", "cm",
+      barrel_ecal_abs_thickness_, 
+      "Thickness of absorber layers in barrel ECAL.");
+  barrel_ecal_abs_thickness_cmd.SetRange("value>0.");
+
+  G4GenericMessenger::Command& barrel_ecal_scint_thickness_cmd =
+    msg_->DeclarePropertyWithUnit("barrel_ecal_scint_thickness", "cm",
+      barrel_ecal_scint_thickness_, 
+      "Thickness of scintillator layers in barrel ECAL.");
+  barrel_ecal_scint_thickness_cmd.SetRange("value>0.");
+
+  G4GenericMessenger::Command& barrel_ecal_num_layers_cmd =
+    msg_->DeclarePropertyWithUnit("barrel_ecal_num_layers", "cm",
+      barrel_ecal_num_layers_, 
+      "Number of layers in barrel ECAL.");
+  barrel_ecal_num_layers_cmd.SetRange("value>0.");
+
+
+  G4GenericMessenger::Command& upstream_ecal_abs_thickness_cmd =
+    msg_->DeclarePropertyWithUnit("upstream_ecal_abs_thickness", "cm",
+      upstream_ecal_abs_thickness_, 
+      "Thickness of absorber layers in upstream ECAL.");
+  upstream_ecal_abs_thickness_cmd.SetRange("value>0.");
+
+  G4GenericMessenger::Command& upstream_ecal_scint_thickness_cmd =
+    msg_->DeclarePropertyWithUnit("upstream_ecal_scint_thickness", "cm",
+      upstream_ecal_scint_thickness_, 
+      "Thickness of scintillator layers in upstream ECAL.");
+  upstream_ecal_scint_thickness_cmd.SetRange("value>0.");
+
+  G4GenericMessenger::Command& upstream_ecal_num_layers_cmd =
+    msg_->DeclarePropertyWithUnit("upstream_ecal_num_layers", "cm",
+      upstream_ecal_num_layers_, 
+      "Number of layers in upstream ECAL.");
+  upstream_ecal_num_layers_cmd.SetRange("value>0.");
+
+  G4GenericMessenger::Command& downstream_ecal_abs_thickness_cmd =
+    msg_->DeclarePropertyWithUnit("downstream_ecal_abs_thickness", "cm",
+      downstream_ecal_abs_thickness_, 
+      "Thickness of absorber layers in downstream ECAL.");
+  downstream_ecal_abs_thickness_cmd.SetRange("value>0.");
+
+  G4GenericMessenger::Command& downstream_ecal_scint_thickness_cmd =
+    msg_->DeclarePropertyWithUnit("downstream_ecal_scint_thickness", "cm",
+      downstream_ecal_scint_thickness_, 
+      "Thickness of scintillator layers in downstream ECAL.");
+  downstream_ecal_scint_thickness_cmd.SetRange("value>0.");
+
+  G4GenericMessenger::Command& downstream_ecal_num_layers_cmd =
+    msg_->DeclarePropertyWithUnit("downstream_ecal_num_layers", "cm",
+      downstream_ecal_num_layers_, 
+      "Number of layers in downstream ECAL.");
+  downstream_ecal_num_layers_cmd.SetRange("value>0.");
+
+  ////////////////////////////////////////////////
+
+  msg_->DeclareProperty("gdml_output_filename", gdml_output_filename_,
+    "Name of GDML output file");
 }
 

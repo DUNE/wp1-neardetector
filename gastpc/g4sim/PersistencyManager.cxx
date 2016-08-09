@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 ///  \file   PersistencyManager.cxx
-///  \brief
+///  \brief  Wrapper class that contains all used GHEP records.
 ///
 ///  \author  <justo.martin-albo \at physics.ox.ac.uk>
 ///  \date    Created 14 Mar 2016
@@ -94,17 +94,11 @@ G4bool PersistencyManager::Store(const G4Event* event)
 
   gastpc::EventRecord evtrec;
 
-  G4cout << "Here" << G4endl;
-
   ProcessTrajectories(event->GetTrajectoryContainer(), evtrec);
   ProcessPrimaryGenerationInfo(event, evtrec);
   ProcessDetectorHits(event->GetHCofThisEvent(), evtrec);
 
-  G4cout << "Here" << G4endl;
-
   writer_->Write(evtrec);
-
-  G4cout << "Here" << G4endl;
 
   // Get ready for the following event
   TrajectoryMap::Clear();
@@ -135,6 +129,8 @@ void PersistencyManager::ProcessPrimaryGenerationInfo(const G4Event* event,
     nuints.push_back(nuint);
   }
 
+  eg_info->DropEntries();
+
   for (G4int i=0; i<event->GetNumberOfPrimaryVertex(); ++i) {
 
     G4PrimaryVertex* vertex = event->GetPrimaryVertex(i);
@@ -153,7 +149,8 @@ void PersistencyManager::ProcessPrimaryGenerationInfo(const G4Event* event,
       else {
         // We seem to have found a primary particle that didn't make it
         // to the tracking stage
-        G4cerr << "Something went wrong" << G4endl;
+        G4Exception("PersistencyManager::ProcessPrimaryGenerationInfo()",
+          "WARNING", JustWarning, "Found a track without ID.");
         continue;
       }
     }
@@ -294,6 +291,7 @@ void PersistencyManager::ProcessTrackingHits(G4VHitsCollection* hc,
 
 G4bool PersistencyManager::Store(const G4VPhysicalVolume*)
 {
+  G4cout << "PersistencyManager::Store" << G4endl;
   return true;
 }
 

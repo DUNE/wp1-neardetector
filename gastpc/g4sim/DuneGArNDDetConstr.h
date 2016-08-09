@@ -41,26 +41,9 @@ private:
 private:
   G4GenericMessenger* msg_; ///< Commands messenger
 
+  G4double magfield_strength_; /// Magnetic field strength
+
   G4double hall_size_; /// Size of near detector hall
-
-  G4double vessel_diameter_; ///< Internal diameter of pressure vessel
-  G4double vessel_length_;   ///< Internal length of pressure vessel
-  G4double vessel_barrel_thickness_; ///< Thickness of pressure vessel barrel
-  G4double vessel_endcap_thickness_; ///< Thickness of pressure vessel endcaps
-
-  G4double vessel_ecal_gap_; ///< Air gap between vessel and ecal modules
-
-  G4double barrel_ecal_abs_thickness_;
-  G4double barrel_ecal_scint_thickness_;
-  G4int barrel_ecal_num_layers_;
-
-  G4double upstream_ecal_abs_thickness_;
-  G4double upstream_ecal_scint_thickness_;
-  G4int upstream_ecal_num_layers_;
-
-  G4double downstream_ecal_abs_thickness_;
-  G4double downstream_ecal_scint_thickness_;
-  G4int downstream_ecal_num_layers_;
 
   G4double magnet_yoke_width_;     ///< Internal width of magnet yoke
   G4double magnet_yoke_height_;    ///< Internal height of magnet yoke
@@ -72,10 +55,29 @@ private:
   G4double magnet_coil_length_;    ///< Internal length of magnet coils
   G4double magnet_coil_thickness_; ///< Thickness of magnet coils
 
-  G4double magfield_strength_; /// Magnetic field strength
+  G4double vessel_diameter_;         ///< Internal diameter of pressure vessel
+  G4double vessel_length_;           ///< Internal length of pressure vessel
+  G4double vessel_barrel_thickness_; ///< Thickness of pressure vessel barrel
+  G4double vessel_endcap_thickness_; ///< Thickness of pressure vessel endcaps
+
+  G4double vessel_ecal_gap_; ///< Air gap between vessel and ecal modules
+
+  G4double barrel_ecal_abs_thickness_;   ///< Barrel ECAL absorber thickness
+  G4double barrel_ecal_scint_thickness_; ///< Barrel ECAL scintillator thickness
+  G4int barrel_ecal_num_layers_;         ///< Number of layers in barrel ECAL
+
+  G4double upstream_ecal_abs_thickness_;   ///< Upstr. ECAL absorber thickness
+  G4double upstream_ecal_scint_thickness_; ///< Upstr. ECAL scintillator thickness
+  G4int upstream_ecal_num_layers_;         ///< Number of layers in upstr. ECAL
+
+  G4double downstream_ecal_abs_thickness_;   ///< Downst. ECAL absorber thickness
+  G4double downstream_ecal_scint_thickness_; ///< Downst. ECAL scintill. thickness
+  G4int downstream_ecal_num_layers_;         ///< Number of layers in downst. ECAL
 
   G4VPhysicalVolume* hall_phys_vol_;   ///< Physical volume of near det. hall
   G4VPhysicalVolume* detenv_phys_vol_; ///< Physical volume wrapping the ND
+
+  G4String gdml_output_filename_; ///< Name of GDML output file
 };
 
 #endif

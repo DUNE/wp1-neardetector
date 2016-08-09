@@ -73,7 +73,7 @@ void RunManager::ExecuteMacroFile(const G4String& filename)
   G4UIsession* batch_session = new UIBatch(filename.data(), UI->GetSession());
   UI->SetSession(batch_session);
   G4UIsession* prev_session = UI->GetSession()->SessionStart();
-  delete UI->GetSession();
+  delete (UI->GetSession());
   UI->SetSession(prev_session);
 }
 
