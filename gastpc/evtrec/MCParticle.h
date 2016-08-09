@@ -16,6 +16,7 @@
 
 namespace gastpc { class MCParticle; }
 namespace gastpc { class NuInteraction; }
+namespace gastpc { class MCTrack; }
 
 
 /// TODO: Class description
@@ -91,6 +92,11 @@ public:
   ///
   gastpc::NuInteraction* GetInteraction() const;
 
+  ///
+  void AddTrack(gastpc::MCTrack*);
+  ///
+  const std::vector<gastpc::MCTrack*>& GetTracks() const;
+
   // 
   void Info(std::ostream& s=std::cout) const;
 
@@ -115,6 +121,8 @@ private:
 
   gastpc::MCParticle* mother_; ///< Pointer to mother particle
   std::vector<gastpc::MCParticle*> daughters_;
+
+  std::vector<gastpc::MCTrack*> tracks_;
 
   ClassDef(gastpc::MCParticle, 1)
 };
@@ -170,5 +178,10 @@ inline void gastpc::MCParticle::SetInteraction(gastpc::NuInteraction* i)
 { interaction_ = i; }
 inline gastpc::NuInteraction* gastpc::MCParticle::GetInteraction() const
 { return interaction_; }
+
+inline void gastpc::MCParticle::AddTrack(gastpc::MCTrack* p)
+{ tracks_.push_back(p); }
+inline const std::vector<gastpc::MCTrack*>& gastpc::MCParticle::GetTracks() const 
+{ return tracks_; }
 
 #endif

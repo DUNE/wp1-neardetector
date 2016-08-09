@@ -41,6 +41,7 @@ namespace gastpc {
     interaction_ = 0;
     mother_ = 0;
     daughters_.clear();
+    tracks_.clear();
   }
 
 
