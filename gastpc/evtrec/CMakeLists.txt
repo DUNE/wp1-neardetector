@@ -28,5 +28,5 @@ install(TARGETS GasTPCEvtRec
         ARCHIVE DESTINATION lib)
 
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/G__EvtRec_rdict.pcm"
-              "${CMAKE_CURRENT_BINARY_DIR}/libEvtRec.rootmap" 
+#              "${CMAKE_CURRENT_BINARY_DIR}/libEvtRec.rootmap" 
         DESTINATION lib)
