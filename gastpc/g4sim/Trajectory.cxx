@@ -32,7 +32,8 @@ Trajectory::Trajectory(const G4Track* track):
   creator_process_(""),
   initial_volume_(""),
   final_volume_(""),
-  rec_trjpoints_(true)
+  rec_trjpoints_(true),
+  trjpoints_(0)
 {
   // Set creator process
   if (mother_id_ == 0) creator_process_ = "none";
@@ -41,7 +42,7 @@ Trajectory::Trajectory(const G4Track* track):
   // Set name of volume where particle was created
   initial_volume_ = track->GetVolume()->GetName();
 
-  _trjpoints = new TrajectoryPointContainer();
+  if (rec_trjpoints_) trjpoints_ = new TrajectoryPointContainer();
 
   // Add this trajectory in the map, but only if no other
   // trajectory for this track id has been registered yet
@@ -57,10 +58,11 @@ Trajectory::Trajectory(const Trajectory& other): G4VTrajectory()
 
 Trajectory::~Trajectory()
 {
-  for (unsigned int i=0; i<_trjpoints->size(); ++i) 
-    delete (*_trjpoints)[i];
-  _trjpoints->clear();
-  delete _trjpoints;
+  if (trjpoints_) {
+    for (unsigned int i=0; i<trjpoints_->size(); ++i) delete (*trjpoints_)[i];
+    trjpoints_->clear();
+    delete trjpoints_;
+  }
 }
 
 
@@ -89,7 +91,7 @@ void Trajectory::AppendStep(const G4Step* step)
   TrajectoryPoint* point = 
     new TrajectoryPoint(step->GetPostStepPoint()->GetPosition(),
                         step->GetPostStepPoint()->GetGlobalTime());
-  _trjpoints->push_back(point);
+  trjpoints_->push_back(point);
 }
 
 
@@ -104,11 +106,11 @@ void Trajectory::MergeTrajectory(G4VTrajectory* second)
 
   // initial point of the second trajectory should not be merged
   for (G4int i=1; i<entries ; ++i) { 
-    _trjpoints->push_back((*(tmp->_trjpoints))[i]);
+    trjpoints_->push_back((*(tmp->trjpoints_))[i]);
   }
 
-  delete (*tmp->_trjpoints)[0];
-  tmp->_trjpoints->clear();
+  delete (*tmp->trjpoints_)[0];
+  tmp->trjpoints_->clear();
 }
 
 

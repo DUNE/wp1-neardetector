@@ -8,14 +8,15 @@
 
 #include "RunManager.h"
 
+#include "PersistencyManager.h"
 #include "DuneGArNDDetConstr.h"
 #include "BeamSpillGenerator.h"
 #include "ParticleGunGenerator.h"
-#include "PersistencyManager.h"
 #include "DefaultRunAction.h"
 #include "DefaultEventAction.h"
 #include "DefaultTrackingAction.h"
 #include "DefaultSteppingAction.h"
+#include "UIBatch.h"
 
 #include <globals.hh>
 #include <G4GenericMessenger.hh>
@@ -33,8 +34,7 @@ RunManager::RunManager(const std::string& detector_tag,
 {
   DefineCommands();
 
-  G4VModularPhysicsList* physlist = new FTFP_BERT(); //new QGSP_BERT();
-    //new G4EmStandardPhysics_option3();
+  G4VModularPhysicsList* physlist = new QGSP_BERT();
   physlist->RegisterPhysics(new G4StepLimiterPhysics());
   this->SetUserInitialization(physlist);
 
@@ -53,9 +53,10 @@ RunManager::RunManager(const std::string& detector_tag,
 
 RunManager::~RunManager()
 {
-  PersistencyManager* current = dynamic_cast<PersistencyManager*>
+  PersistencyManager* pm = dynamic_cast<PersistencyManager*>
     (G4VPersistencyManager::GetPersistencyManager());
-  current->CloseFile();
+  if (pm) pm->CloseFile();
+
   delete msg_;
 }
 
@@ -69,13 +70,23 @@ void RunManager::Initialize()
 void RunManager::ExecuteMacroFile(const G4String& filename)
 {
   G4UImanager* UI = G4UImanager::GetUIpointer();
-  UI->ExecuteMacroFile(filename);
+  G4UIsession* batch_session = new UIBatch(filename.data(), UI->GetSession());
+  UI->SetSession(batch_session);
+  G4UIsession* prev_session = UI->GetSession()->SessionStart();
+  delete UI->GetSession();
+  UI->SetSession(prev_session);
 }
+
+
+// void RunManager::ExecuteMacroFile(const G4String& filename)
+// {
+//   G4UImanager* UI = G4UImanager::GetUIpointer();
+//   UI->ExecuteMacroFile(filename);
+// }
 
 
 void RunManager::SetRandomSeed(G4int seed)
 {
-  G4cerr << "RunManager::SetRandomSeed(): " << seed << G4endl;
   if (seed < 0) CLHEP::HepRandom::setTheSeed(time(0));
   else CLHEP::HepRandom::setTheSeed(seed);
 }

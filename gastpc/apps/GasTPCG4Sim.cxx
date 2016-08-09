@@ -102,13 +102,9 @@ int main(int argc, char** argv)
 {
   ParseCmdLineOptions(argc, argv);
 
-  std::cerr << "Initialize()" << std::endl;
-
   RunManager* runmgr = new RunManager(detector_, generator_);
   runmgr->ExecuteMacroFile(cfg_filename_);
   runmgr->Initialize();
-
-  std::cerr << "Initialize()" << std::endl;
 
   if (!batch_mode_) {
     G4VisManager* vismgr = new G4VisExecutive();
@@ -126,6 +122,5 @@ int main(int argc, char** argv)
   }
 
   delete runmgr;
-
   return EXIT_SUCCESS;
 }

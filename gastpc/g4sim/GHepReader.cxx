@@ -18,7 +18,10 @@
 #include <G4ParticleTable.hh>
 
 #include <TChain.h>
+#include <TTree.h>
+#include <TFile.h>
 #include <TCollection.h>
+#include <TBranch.h>
 //#include <TVector3.h>
 
 #include <Ntuple/NtpMCEventRecord.h>
@@ -46,7 +49,7 @@ GHepReader::~GHepReader()
 void GHepReader::Initialize(const G4String& path)
 {
   ghep_chain_ = new TChain("gtree");
-  ghep_chain_->Add(path);
+  ghep_chain_->Add(path.data());
   ghep_chain_->SetBranchAddress("gmcrec", &gmcrec_);
 
   num_entries_ = ghep_chain_->GetEntries();
@@ -55,23 +58,21 @@ void GHepReader::Initialize(const G4String& path)
 
 void GHepReader::GeneratePrimaryVertices(G4Event* event)
 {
-  // Read from the GHEP source as many interaction as required
+  // Read from the GHEP source as many interactions as required
   // according to the defined mean number of interactions per spill.
 
-  // The G4Event is organized in terms of vertices (a position and time)
+  // (The G4Event is organized in terms of vertices (a position and time)
   // and primary particles associated to them. In the GHEP record, in contrast,
   // we are given a single vertex (typically, the point at which the neutrino
   // interacted) and relative positions and times for each final-state 
   // particle. We'll keep track of the different Geant4-like vertices we
-  // create using the map defined below.
+  // create using the map defined below.)
   std::map<G4LorentzVector, G4PrimaryVertex*> vertex_map;
 
   // Decide how many interactions we'll read from this source
   G4int num_interactions;
-  if (mean_ <= 0.) 
-    num_interactions = 1;
-  else 
-    num_interactions = BeamSpillSource::NumberOfInteractions();
+  if (mean_ <= 0.) num_interactions = 1;
+  else num_interactions = BeamSpillSource::NumberOfInteractions();
 
   // Fetch the event generation info class in which we'll store a copy
   // of the GHEP record
@@ -80,23 +81,20 @@ void GHepReader::GeneratePrimaryVertices(G4Event* event)
 
   for (G4int i=0; i<num_interactions; ++i) {
 
-    G4cout << "Interaction no. " << i << G4endl;
-
     ghep_chain_->GetEntry(current_entry_);
     genie::EventRecord* record = gmcrec_->event;
 
     // Copy the GHEP record into the event generation info object
     // (I use here the Copy() method because using the copy constructor
-    // results at runtime in a segmentaion violation.)
+    // results at runtime in a segmentation violation.)
     genie::NtpMCEventRecord* gmcrec_copy = new genie::NtpMCEventRecord();
     gmcrec_copy->Copy(*gmcrec_);
     eg_info->AddEntry(gmcrec_copy);
 
     // Generate a time offset for this interaction
     G4double time_offset = BeamSpillSource::TimeOffset();
-    G4cout << "time offset (ns): " << time_offset/ns << G4endl;
 
-    // Get the common vertex position and time in the GHEP record
+    // Get the common vertex position and time for this interaction
     TLorentzVector* xyzt = record->Vertex();
 
     // Loop through the particles in the GHEP record
@@ -131,7 +129,7 @@ void GHepReader::GeneratePrimaryVertices(G4Event* event)
       G4PrimaryVertex* vertex = 0;
       auto result = vertex_map.find(gpart_xyzt);
       if (result == vertex_map.end()) {
-        // It's not in the map yet
+        // This vertex is not in the map yet
         vertex = new G4PrimaryVertex(gpart_xyzt.x(), 
                                      gpart_xyzt.y(), 
                                      gpart_xyzt.z(),
@@ -155,9 +153,8 @@ void GHepReader::GeneratePrimaryVertices(G4Event* event)
     PrimaryParticleInfo* pp_info = new PrimaryParticleInfo();
     pp_info->SetInteractionID((eg_info->GetEntries().size())-1);
     particle->SetUserInformation(pp_info);
-    std::cout << "Interaction ID: " << pp_info->GetInteractionID() << G4endl;
 
-    // Add more info to the Geant4 particle
+    // Add some extra info to the Geant4 particle
     particle->SetCharge(gpart->Charge());
     if (gpart->PolzIsSet()) {
       TVector3 polz;
@@ -171,6 +168,7 @@ void GHepReader::GeneratePrimaryVertices(G4Event* event)
 
     // Get ready to read the following entry if need it.
     // If we've reached the end-of-file, rewind to the beginning.
+    gmcrec_->Clear();
     ++current_entry_;
     if (current_entry_ == num_entries_) current_entry_ = 0;
   }

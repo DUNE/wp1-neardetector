@@ -127,7 +127,7 @@ private:
 
   G4bool rec_trjpoints_;
 
-  TrajectoryPointContainer* _trjpoints;
+  TrajectoryPointContainer* trjpoints_;
 };
 
 // Inline definitions //////////////////////////////////////
@@ -151,10 +151,10 @@ inline G4ParticleDefinition* Trajectory::GetParticleDefinition()
 { return pdef_; }
 
 inline int Trajectory::GetPointEntries() const
-{ return _trjpoints->size(); }
+{ return trjpoints_->size(); }
 
 inline G4VTrajectoryPoint* Trajectory::GetPoint(G4int i) const
-{ return (*_trjpoints)[i]; }
+{ return (*trjpoints_)[i]; }
 
 inline G4ThreeVector Trajectory::GetInitialMomentum() const
 { return initial_momentum_; }

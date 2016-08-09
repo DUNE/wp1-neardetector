@@ -51,10 +51,10 @@ G4Material* MaterialsList::TitaniumR56323()
   G4Material* material = G4Material::GetMaterial(name, false);
 
   if (!material) {
-    material = new G4Material(name, 4.48*g/cm3, 4);
+    material = new G4Material(name, 4.48*g/cm3, 3);
 
     G4Element* Ti = G4NistManager::Instance()->FindOrBuildElement("Ti");
-    material->AddElement(Ti, 0.944);
+    material->AddElement(Ti, 0.945);
 
     G4Element* Al = G4NistManager::Instance()->FindOrBuildElement("Al");
     material->AddElement(Al, 0.030);
@@ -62,8 +62,8 @@ G4Material* MaterialsList::TitaniumR56323()
     G4Element* V = G4NistManager::Instance()->FindOrBuildElement("V");
     material->AddElement(V, 0.025);
 
-    G4Element* Ru = G4NistManager::Instance()->FindOrBuildElement("Ru");
-    material->AddElement(Ru, 0.001);
+//    G4Element* Ru = G4NistManager::Instance()->FindOrBuildElement("Ru");
+//    material->AddElement(Ru, 0.001);
   }
 
   return material;

@@ -16,7 +16,6 @@ namespace genie { class NtpMCEventRecord; }
 class TChain;
 
 
-
 /// TODO: Class description
 
 class GHepReader: public BeamSpillSource
