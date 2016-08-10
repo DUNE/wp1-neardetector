@@ -19,6 +19,8 @@
 #include <G4VisAttributes.hh>
 #include <G4SDManager.hh>
 #include <G4UserLimits.hh>
+#include <G4ProductionCuts.hh>
+#include <G4Region.hh>
 
 
 
@@ -71,12 +73,18 @@ void DuneGArNDVesselGeometry::DefineVolumes()
   new G4PVPlacement(0, G4ThreeVector(), tpc_logic_vol, "TPC", gas_logic_vol, 
     false, 0, true);
 
-  TrackingSD* tsd = new TrackingSD("/DUNEGARND/TPC");
+  TrackingSD* tsd = new TrackingSD("TPC");
   tpc_logic_vol->SetSensitiveDetector(tsd);
   G4SDManager::GetSDMpointer()->AddNewDetector(tsd);
 
   G4UserLimits* step_limit = new G4UserLimits(7.5*mm);
   tpc_logic_vol->SetUserLimits(step_limit);
+
+  G4ProductionCuts* prodcuts = new G4ProductionCuts();
+  prodcuts->SetProductionCut(15.*mm); // For all particles
+  G4Region* gas_region = new G4Region("GAS");
+  gas_region->AddRootLogicalVolume(gas_logic_vol);
+  gas_region->SetProductionCuts(prodcuts);
 
   //G4VisAttributes* vis = new G4VisAttributes();
   //vis->SetColor(0.5,0.5,0.5);

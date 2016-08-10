@@ -254,6 +254,8 @@ void PersistencyManager::ProcessTrackingHits(G4VHitsCollection* hc,
   TrackingHitsCollection* hits = dynamic_cast<TrackingHitsCollection*>(hc);
   if (!hits) return;
 
+  mctracks_map_.clear();
+
   for (G4int i=0; i<hits->entries(); ++i) {
 
     TrackingHit* hit = dynamic_cast<TrackingHit*>(hits->GetHit(i));
@@ -270,12 +272,14 @@ void PersistencyManager::ProcessTrackingHits(G4VHitsCollection* hc,
     auto result = mctracks_map_.find(trackid);
 
     if (result == mctracks_map_.end()) {
-      // We have not seen this track before; 
-      // let's create a new MCTrack then
+      // We have not seen this track before. Let's create a new MCTrack then
+      // and set its properties and related particles.
       mctrack = new gastpc::MCTrack();
-      mctrack->SetLabel(hits->GetSDname());
-      mctrack->SetParticle(mcparticles_map_[trackid]);
       mctracks_map_[trackid] = mctrack;
+      gastpc::MCParticle* mcpart = mcparticles_map_[trackid];
+      mctrack->SetParticle(mcpart);
+      mcpart->AddTrack(mctrack);
+      mctrack->SetLabel(hits->GetSDname());      
       evtrec.Add(mctrack);
     }
     else {
@@ -291,7 +295,6 @@ void PersistencyManager::ProcessTrackingHits(G4VHitsCollection* hc,
 
 G4bool PersistencyManager::Store(const G4VPhysicalVolume*)
 {
-  G4cout << "PersistencyManager::Store" << G4endl;
   return true;
 }
 

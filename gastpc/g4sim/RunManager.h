@@ -38,18 +38,16 @@ public:
   ///
   void DefineCommands();
 
-private:
-  G4VUserDetectorConstruction* CreateDetectorConstruction(const std::string&);
-
-  G4VUserPrimaryGeneratorAction* CreatePrimaryGenerator(const std::string&);
-
   /// Set a seed for the random number generator
   /// If a negative integer is given, the system time is set as seed.
   void SetRandomSeed(G4int);
 
 private:
-  G4GenericMessenger* msg_;
+  G4VUserDetectorConstruction* CreateDetectorConstruction(const std::string&);
+  G4VUserPrimaryGeneratorAction* CreatePrimaryGenerator(const std::string&);
 
+private:
+  G4GenericMessenger* msg_;
 };
 
 #endif

@@ -21,6 +21,7 @@
 namespace {
   bool batch_mode_ = true;       ///< Batch mode flag
   int num_events_ = 0;           ///< Number of events
+  int rnd_seed_ = -1;            ///< Random seed
   std::string cfg_filename_(""); ///< Filename of configuration macro
   std::string detector_("");     ///< Detector construction name
   std::string generator_("");    ///< Primary generator name
@@ -30,12 +31,13 @@ namespace {
 void PrintUsage()
 {
   std::cerr << "Usage: GasTPCG4Sim [-b|i] [-c <file>] [-n <number>]\n"
-            << "                   -d <name> -g <name>"
+            << "                   [-r <number>] -d <name> -g <name>"
             << "\n" << std::endl;
   std::cerr << "   -b, --batch          : Run in batch mode (default)\n"
             << "   -i, --interactive    : Run in interactive/graphic mode\n"
             << "   -c, --config-file    : Configuration macro file\n"
             << "   -n, --nevents        : Number of events to simulate\n"
+            << "   -r, --seed           : Random seed\n"
             << "   -d, --detector       : Detector construction tag\n"
             << "   -g, --generator      : Primary generator tag"
             << std::endl; 
@@ -54,6 +56,7 @@ void ParseCmdLineOptions(int argc, char** argv)
     {"batch",       no_argument,       0, 'b'},
     {"config-file", required_argument, 0, 'c'},
     {"nevents",     required_argument, 0, 'n'},
+    {"seed",        required_argument, 0, 'r'},
     {"detector",    required_argument, 0, 'd'},
     {"generator",   required_argument, 0, 'g'},
     {0, 0, 0, 0}
@@ -62,7 +65,7 @@ void ParseCmdLineOptions(int argc, char** argv)
   while (true) {
 
     int option_index = 0;
-    c = getopt_long(argc, argv, "ibc:n:d:g:", long_options, &option_index);
+    c = getopt_long(argc, argv, "ibc:n:r:d:g:", long_options, &option_index);
 
     if (c == -1) break;
 
@@ -78,6 +81,9 @@ void ParseCmdLineOptions(int argc, char** argv)
         break;
       case 'n':
         num_events_ = std::atoi(optarg);
+        break;
+      case 'r':
+        rnd_seed_ = std::atoi(optarg);
         break;
       case 'd':
         detector_ = std::string(optarg);
@@ -103,6 +109,7 @@ int main(int argc, char** argv)
   ParseCmdLineOptions(argc, argv);
 
   RunManager* runmgr = new RunManager(detector_, generator_);
+  runmgr->SetRandomSeed(rnd_seed_);
   runmgr->ExecuteMacroFile(cfg_filename_);
   runmgr->Initialize();
 

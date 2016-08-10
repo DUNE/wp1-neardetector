@@ -19,6 +19,7 @@
 #include "UIBatch.h"
 
 #include <globals.hh>
+#include <G4SystemOfUnits.hh>
 #include <G4GenericMessenger.hh>
 #include <G4UImanager.hh>
 #include <G4VModularPhysicsList.hh>
@@ -36,6 +37,9 @@ RunManager::RunManager(const std::string& detector_tag,
 
   G4VModularPhysicsList* physlist = new QGSP_BERT();
   physlist->RegisterPhysics(new G4StepLimiterPhysics());
+  physlist->SetDefaultCutValue(50.*mm);
+
+  physlist->DumpCutValuesTable();
   this->SetUserInitialization(physlist);
 
   this->SetUserInitialization(CreateDetectorConstruction(detector_tag));
@@ -89,6 +93,8 @@ void RunManager::SetRandomSeed(G4int seed)
 {
   if (seed < 0) CLHEP::HepRandom::setTheSeed(time(0));
   else CLHEP::HepRandom::setTheSeed(seed);
+  CLHEP::HepRandom::showEngineStatus()
+  ;
 }
 
 

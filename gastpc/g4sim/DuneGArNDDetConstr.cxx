@@ -203,7 +203,7 @@ void DuneGArNDDetConstr::DefineEnvelopeAndMagnet()
   // Production cuts ///////////////////////////////////////
 
   G4ProductionCuts* prodcuts = new G4ProductionCuts();
-  prodcuts->SetProductionCut(5.*cm); // For all particles
+  prodcuts->SetProductionCut(10.*cm); // For all particles
 
   G4Region* yoke_region = new G4Region("MAGNET_YOKE");
   yoke_region->AddRootLogicalVolume(yoke_geom.GetLogicalVolume());
