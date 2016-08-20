@@ -30,6 +30,8 @@ public:
   /// Add a GHEP source to the primary generator.
   /// (Similar methods could exist for other source types.)
   void AddGHepSource(G4String, G4double);
+
+  void AddCosmicsSource(G4String);
   
   ///
   virtual void GeneratePrimaries(G4Event*);

@@ -12,10 +12,8 @@
 #include <string>
 
 namespace genie { class NtpMCEventRecord; }
-
 class TFile;
 class TTree;
-class NdtfDst;
 
 
 /// TODO: Class description
@@ -43,15 +41,16 @@ public:
   int     EventID;
   int     Sample;
   double  Ev_reco;
+  double  Ev;
+  double  Y;
   double  VertexPosition[4];
   int     NGeantTracks;
+  int     TrackID[500];
   double  Momentum[500];
   int     Pdg[500];
-//  int     TrackID[500];
-//  double  TotalEDep;
+  double  TotalEDep[500];
   double  dEdx[500];
-//  int     NGeantHits[500];
-
+  int     NGeantHits[500];
 
 private:
   TFile* file_;

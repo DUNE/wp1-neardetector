@@ -17,7 +17,7 @@ ClassImp(gastpc::EventRecord);
 
 namespace gastpc {
 
-  EventRecord::EventRecord()
+  EventRecord::EventRecord(): run_id_(-1), event_id_(-1)
   {
   }
 

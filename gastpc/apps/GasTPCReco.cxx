@@ -13,7 +13,6 @@
 #include "MCParticle.h"
 #include "NuInteraction.h"
 #include "DstWriter.h"
-#include "NdtfDst.h"
 #include "Units.h"
 
 #include <TRandom3.h>
@@ -21,6 +20,9 @@
 #include <TTreeReader.h>
 #include <TTreeReaderValue.h>
 #include <TLorentzVector.h>
+
+#include <Ntuple/NtpMCEventRecord.h>
+#include <Interaction/Interaction.h>
 
 #include <getopt.h>
 #include <iostream>
@@ -51,9 +53,12 @@ namespace {
   struct TrackInfo {
     double pdg;
     double dEdx;
+    double edep;
     double length;
     double length_T;
     double momentum;
+    int    num_hits;
+    int    track_id;
   };
 
 }
@@ -203,6 +208,8 @@ double ProcessTrack(gastpc::MCTrack* track, TrackInfo& track_info)
   TLorentzVector max  = prev;
   std::multiset<double> dEdx_measurements;
 
+  double edep = 0.;
+
   for (gastpc::MCHit* hit: track->GetHits()) {
     
     TLorentzVector curr = hit->GetXYZT();
@@ -218,11 +225,15 @@ double ProcessTrack(gastpc::MCTrack* track, TrackInfo& track_info)
     double dEdx = hit->GetAmplitude() / distance;
     dEdx_measurements.insert(dEdx);
 
+    edep += hit->GetAmplitude();
+
     ++i;
     prev = curr;
   }
 
   track_info.dEdx = TruncatedMean(dEdx_measurements);
+  track_info.edep = edep;
+  track_info.num_hits = track->GetHits().size();
 
   double length_t = max.Z() - min.Z();
   double length_l = max.Y() - min.Y();
@@ -392,6 +403,8 @@ int main(int argc, char* argv[])
       if (tgt.Z() != 18) continue;
 
       double energy_reco = 0.;
+      double energy_nu = interaction->InitState().ProbeE(genie::kRfLab);
+      double Y = -1.;
       std::vector<TrackInfo> trackinfo_v;
       ParticleContent pc = {};
 
@@ -412,6 +425,7 @@ int main(int argc, char* argv[])
       for (gastpc::MCParticle* mcp: nuint->GetParticles()) {
 
         int pdg = mcp->GetPDGCode();
+        int trackid = mcp->GetMCID();
 
         // MUONS ///////////////////////////////////////////
         if (std::abs(pdg) == 13) {
@@ -425,6 +439,7 @@ int main(int argc, char* argv[])
 
             TrackInfo ti = {};
             ti.pdg = pdg;
+            ti.track_id = trackid;
 
             double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
             double mass_muon = 105.6583715 * gastpc::MeV;
@@ -432,6 +447,7 @@ int main(int argc, char* argv[])
               std::sqrt( measured_mom * measured_mom + mass_muon * mass_muon);
 
             energy_reco += energy;
+            Y = 1. - energy / energy_nu;
             trackinfo_v.push_back(ti);
           }
         }
@@ -446,6 +462,7 @@ int main(int argc, char* argv[])
 
             TrackInfo ti = {};
             ti.pdg = pdg;
+            ti.track_id = trackid;
             
             double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
             energy_reco += measured_mom;
@@ -464,6 +481,7 @@ int main(int argc, char* argv[])
 
             TrackInfo ti = {};
             ti.pdg = pdg;
+            ti.track_id = trackid;
 
             double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
             double mass_electron = 0.511 * gastpc::MeV;
@@ -471,6 +489,7 @@ int main(int argc, char* argv[])
               std::sqrt( measured_mom * measured_mom + mass_electron * mass_electron);
 
             energy_reco += energy;
+            Y = 1. - energy / energy_nu;
             trackinfo_v.push_back(ti);
           }
         }
@@ -485,6 +504,7 @@ int main(int argc, char* argv[])
 
             TrackInfo ti = {};
             ti.pdg = pdg;
+            ti.track_id = trackid;
 
             double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
             double mass_pion = 139.57018 * gastpc::MeV;
@@ -502,6 +522,7 @@ int main(int argc, char* argv[])
 
           TrackInfo ti;
           ti.pdg = pdg;
+          ti.track_id = trackid;
 
           double energy = mcp->GetInitial4Momentum().E();
           energy = energy * gastpc::GeV;
@@ -510,16 +531,21 @@ int main(int argc, char* argv[])
         }        
       } // for (gastpc::MCParticle* mcp: nuint->GetParticles())
 
-      dst_->Sample = AnalyzeParticleContent(pc);
+      dst_->Sample  = AnalyzeParticleContent(pc);
       dst_->Ev_reco = energy_reco;
+      dst_->Ev      = energy_nu;
+      dst_->Y       = Y;
 
       int num_tracks = trackinfo_v.size();
       dst_->NGeantTracks = num_tracks;
 
       for (int i=0; i<num_tracks; ++i) {
-        dst_->Pdg[i]      = trackinfo_v[i].pdg;
-        dst_->Momentum[i] = trackinfo_v[i].momentum;
-        dst_->dEdx[i]     = trackinfo_v[i].dEdx;
+        dst_->TrackID[i]    = trackinfo_v[i].track_id;
+        dst_->Pdg[i]        = trackinfo_v[i].pdg;
+        dst_->Momentum[i]   = trackinfo_v[i].momentum;
+        dst_->dEdx[i]       = trackinfo_v[i].dEdx;
+        dst_->TotalEDep[i]  = trackinfo_v[i].edep;
+        dst_->NGeantHits[i] = trackinfo_v[i].num_hits;
       }
 
       dst_->Write();

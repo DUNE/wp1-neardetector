@@ -16,7 +16,7 @@ set(CMAKE_MODULE_PATH "${GASTPC_SOURCE_DIR}/cmake" "${CMAKE_MODULE_PATH}")
 
 ### Look for external dependencies
 find_package(Geant4 REQUIRED vis_opengl_x11)
-find_package(ROOT REQUIRED Geom EGPythia6)
+find_package(ROOT REQUIRED Geom EGPythia6 TreePlayer)
 find_package(GENIE REQUIRED)
 find_package(LibXml2)
 find_package(Log4cpp)

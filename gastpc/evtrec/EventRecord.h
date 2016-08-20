@@ -27,6 +27,12 @@ public:
   /// Destructor
   virtual ~EventRecord();
 
+  void SetRunID(int);
+  int GetRunID() const;
+
+  void SetEventID(int);
+  int GetEventID() const;
+
   void Add(gastpc::MCParticle*);
   void Add(gastpc::MCTrack*);
   void Add(gastpc::NuInteraction*);
@@ -35,15 +41,25 @@ public:
   const std::vector<gastpc::MCTrack*>& GetMCTracks() const;
   const std::vector<gastpc::NuInteraction*>& GetNuInteractions() const;
 
-  /// Drestoy all objects in the event record
+  /// Destroy all objects in the event record
   void Clear();
 
 private:
+  int run_id_;
+  int event_id_;
+
   std::vector<gastpc::MCParticle*> mcparticles_;
   std::vector<gastpc::MCTrack*> mctracks_;
   std::vector<gastpc::NuInteraction*> nuints_;
 
   ClassDef(gastpc::EventRecord, 1)
 };
+
+// Inline definitions //////////////////////////////////////
+
+inline void gastpc::EventRecord::SetRunID(int id) { run_id_ = id; }
+inline int  gastpc::EventRecord::GetRunID() const { return run_id_; }
+inline void gastpc::EventRecord::SetEventID(int id) { event_id_ = id; }
+inline int  gastpc::EventRecord::GetEventID() const { return event_id_; }
 
 #endif

@@ -8,7 +8,7 @@
 
 #include "DstWriter.h"
 
-#include "NdtfDst.h"
+#include <Ntuple/NtpMCEventRecord.h>
 
 #include <TTree.h>
 #include <TFile.h>
@@ -43,14 +43,16 @@ bool DstWriter::OpenFile(const std::string& filename,
   tree_->Branch("EventID",        &EventID, "EventID/I");
   tree_->Branch("Sample",         &Sample, "Sample/I");
   tree_->Branch("Ev_reco",        &Ev_reco, "Ev_reco/D");
+  tree_->Branch("Ev",             &Ev, "Ev/D");
+  tree_->Branch("Y",              &Y, "Y/D");
   tree_->Branch("VertexPosition", VertexPosition, "VertexPosition[4]/D");
   tree_->Branch("NGeantTracks",   &NGeantTracks, "NGeantTracks/I");
+  tree_->Branch("TrackID",        TrackID, "TrackID[NGeantTracks]/I");
   tree_->Branch("Momentum",       Momentum, "Momentum[NGeantTracks]/D");
+  tree_->Branch("TotalEDep",      TotalEDep, "TotalEDep[NGeantTracks]/D");
   tree_->Branch("Pdg",            Pdg, "Pdg[NGeantTracks]/I");
-//  tree_->Branch("TrackID",        TrackID, "TrackID[NGeantTracks]/I");
-  //tree_->Branch("TotalEDep",      &(dst_->TotalEDep));
   tree_->Branch("dEdx",           dEdx, "dEdx[NGeantTracks]/D");
-  //tree_->Branch("NGeantHits",     &(dst_->NGeantHits));
+  tree_->Branch("NGeantHits",     NGeantHits, "NGeantHits[NGeantTracks]/I");
 
   tree_->SetWeight(3.75E15);
 

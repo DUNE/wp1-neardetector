@@ -62,9 +62,14 @@ G4double LBNFBeamTimeDistribution::TimeOffset()
   // First, pick a time within a bucket
   G4double offset = G4RandGauss::shoot(0.0, bucket_time_sigma_);
 
-  // Second, pick a bucket within a batch
-  G4int bucket_num = 
-    std::floor(G4RandFlat::shoot(0., filled_buckets_per_batch_));
+  // Second, pick a bucket within a batch.
+  // (The limits for the random generator are defined explicitly below
+  // or the compiler complains otherwise about an ambiguous function call,
+  // since a 0 could be taken as a null pointer thus matching another method's 
+  // declaration.)
+  G4long min_bucket = 0; 
+  G4long max_bucket = filled_buckets_per_batch_;
+  G4long bucket_num = G4RandFlat::shootInt(min_bucket, max_bucket);
   offset +=  time_betw_buckets_ * G4double(bucket_num);
 
   // Third, pick a batch

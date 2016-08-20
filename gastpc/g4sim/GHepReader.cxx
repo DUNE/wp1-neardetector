@@ -11,6 +11,7 @@
 #include "EventGenerationInfo.h"
 #include "PrimaryParticleInfo.h"
 
+#include <Randomize.hh>
 #include <G4Event.hh>
 #include <G4LorentzVector.hh>
 #include <G4SystemOfUnits.hh>
@@ -19,10 +20,6 @@
 
 #include <TChain.h>
 #include <TTree.h>
-#include <TFile.h>
-#include <TCollection.h>
-#include <TBranch.h>
-//#include <TVector3.h>
 
 #include <Ntuple/NtpMCEventRecord.h>
 #include <EVGCore/EventRecord.h>

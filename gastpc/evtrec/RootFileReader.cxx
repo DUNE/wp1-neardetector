@@ -38,7 +38,7 @@ namespace gastpc {
 
     // Fetch the EventRecord tree from the file and sync the branch 
     // address to the transient record
-    tree_ = (TTree*) file_->Get("EventRecord");
+    tree_ = dynamic_cast<TTree*>(file_->Get("EventRecord"));
     evtrec_ = 0;
     tree_->SetBranchAddress("EventRecord", &evtrec_);
 
@@ -54,6 +54,7 @@ namespace gastpc {
 
   gastpc::EventRecord& RootFileReader::Read(int i)
   {
+    evtrec_->Clear();
     tree_->GetEntry(i);
     return *evtrec_;
   }

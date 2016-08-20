@@ -24,6 +24,7 @@
 
 #include <Ntuple/NtpMCEventRecord.h>
 
+#include <Randomize.hh>
 #include <G4GenericMessenger.hh>
 #include <G4Event.hh>
 #include <G4PrimaryVertex.hh>
@@ -93,6 +94,9 @@ G4bool PersistencyManager::Store(const G4Event* event)
   if (!store_current_event_) return false;
 
   gastpc::EventRecord evtrec;
+
+  evtrec.SetEventID(event->GetEventID());
+  evtrec.SetRunID(CLHEP::HepRandom::getTheSeed());
 
   ProcessTrajectories(event->GetTrajectoryContainer(), evtrec);
   ProcessPrimaryGenerationInfo(event, evtrec);
