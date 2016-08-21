@@ -406,7 +406,7 @@ int main(int argc, char* argv[])
       double energy_nu = interaction->InitState().ProbeE(genie::kRfLab);
       double Y = -1.;
       std::vector<TrackInfo> trackinfo_v;
-      ParticleContent pc = {};
+      ParticleContent pc{};
 
       dst_->RunID   = rv->GetRunID();
       dst_->EventID = rv->GetEventID();
@@ -437,7 +437,7 @@ int main(int argc, char* argv[])
             if (pdg == pdg_muon) pc.num_muons += 1;
             else pc.num_wsmuons += 1;
 
-            TrackInfo ti = {};
+            TrackInfo ti{};
             ti.pdg = pdg;
             ti.track_id = trackid;
 
@@ -460,7 +460,7 @@ int main(int argc, char* argv[])
 
             pc.num_protons += 1;
 
-            TrackInfo ti = {};
+            TrackInfo ti{};
             ti.pdg = pdg;
             ti.track_id = trackid;
             
@@ -479,7 +479,7 @@ int main(int argc, char* argv[])
             if (pdg == pdg_electron) pc.num_electrons += 1;
             else pc.num_wselectrons += 1;
 
-            TrackInfo ti = {};
+            TrackInfo ti{};
             ti.pdg = pdg;
             ti.track_id = trackid;
 
@@ -502,7 +502,7 @@ int main(int argc, char* argv[])
 
             pc.num_picharged += 1;
 
-            TrackInfo ti = {};
+            TrackInfo ti{};
             ti.pdg = pdg;
             ti.track_id = trackid;
 
@@ -520,7 +520,7 @@ int main(int argc, char* argv[])
 
           pc.num_pizeroes += 1;
 
-          TrackInfo ti;
+          TrackInfo ti{};
           ti.pdg = pdg;
           ti.track_id = trackid;
 
