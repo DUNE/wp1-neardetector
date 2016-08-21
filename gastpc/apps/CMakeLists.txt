@@ -59,15 +59,6 @@ target_link_libraries(GasTPCReco  GasTPCEvtRec NdtfDst
 
 ##############################
 
-add_executable(OverlayEvents OverlayEvents.cxx)
-
-target_link_libraries(OverlayEvents   ${ROOT_LIBRARIES}
-                                      ${GENIE_LIBRARIES}
-                                      ${Log4cpp_LIBRARIES}
-                                      ${LIBXML2_LIBRARIES})
-
-##############################
-
 install(TARGETS VertexStats GasTPCG4Sim TestIOEvtRec TestIOEvtRecWithGenie
-                EvtRecDump GasTPCReco OverlayEvents
+                EvtRecDump GasTPCReco
         RUNTIME DESTINATION bin)

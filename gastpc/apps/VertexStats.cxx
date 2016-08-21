@@ -103,6 +103,7 @@ int main(int argc, char** argv)
   chain->SetBranchAddress("gmcrec", &mcrec);
 
   double total_pot = 0.;
+  int total_num_vertices = 0;
   TFile* current_file = 0;
   std::map<TGeoNode*, DetVol> node_map;
   std::map<int, int> target_map;
@@ -163,6 +164,9 @@ int main(int argc, char** argv)
     genie::Interaction* interaction = record->Summary();
     const genie::Target& tgt = interaction->InitState().Tgt();
     target_map[tgt.Z()] += 1;
+
+    // Compute total statistics
+    ++total_num_vertices;
   }
 
   // Write results in the output file
@@ -171,6 +175,8 @@ int main(int argc, char** argv)
   ofile.open(output_file_, std::ios::trunc);
 
   ofile << "Total POT analyzed: " << total_pot << std::endl;
+
+  ofile << "Total num. vertices: " << total_num_vertices << std::endl;
 
   ofile << "\nVertex distribution per geometry volumes:" << std::endl;
 
