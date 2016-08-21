@@ -176,7 +176,7 @@ int main(int argc, char** argv)
 
   ofile << "Total POT analyzed: " << total_pot << std::endl;
 
-  ofile << "Total num. vertices: " << total_num_vertices << std::endl;
+  ofile << "Total num. vertices: " << total_num_vertices << std::endl; 
 
   ofile << "\nVertex distribution per geometry volumes:" << std::endl;
 
