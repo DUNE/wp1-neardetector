@@ -28,8 +28,11 @@ CONTENTS:
 Justo Martin Albo <justo.martin-albo@physics.ox.ac.uk> - current developer
 University of Oxford
 
-Georgios Christodoulou <georgios at hep.ph.liv.ac.uk> - current developer
+Georgios Christodoulou <georgios@hep.ph.liv.ac.uk> - current developer
 University of Liverpool
+
+Yuri Shitov <y.shitov@imperial.ac.uk> - current developer
+Imperial College, Royal Holloway
 
 Tom Stainer <tstainer \at liv.ac.uk>
 University of Liverpool
