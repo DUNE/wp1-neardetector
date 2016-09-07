@@ -3,7 +3,7 @@
 <geant_analysis_inputs analysis="GeantHPGASTPC" version="2015a" config="GeantHPTPC">
 
   <!-- Geometry file and volume to run geant simulation -->
-  <GeometryFile>                MyTPC.gdml              </GeometryFile>   <!-- has to be located in src/config-->
+  <GeometryFile>                site.gdml              </GeometryFile>   <!-- has to be located in src/config-->
   <SimTargetVolume>             innerVesselVolume      </SimTargetVolume>
   <SimEcalVolume>               12                     </SimEcalVolume>  <!-- Number of ecal volumes to simulate -->
   <POTSimulated>                2.25e15                </POTSimulated> <!-- POT simulated. This has to be the same with the number provided when running Genie  -->
