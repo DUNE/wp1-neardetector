@@ -13,7 +13,7 @@
           University of Liverpool
 
 \created  Sep 2012
-\last update Oct 2015
+\last update Sep 2016
 */
 //____________________________________________________________________________
 #include "GasTPCProcessor.hh"
@@ -21,6 +21,7 @@
 GasTPCProcessor::GasTPCProcessor()
   : precessCount_(0), recordCount_(0), backTracer_(0){
   //backTracerBuff_ = &backTracer_;
+  fNtpMCEventRecord = new genie::NtpMCEventRecord(); // protection when running the particle gun
 }
 
 GasTPCProcessor::~GasTPCProcessor(){
