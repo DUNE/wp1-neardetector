@@ -52,10 +52,15 @@ int main(int argc, char ** argv) {
   // Load the xml file
   const char* gastpc_dir = getenv("GasTPC");
   if(datacard == "")
-    datacard = "GeantSimulation.xml";
+    datacard = "GeantSimulationPG.xml";
   std::string fdatacard = string(gastpc_dir) + "/src/config/" + datacard;
 
   ReadDatacard(fdatacard);
+
+  if(fGeometryFile == "")
+    fGeometryFile = "site.gdml";
+  std::string fgeofile = string(gastpc_dir) + "/src/config/" + fGeometryFile;
+  std::cout << "INFO::Geometry file :: " << fgeofile << std::endl;
 
   // Define the input tree
   TTree *pg = new TTree("pg","pg");
@@ -93,7 +98,7 @@ int main(int argc, char ** argv) {
     else if(abs(pdg) == 2112)
       fMass = 939.57;
     else{
-      cout << "Choose the correct pdg to simulate. 11,-11,13,-13,22,211,-211,321,-321,2212,2112" << endl;
+      cout << "ERROR::Choose the correct pdg to simulate. 11,-11,13,-13,22,211,-211,321,-321,2212,2112" << endl;
       break;
     }
 
@@ -159,11 +164,11 @@ int main(int argc, char ** argv) {
   // Initialize your processors here. The processors will define
   // default values for all runtime parameters.
   LoadNuEventProcessor     *eventLoader  = new LoadNuEventProcessor();
-  eventLoader->initialize("particlegun",pg,fGeometryFile,1);
+  eventLoader->initialize("particlegun",pg,fgeofile,1);
   if(nentries > 0)
     eventLoader->setNEvents(nentries);
   
-  Geant4TrackingAlgorithm *g4trackingalg = new Geant4TrackingAlgorithm(fGeometryFile,fSimTargetVolume);
+  Geant4TrackingAlgorithm *g4trackingalg = new Geant4TrackingAlgorithm(fgeofile,fSimTargetVolume);
   //g4trackingalg->setGeometryFile(fGeometryFile);
   //g4trackingalg->setTargetVolumeName(fSimTargetVolume);
   g4trackingalg->setPhysicsList(fEMPhysicsList,fHadPhysicsList);
