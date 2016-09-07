@@ -1,6 +1,10 @@
 {
   gSystem->Load("libGeom");
+  // Choose the file to read
+  // Full DUNE ND detector geometry including the cavern
   TGeoManager *geom = TGeoManager::Import("../src/config/site.gdml");
+  // Only HPTPC
+  //TGeoManager *geom = TGeoManager::Import("../src/config/GasTPCDetector.gdml");
  
   //print out volumes and densities
   for(int i=0;i<=gGeoManager->GetListOfVolumes()->GetLast();i++){
