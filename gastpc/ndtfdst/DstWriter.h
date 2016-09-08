@@ -43,6 +43,7 @@ public:
   double  Ev_reco;
   double  Ev;
   double  Y;
+  double  Y_reco;
   double  VertexPosition[4];
   int     NGeantTracks;
   int     TrackID[500];

@@ -403,8 +403,10 @@ int main(int argc, char* argv[])
       if (tgt.Z() != 18) continue;
 
       double energy_reco = 0.;
-      double energy_nu = interaction->InitState().ProbeE(genie::kRfLab);
+      double energy_nu = 
+        (interaction->InitState().ProbeE(genie::kRfLab)) * gastpc::GeV;
       double Y = -1.;
+      double Y_reco = 0.;
       std::vector<TrackInfo> trackinfo_v;
       ParticleContent pc{ 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -447,7 +449,8 @@ int main(int argc, char* argv[])
               std::sqrt( measured_mom * measured_mom + mass_muon * mass_muon);
 
             energy_reco += energy;
-            Y = 1. - energy / energy_nu;
+            Y_reco = energy;
+            Y = mct->GetParticle()->GetInitial4Momentum().E();
             trackinfo_v.push_back(ti);
           }
         }
@@ -489,7 +492,8 @@ int main(int argc, char* argv[])
               std::sqrt( measured_mom * measured_mom + mass_electron * mass_electron);
 
             energy_reco += energy;
-            Y = 1. - energy / energy_nu;
+            Y_reco = energy;
+            Y = mct->GetParticle()->GetInitial4Momentum().E();
             trackinfo_v.push_back(ti);
           }
         }
@@ -534,7 +538,8 @@ int main(int argc, char* argv[])
       dst_->Sample  = AnalyzeParticleContent(pc);
       dst_->Ev_reco = energy_reco;
       dst_->Ev      = energy_nu;
-      dst_->Y       = Y;
+      dst_->Y       = 1. - Y / energy_nu;
+      dst_->Y_reco  = 1. - Y_reco / energy_reco;
 
       int num_tracks = trackinfo_v.size();
       dst_->NGeantTracks = num_tracks;
@@ -550,6 +555,7 @@ int main(int argc, char* argv[])
 
       dst_->Write();
       trackinfo_v.clear();
+      dst_->gmcrec->Clear();
 
     } // for (gastpc::NuInteraction* nuint: rv->GetNuInteractions())
   } // while (rd.Next())

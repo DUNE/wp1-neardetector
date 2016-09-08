@@ -45,6 +45,7 @@ bool DstWriter::OpenFile(const std::string& filename,
   tree_->Branch("Ev_reco",        &Ev_reco, "Ev_reco/D");
   tree_->Branch("Ev",             &Ev, "Ev/D");
   tree_->Branch("Y",              &Y, "Y/D");
+  tree_->Branch("Y_reco",         &Y_reco, "Y_reco/D");
   tree_->Branch("VertexPosition", VertexPosition, "VertexPosition[4]/D");
   tree_->Branch("NGeantTracks",   &NGeantTracks, "NGeantTracks/I");
   tree_->Branch("TrackID",        TrackID, "TrackID[NGeantTracks]/I");
