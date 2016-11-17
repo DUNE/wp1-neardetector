@@ -14,9 +14,9 @@ set(EvtRec_SRCS   EventRecord.cxx
                   RootFileReader.cxx 
                   RootFileWriter.cxx )
 
-root_generate_dictionary(G__EvtRec ${EvtRec_HDRS} LINKDEF LinkDef.h)
+root_generate_dictionary(G__GasTPCEvtRec ${EvtRec_HDRS} LINKDEF LinkDef.h)
 
-add_library(GasTPCEvtRec SHARED ${EvtRec_SRCS} G__EvtRec.cxx)
+add_library(GasTPCEvtRec SHARED ${EvtRec_SRCS} G__GasTPCEvtRec.cxx)
 
 target_link_libraries(GasTPCEvtRec ${ROOT_LIBRARIES}
                                    ${GENIE_LIBRARIES}
@@ -27,6 +27,5 @@ install(TARGETS GasTPCEvtRec
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
 
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/G__EvtRec_rdict.pcm"
-#              "${CMAKE_CURRENT_BINARY_DIR}/libEvtRec.rootmap" 
-        DESTINATION lib)
+file(GLOB GasTPCEvtRecDicts ${CMAKE_CURRENT_BINARY_DIR}/*.pcm)
+install(FILES ${GasTPCEvtRecDicts} DESTINATION lib)
