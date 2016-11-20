@@ -13,8 +13,8 @@ ClassImp(gastpc::MCHit);
 
 namespace gastpc {
 
-  MCHit::MCHit(): 
-    amplitude_(0.), xyzt_(TLorentzVector()), mcp_(0)
+  MCHit::MCHit():
+    x_(0.), y_(0.), z_(0.), time_(0.), amplitude_(0.)
   {
   }
 
@@ -26,7 +26,17 @@ namespace gastpc {
 
   void MCHit::SetXYZT(double x, double y, double z, double t)
   {
-    xyzt_.SetXYZT(x, y, z, t);
+    x_ = x;
+    y_ = y;
+    z_ = z;
+    time_ = t;
+  }
+
+
+  std::vector<double> MCHit::GetXYZT() const
+  {
+    std::vector<double> v = {x_, y_, z_, time_};
+    return v;
   }
 
 } // namespace gastpc

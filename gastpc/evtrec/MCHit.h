@@ -10,9 +10,8 @@
 #define GASTPC_MCHIT_H
 
 #include <Rtypes.h>
-#include <TLorentzVector.h>
+#include <vector>
 
-namespace gastpc { class MCParticle; }
 namespace gastpc { class MCHit; }
 
 
@@ -26,37 +25,28 @@ public:
   /// Destructor
   virtual ~MCHit();
 
-  /// Set particle that generated the hit
-  void SetParticle(gastpc::MCParticle*);
-  /// Return particle associated to this hit
-  gastpc::MCParticle* GetParticle() const;
+  /// Set position and time associated to this hit
+  void SetXYZT(double, double, double, double);
+  /// Return hit's position and time
+  std::vector<double> GetXYZT() const;
 
   ///
   void SetAmplitude(double);
   ///
   double GetAmplitude() const;
 
-  /// Set position and time associated to this hit
-  void SetXYZT(double, double, double, double);
-  /// Return hit's position and time
-  const TLorentzVector& GetXYZT() const;
 
 private:
-  double amplitude_;        ///< Hit signal amplitude (e.g. edep)
-  TLorentzVector xyzt_;     ///< Hit position and time
-  gastpc::MCParticle* mcp_; ///< Pointer to associated particle
+  double x_, y_, z_;  ///< Hit position
+  double time_;       ///< Hit time
+  double amplitude_;  ///< Hit signal amplitude (e.g. edep)
 
-  ClassDef(gastpc::MCHit, 1)
+  ClassDef(gastpc::MCHit, 2)
 };
 
 // Inline definitions //////////////////////////////////////
 
 inline void gastpc::MCHit::SetAmplitude(double a) { amplitude_ = a; }
 inline double gastpc::MCHit::GetAmplitude() const { return amplitude_; }
-
-inline void gastpc::MCHit::SetParticle(gastpc::MCParticle* p) { mcp_ = p; }
-inline gastpc::MCParticle* gastpc::MCHit::GetParticle() const { return mcp_; } 
-
-inline const TLorentzVector& gastpc::MCHit::GetXYZT() const { return xyzt_; } 
 
 #endif
