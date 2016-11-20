@@ -49,16 +49,16 @@ target_link_libraries(EvtRecDump  GasTPCEvtRec
 
 ##############################
 
-add_executable(GasTPCReco GasTPCReco.cxx)
+#add_executable(GasTPCReco GasTPCReco.cxx)
 
-target_link_libraries(GasTPCReco  GasTPCEvtRec NdtfDst
-                                  ${ROOT_LIBRARIES}
-                                  ${GENIE_LIBRARIES}
-                                  ${Log4cpp_LIBRARIES}
-                                  ${LIBXML2_LIBRARIES})
+#target_link_libraries(GasTPCReco  GasTPCEvtRec NdtfDst
+#                                  ${ROOT_LIBRARIES}
+#                                  ${GENIE_LIBRARIES}
+#                                  ${Log4cpp_LIBRARIES}
+#                                  ${LIBXML2_LIBRARIES})
 
 ##############################
 
 install(TARGETS VertexStats GasTPCG4Sim TestIOEvtRec TestIOEvtRecWithGenie
-                EvtRecDump GasTPCReco
+                EvtRecDump
         RUNTIME DESTINATION bin)
