@@ -9,7 +9,7 @@
 #include "Trajectory.h"
 
 #include "TrajectoryPoint.h"
-#include "TrajectoryMap.h"
+#include "TrajectoryRegister.h"
 
 #include <G4Track.hh>
 #include <G4ParticleDefinition.hh>
@@ -24,29 +24,27 @@ Trajectory::Trajectory(const G4Track* track):
   pdef_(track->GetDefinition()), 
   track_id_(track->GetTrackID()), 
   mother_id_(track->GetParentID()),
+  ancestor_id_(0),
   initial_momentum_(track->GetMomentum()),
   initial_position_(track->GetVertexPosition()),
   final_position_(G4ThreeVector()),
   initial_time_(track->GetGlobalTime()),
   final_time_(0.),
   creator_process_(""),
-  initial_volume_(""),
-  final_volume_(""),
   rec_trjpoints_(true),
   trjpoints_(0)
 {
+  this->FindAncestorID();
+
   // Set creator process
   if (mother_id_ == 0) creator_process_ = "none";
   else creator_process_ = track->GetCreatorProcess()->GetProcessName();
 
-  // Set name of volume where particle was created
-  initial_volume_ = track->GetVolume()->GetName();
-
   if (rec_trjpoints_) trjpoints_ = new TrajectoryPointContainer();
 
-  // Add this trajectory in the map, but only if no other
+  // Add this trajectory in the register, but only if no other
   // trajectory for this track id has been registered yet
-  if (!TrajectoryMap::Get(track->GetTrackID())) TrajectoryMap::Add(this);
+  if (!TrajectoryRegister::Get(track->GetTrackID())) TrajectoryRegister::Add(this);
 }
 
 
@@ -63,6 +61,26 @@ Trajectory::~Trajectory()
     trjpoints_->clear();
     delete trjpoints_;
   }
+}
+
+
+void Trajectory::FindAncestorID()
+{
+  family_tree_level_ = 1;
+  int current_track_id = this->GetTrackID();
+  int parent_track_id  = this->GetParentID();
+
+  while (parent_track_id > 0) {    
+    // Move up one level in the trajectory's family tree
+    Trajectory* trj = 
+      dynamic_cast<Trajectory*>(TrajectoryRegister::Get(parent_track_id));
+
+    current_track_id = trj->GetTrackID();
+    parent_track_id  = trj->GetParentID();
+    ++family_tree_level_;
+  }
+
+  ancestor_id_ = current_track_id;
 }
 
 

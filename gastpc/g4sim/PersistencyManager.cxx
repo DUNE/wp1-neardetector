@@ -9,7 +9,7 @@
 #include "PersistencyManager.h"
 
 #include "Trajectory.h"
-#include "TrajectoryMap.h"
+#include "TrajectoryRegister.h"
 #include "TrackingHit.h"
 #include "TrackingSD.h"
 #include "EventGenerationInfo.h"
@@ -17,7 +17,7 @@
 
 #include "RootFileWriter.h"
 #include "EventRecord.h"
-#include "NuInteraction.h"
+#include "MCGenInfo.h"
 #include "MCParticle.h"
 #include "MCTrack.h"
 #include "MCHit.h"
@@ -38,10 +38,12 @@
 
 
 PersistencyManager::PersistencyManager(): 
-  G4VPersistencyManager(), msg_(0), writer_(0)
+  G4VPersistencyManager(), msg_(0), writer_(0), evtrec_(0),
+  store_current_event_(true), depth_output_family_tree_(3)
 {
   msg_ = new G4GenericMessenger(this, "/gastpc/persistency/");
   msg_->DeclareMethod("output_file", &PersistencyManager::OpenFile, "");
+  msg_->DeclareProperty("depth_output_family_tree_", depth_output_family_tree_, "");
 
 }
 
@@ -93,62 +95,131 @@ G4bool PersistencyManager::Store(const G4Event* event)
 {
   if (!store_current_event_) return false;
 
-  gastpc::EventRecord evtrec;
+  // Create a new event record and set basic properties
+  evtrec_ = new gastpc::EventRecord();
+  evtrec_->SetEventID(event->GetEventID());
+  evtrec_->SetRunID(CLHEP::HepRandom::getTheSeed());
 
-  evtrec.SetEventID(event->GetEventID());
-  evtrec.SetRunID(CLHEP::HepRandom::getTheSeed());
+  ProcessTrajectories(event->GetTrajectoryContainer());
+  ProcessEventGenerationInfo(event);
+  ProcessDetectorHits(event->GetHCofThisEvent());
 
-  ProcessTrajectories(event->GetTrajectoryContainer(), evtrec);
-  ProcessPrimaryGenerationInfo(event, evtrec);
-  ProcessDetectorHits(event->GetHCofThisEvent(), evtrec);
+  // We will set now the family relations between particles.
+  // Loop through all the particles we have stored above in the record.
+  for (gastpc::MCParticle* mcp: evtrec_->GetMCParticles()) {
+    Trajectory* trj = (Trajectory*) TrajectoryRegister::Get(mcp->GetMCID());
 
-  writer_->Write(evtrec);
+    mcp->SetFamilyTreeLevel(trj->GetFamilyTreeLevel());
+
+    // Find and set parent particle
+    auto result = mcparticles_map_.find(trj->GetParentID());
+    if (result != mcparticles_map_.end()) {
+      gastpc::MCParticle* parent = result->second;
+      mcp->SetParent(parent);
+      parent->AddDaughter(mcp);
+    }
+
+    // Find and set ancestor particle
+    result = mcparticles_map_.find(trj->GetAncestorID());
+    if (result != mcparticles_map_.end()) {
+      mcp->SetAncestor(result->second);
+    }
+  }
+
+  writer_->Write(*evtrec_);
 
   // Get ready for the following event
-  TrajectoryMap::Clear();
+  TrajectoryRegister::Clear();
   mcparticles_map_.clear();
-  mctracks_map_.clear();
+
+  delete evtrec_;
 
   return true;
 }
 
 
-void PersistencyManager::ProcessPrimaryGenerationInfo(const G4Event* event,
-                                                      gastpc::EventRecord& er)
+void PersistencyManager::ProcessTrajectories(G4TrajectoryContainer* tc)
 {
-  EventGenerationInfo* eg_info =
+  if (!tc) return; // Make sure the pointer is defined
+
+  // Loop through all the trajectories stored in this event
+  for(G4int i=0; i<tc->entries(); ++i) {
+    
+    Trajectory* trj = dynamic_cast<Trajectory*>((*tc)[i]);
+    if (!trj) continue; // Make sure the pointer is defined
+
+    if (trj->GetFamilyTreeLevel() <= depth_output_family_tree_)
+      StoreTrajectory(trj);
+  }
+}
+
+
+void PersistencyManager::StoreTrajectory(Trajectory* trj)
+{
+  // Create the MCParticle and set its properties
+  gastpc::MCParticle* mcp = new gastpc::MCParticle();
+  mcp->SetPDGCode(trj->GetPDGEncoding());
+  mcp->SetMCID(trj->GetTrackID());
+
+  mcp->SetInitialXYZT(trj->GetInitialPosition().x(),
+                      trj->GetInitialPosition().y(),
+                      trj->GetInitialPosition().z(),
+                      trj->GetInitialTime());
+ 
+  mcp->SetFinalXYZT(trj->GetFinalPosition().x(),
+                    trj->GetFinalPosition().y(),
+                    trj->GetFinalPosition().z(),
+                    trj->GetFinalTime());
+ 
+  mcp->SetInitialMomentum(trj->GetInitialMomentum().x(),
+                          trj->GetInitialMomentum().y(),
+                          trj->GetInitialMomentum().z());
+
+  // Add MCParticle to the event record
+  evtrec_->Add(mcp);
+
+  // Register the particle in the map to keep track of it
+  mcparticles_map_[mcp->GetMCID()] = mcp;
+}
+
+
+void PersistencyManager::ProcessEventGenerationInfo(const G4Event* event)
+{
+  EventGenerationInfo* egi =
     dynamic_cast<EventGenerationInfo*>(event->GetUserInformation());
 
-  std::vector<gastpc::NuInteraction*> nuints;
-  G4int mcid = -1;
+  if (!egi) return; // Make sure the pointer is defined
 
-  for (genie::NtpMCEventRecord* gmcrec: eg_info->GetEntries()) {
+  G4int mcid = 0;
 
+  for (genie::NtpMCEventRecord* gmcrec: egi->GetEntries()) {
+    gastpc::MCGenInfo* mcgi = new gastpc::MCGenInfo();
+    mcgi->SetGeneratorRecord(gmcrec);
+    mcgi->SetMCID(mcid);
+    evtrec_->Add(mcgi);
     ++mcid;
-
-    gastpc::NuInteraction* nuint = new gastpc::NuInteraction();
-    nuint->SetGenieRecord(gmcrec);
-    nuint->SetMCID(mcid);
-    er.Add(nuint);
-    nuints.push_back(nuint);
   }
 
-  eg_info->DropEntries();
+  // Remove entries from event generation info container to avoid
+  // memory-deallocation problems at destruction
+  egi->DropEntries(); 
 
+  // Associate primary particles to the mc generation info entries
   for (G4int i=0; i<event->GetNumberOfPrimaryVertex(); ++i) {
-
     G4PrimaryVertex* vertex = event->GetPrimaryVertex(i);
 
     for (G4int j=0; j<vertex->GetNumberOfParticle(); ++j) {
-
       G4PrimaryParticle* particle = vertex->GetPrimary(j);
+
       auto result = mcparticles_map_.find(particle->GetTrackID());
+
       if (result != mcparticles_map_.end()) {
+        gastpc::MCParticle* mcp = result->second;
+        const std::vector<gastpc::MCGenInfo*>& vmcgi = evtrec_->GetMCGenInfo();
         PrimaryParticleInfo* pp_info =
           dynamic_cast<PrimaryParticleInfo*>(particle->GetUserInformation());
-        gastpc::MCParticle* mcp = result->second;
-        mcp->SetInteraction(nuints[pp_info->GetInteractionID()]);
-        nuints[pp_info->GetInteractionID()]->AddParticle(mcp);
+        mcp->SetMCGenInfo(vmcgi[pp_info->GetInteractionID()]);
+        vmcgi[pp_info->GetInteractionID()]->AddParticle(mcp);
       }
       else {
         // We seem to have found a primary particle that didn't make it
@@ -162,70 +233,7 @@ void PersistencyManager::ProcessPrimaryGenerationInfo(const G4Event* event,
 }
 
 
-void PersistencyManager::ProcessTrajectories(G4TrajectoryContainer* tc,
-                                             gastpc::EventRecord& evtrec)
-{
-  if (!tc) return; // Make sure the pointer is defined
-
-  // Loop through all the trajectories converting them into MCParticles
-  // and storing them in the gastpc event record
-
-  for (G4int i=0; i<tc->entries(); i++) {
-
-    Trajectory* trj = dynamic_cast<Trajectory*>((*tc)[i]);
-    if (!trj) continue; // Make sure the pointer is defined
-
-    gastpc::MCParticle* mcpart = new gastpc::MCParticle();
-
-    mcpart->SetPDGCode(trj->GetPDGEncoding());
-    mcpart->SetMCID(trj->GetTrackID());
-
-    G4ThreeVector xyz = trj->GetInitialPosition();
-    G4double time     = trj->GetInitialTime();
-    mcpart->SetInitialXYZT(xyz.x(), xyz.y(), xyz.z(), time);
-
-    xyz  = trj->GetFinalPosition();
-    time = trj->GetFinalTime();
-    mcpart->SetFinalXYZT(xyz.x(), xyz.y(), xyz.z(), time);
-
-    mcpart->SetInitialVolume(trj->GetInitialVolume());
-    mcpart->SetFinalVolume(trj->GetFinalVolume());
-
-    G4double mass = trj->GetParticleDefinition()->GetPDGMass();
-    G4ThreeVector mom = trj->GetInitialMomentum();
-    G4double energy = sqrt(mom.mag2() + mass*mass);
-    mcpart->SetInitial4Momentum(mom.x(), mom.y(), mom.z(), energy);
-
-    mcpart->SetCreatorProcess(trj->GetCreatorProcess());
-
-    // Register the particle in the map to keep track of it
-    mcparticles_map_[mcpart->GetMCID()] = mcpart;
-
-    // Add particle to the event record
-    evtrec.Add(mcpart);
-  }
-
-  // We will set now the family relations between particles.
-  // Loop through all the particles we have stored above in the record.
-
-  for (gastpc::MCParticle* mcpart: evtrec.GetMCParticles()) {
-    Trajectory* trj = (Trajectory*) TrajectoryMap::Get(mcpart->GetMCID());
-    int mother_id = trj->GetParentID();
-    if (mother_id == 0) {
-      mcpart->SetPrimary(true);
-    }
-    else {
-      gastpc::MCParticle* mother = mcparticles_map_[mother_id];
-      mcpart->SetPrimary(false);
-      mcpart->SetMother(mother);
-      mother->AddDaughter(mcpart);
-    }
-  }
-}
-
-
-void PersistencyManager::ProcessDetectorHits(G4HCofThisEvent* hce,
-                                             gastpc::EventRecord& evtrec)
+void PersistencyManager::ProcessDetectorHits(G4HCofThisEvent* hce)
 {
   if (!hce) return; // Make sure the pointer is defined
 
@@ -244,7 +252,7 @@ void PersistencyManager::ProcessDetectorHits(G4HCofThisEvent* hce,
     G4VHitsCollection* hits = hce->GetHC(hcid);
 
     if (hcname == TrackingSD::HitCollectionUniqueName()) 
-      ProcessTrackingHits(hits, evtrec);
+      StoreTrackingHits(hits);
     else
       G4Exception("PersistencyManager::StoreDetectorHits()", "WARNING",
         JustWarning, "Unknown collection of hits will not be stored."); 
@@ -252,18 +260,19 @@ void PersistencyManager::ProcessDetectorHits(G4HCofThisEvent* hce,
 }
 
 
-void PersistencyManager::ProcessTrackingHits(G4VHitsCollection* hc,
-                                             gastpc::EventRecord& evtrec)
+void PersistencyManager::StoreTrackingHits(G4VHitsCollection* hc)
 {
   TrackingHitsCollection* hits = dynamic_cast<TrackingHitsCollection*>(hc);
-  if (!hits) return;
+  if (!hits) return; // Make sure the pointer is defined
 
-  mctracks_map_.clear();
+  // We'll use a map to keep record of the mc tracks we create
+  // indexing them by their track id
+  std::map<G4int, gastpc::MCTrack*> mctracks_map;
 
   for (G4int i=0; i<hits->entries(); ++i) {
 
     TrackingHit* hit = dynamic_cast<TrackingHit*>(hits->GetHit(i));
-    if (!hit) continue;
+    if (!hit) continue; // Make sure the pointer is defined
 
     gastpc::MCHit* mchit = new gastpc::MCHit();
     G4LorentzVector xyzt = hit->GetPositionAndTime();
@@ -272,22 +281,37 @@ void PersistencyManager::ProcessTrackingHits(G4VHitsCollection* hc,
 
     // Let's find out which track is the owner of this hit
     gastpc::MCTrack* mctrack = 0;
-    G4int trackid = hit->GetTrackID();
-    auto result = mctracks_map_.find(trackid);
+    auto result = mctracks_map.find(hit->GetTrackID());
 
-    if (result == mctracks_map_.end()) {
-      // We have not seen this track before. Let's create a new MCTrack then
-      // and set its properties and related particles.
+    if (result == mctracks_map.end()) {
+      // We have not seen this track before. 
+      // Let's then create a new MCTrack and set its properties.
       mctrack = new gastpc::MCTrack();
-      mctracks_map_[trackid] = mctrack;
-      gastpc::MCParticle* mcpart = mcparticles_map_[trackid];
-      mctrack->SetParticle(mcpart);
-      mcpart->AddTrack(mctrack);
-      mctrack->SetLabel(hits->GetSDname());      
-      evtrec.Add(mctrack);
+      mctrack->SetLabel(hits->GetSDname());  
+
+      // Find the particle associated to this track and set
+      // the bi-directional relationship pointers
+      gastpc::MCParticle* mcp = 0;
+      auto result2 = mcparticles_map_.find(hit->GetTrackID());
+      if (result2 == mcparticles_map_.end()) {
+        Trajectory* trj = dynamic_cast<Trajectory*>
+          (TrajectoryRegister::Get(hit->GetTrackID()));
+        if (!trj) continue; // Make sure the pointer is defined
+        StoreTrajectory(trj);
+        mcp = mcparticles_map_[hit->GetTrackID()];
+      }
+      else {
+        mcp = result2->second;
+      }
+
+      mctrack->SetParticle(mcp);
+      mcp->AddTrack(mctrack);
+      // Add track to map and to persistent event record
+      mctracks_map[hit->GetTrackID()] = mctrack;          
+      evtrec_->Add(mctrack);
     }
     else {
-      // We created the track already for a previous hit
+      // The track was created for a previous hit
       mctrack = result->second;
     }
 
@@ -295,10 +319,3 @@ void PersistencyManager::ProcessTrackingHits(G4VHitsCollection* hc,
     mctrack->Add(mchit);
   }
 }
-
-
-G4bool PersistencyManager::Store(const G4VPhysicalVolume*)
-{
-  return true;
-}
-

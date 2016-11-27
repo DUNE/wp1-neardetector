@@ -15,10 +15,8 @@ ClassImp(gastpc::MCParticle);
 namespace gastpc {
 
   MCParticle::MCParticle():
-    primary_(false), mcid_(-1), pdg_code_(0), 
-    initial_xyzt_(TLorentzVector()), final_xyzt_(TLorentzVector()),
-    initial_4P_(TLorentzVector()), final_4P_(TLorentzVector()),
-    interaction_(0), mother_(0)
+    mcid_(-1), pdg_code_(0), family_tree_level_(0), 
+    parent_(0), ancestor_(0), mcgi_(0)
   {
   }
 
@@ -31,45 +29,70 @@ namespace gastpc {
 
   void MCParticle::Clear()
   {
-    primary_ = false;
-    mcid_ = -1;
-    pdg_code_ = 0;
-    initial_xyzt_ = TLorentzVector();
-    final_xyzt_ = TLorentzVector();
-    initial_4P_ = TLorentzVector();
-    final_4P_ = TLorentzVector();
-    interaction_ = 0;
-    mother_ = 0;
-    daughters_.clear();
-    tracks_.clear();
   }
 
 
   void MCParticle::SetInitialXYZT(double x, double y, double z, double t)
   {
-    initial_xyzt_.SetXYZT(x, y, z, t);
+    initial_xyzt_ = {x, y, z, t};
+  }
+
+
+  const std::vector<double>& MCParticle::GetInitialXYZT() const
+  {
+    return initial_xyzt_;
   }
 
 
   void MCParticle::SetFinalXYZT(double x, double y, double z, double t)
   {
-    final_xyzt_.SetXYZT(x, y, z, t);
+    initial_xyzt_ = {x, y, z, t};
   }
 
 
-  void MCParticle::SetInitial4Momentum(double px, double py, double pz, double E)
+  const std::vector<double>& MCParticle::GetFinalXYZT() const
   {
-    initial_4P_.SetPxPyPzE(px, py, pz, E);
+    return initial_xyzt_;
   }
 
 
-  void MCParticle::SetFinal4Momentum(double px, double py, double pz, double E)
+  void MCParticle::SetInitialMomentum(double x, double y, double z)
   {
-    final_4P_.SetPxPyPzE(px, py, pz, E);
+    initial_mom = {x, y, z};
   }
 
 
-  void MCParticle::Info(std::ostream& os) const 
+  const std::vector<double>& MCParticle::GetInitialMomentum() const
+  {
+    return initial_mom;
+  }
+
+
+  void MCParticle::AddTrack(MCTrack* mct)
+  {
+    tracks_.push_back(mct);
+  }
+
+
+  const std::vector<MCTrack*>& MCParticle::GetTracks() const
+  {
+    return tracks_;
+  }
+
+
+  void MCParticle::AddDaughter(gastpc::MCParticle* p)
+  {
+    daughters_.push_back(p);
+  }
+  
+  
+  const std::vector<gastpc::MCParticle*>& MCParticle::GetDaughters() const
+  {
+    return daughters_;
+  }
+  
+  
+  void MCParticle::Info(std::ostream& /*os*/) const 
   {
     // os << "MCParticle::Info()" << std::endl;
     // os << " - MC ID: " << this->GetMCID() << std::endl;

@@ -1,13 +1,13 @@
 ### CMakeLists.cxx -- gastpc/EvtRec
 
 set(EvtRec_HDRS   EventRecord.h
-                  NuInteraction.h
+                  MCGenInfo.h
                   MCParticle.h
                   MCTrack.h
                   MCHit.h )
 
 set(EvtRec_SRCS   EventRecord.cxx
-                  NuInteraction.cxx
+                  MCGenInfo.cxx
                   MCParticle.cxx
                   MCTrack.cxx
                   MCHit.cxx 

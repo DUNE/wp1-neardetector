@@ -1,45 +1,45 @@
 // -------------------------------------------------------------------
-/// \file   TrajectoryMap.cxx
+/// \file   TrajectoryRegister.cxx
 /// \brief  
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 30 July 2016
 // -------------------------------------------------------------------
 
-#include "TrajectoryMap.h"
+#include "TrajectoryRegister.h"
 
 #include <G4VTrajectory.hh>
 
 
-std::map<int, G4VTrajectory*> TrajectoryMap::map_;
+std::map<int, G4VTrajectory*> TrajectoryRegister::map_;
 
 
-TrajectoryMap::TrajectoryMap()
+TrajectoryRegister::TrajectoryRegister()
 {
 }
 
 
-TrajectoryMap::~TrajectoryMap()
+TrajectoryRegister::~TrajectoryRegister()
 {
   map_.clear();
 }
 
 
-void TrajectoryMap::Clear()
+void TrajectoryRegister::Clear()
 {
   map_.clear();
 }
 
 
-G4VTrajectory* TrajectoryMap::Get(int trackId)
+G4VTrajectory* TrajectoryRegister::Get(int track_id)
 {
-  std::map<int, G4VTrajectory*>::iterator it = map_.find(trackId);
+  std::map<int, G4VTrajectory*>::iterator it = map_.find(track_id);
   if (it == map_.end()) return 0;
   else return it->second;
 }
 
 
-void TrajectoryMap::Add(G4VTrajectory* trj)
+void TrajectoryRegister::Add(G4VTrajectory* trj)
 {
   map_[trj->GetTrackID()] = trj;
 }

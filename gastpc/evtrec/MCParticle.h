@@ -10,12 +10,12 @@
 #define GASTPC_MCPARTICLE_H
 
 #include <Rtypes.h>
-#include <TLorentzVector.h>
-#include <iostream>
+#include <vector>
 #include <string>
+#include <iostream>
 
 namespace gastpc { class MCParticle; }
-namespace gastpc { class NuInteraction; }
+namespace gastpc { class MCGenInfo; }
 namespace gastpc { class MCTrack; }
 
 
@@ -31,11 +31,6 @@ public:
 
   void Clear();
 
-  /// Set as true if the particle is a primary, or as false otherwise
-  void SetPrimary(bool);
-  /// Is this particle a primary?
-  bool IsPrimary() const;
-
   /// Set Monte Carlo ID number for the particle
   void SetMCID(int);
   /// Return Monte Carlo ID for the particle
@@ -46,51 +41,45 @@ public:
   /// Return particle's PDG code
   int GetPDGCode() const;
 
+  ///
+  void SetParent(gastpc::MCParticle*);
+  ///
+  gastpc::MCParticle* GetParent();
+  ///
+  void SetAncestor(gastpc::MCParticle*);
+  ///
+  gastpc::MCParticle* GetAncestor();
+
+  ///
+  void SetFamilyTreeLevel(int);
+  ///
+  int GetFamilyTreeLevel() const;
+  ///
+  bool IsPrimary() const;
+
   /// Set initial position and time of particle
   void SetInitialXYZT(double, double, double, double);
   /// Return initial position and time of particle
-  const TLorentzVector& GetInitialXYZT() const;
+  const std::vector<double>& GetInitialXYZT() const;
   /// Set final position and time of particle
   void SetFinalXYZT(double, double, double, double);
   /// Return final position and time of particle
-  const TLorentzVector& GetFinalXYZT() const;
+  const std::vector<double>& GetFinalXYZT() const;
+
+  /// Set initial momentum of particle
+  void SetInitialMomentum(double, double, double);
+  /// Return initial momentum of particle
+  const std::vector<double>& GetInitialMomentum() const;
 
   ///
-  void SetInitial4Momentum(double, double, double, double);
+  void SetMCGenInfo(gastpc::MCGenInfo*);
   ///
-  const TLorentzVector& GetInitial4Momentum() const;
-  ///
-  void SetFinal4Momentum(double, double, double, double);
-  ///
-  const TLorentzVector& GetFinal4Momentum() const;
+  gastpc::MCGenInfo* GetMCGenInfo();
 
-  ///
-  void SetCreatorProcess(const std::string&);
-  ///
-  const std::string& GetCreatorProcess() const;
-
-  ///
-  void SetInitialVolume(const std::string&);
-  ///
-  const std::string& GetInitialVolume() const;
-  ///
-  void SetFinalVolume(const std::string&);
-  ///
-  const std::string& GetFinalVolume() const;
-
-  ///
-  void SetMother(gastpc::MCParticle*);
-  ///
-  gastpc::MCParticle* GetMother() const;
   ///
   void AddDaughter(gastpc::MCParticle*);
   ///
   const std::vector<gastpc::MCParticle*>& GetDaughters() const;
-
-  ///
-  void SetInteraction(gastpc::NuInteraction*);
-  ///
-  gastpc::NuInteraction* GetInteraction() const;
 
   ///
   void AddTrack(gastpc::MCTrack*);
@@ -101,27 +90,21 @@ public:
   void Info(std::ostream& s=std::cout) const;
 
 private:
-  bool primary_; ///< Is this particle a primary?
-  
-  int mcid_;     ///< Monte Carlo ID number
-  int pdg_code_; ///< PDG code for particle identification
+  int mcid_;              ///< Monte Carlo ID number
+  int pdg_code_;          ///< PDG code for particle identification
+  int family_tree_level_; ///< Primary = 1, Secondary = 2, Tertiary = 3 ...
 
-  TLorentzVector initial_xyzt_; ///< Particle's initial position
-  TLorentzVector final_xyzt_;   ///< Particle's final position
+  std::vector<double> initial_xyzt_; ///< Particle's initial position
+  std::vector<double> final_xyzt_;   ///< Particle's final position
 
-  TLorentzVector initial_4P_; ///< Particle's initial four-momentum
-  TLorentzVector final_4P_;   ///< Particle's final four-momentum
+  std::vector<double> initial_mom; ///< Particle's initial momentum
 
-  std::string creator_process_;
+  gastpc::MCParticle* parent_;   ///< Pointer to parent particle
+  gastpc::MCParticle* ancestor_; ///< Pointer to primary ancestor
 
-  std::string initial_volume_;
-  std::string final_volume_;
+  gastpc::MCGenInfo* mcgi_; ///< Pointer to generation info
 
-  gastpc::NuInteraction* interaction_; ///< Pointer to interaction record
-
-  gastpc::MCParticle* mother_; ///< Pointer to mother particle
   std::vector<gastpc::MCParticle*> daughters_;
-
   std::vector<gastpc::MCTrack*> tracks_;
 
   ClassDef(gastpc::MCParticle, 1)
@@ -131,57 +114,35 @@ std::ostream& operator <<(std::ostream&, const gastpc::MCParticle&);
 
 // Inline definitions //////////////////////////////////////
 
-inline void gastpc::MCParticle::SetPrimary(bool b) { primary_ = b; }
-inline bool gastpc::MCParticle::IsPrimary() const { return primary_; }
+inline void gastpc::MCParticle::SetMCID(int id) 
+{ mcid_ = id; }
+inline int  gastpc::MCParticle::GetMCID() const
+{ return mcid_; }
 
-inline void gastpc::MCParticle::SetMCID(int id) { mcid_ = id; }
-inline int  gastpc::MCParticle::GetMCID() const { return mcid_; }
+inline void gastpc::MCParticle::SetPDGCode(int pdg)
+{ pdg_code_ = pdg; }
+inline int  gastpc::MCParticle::GetPDGCode() const
+{ return pdg_code_; }
 
-inline void gastpc::MCParticle::SetPDGCode(int pdg) { pdg_code_ = pdg; }
-inline int  gastpc::MCParticle::GetPDGCode() const { return pdg_code_; }
+inline void gastpc::MCParticle::SetFamilyTreeLevel(int g)
+{ family_tree_level_ = g; }
+inline int  gastpc::MCParticle::GetFamilyTreeLevel() const
+{ return family_tree_level_; }
+inline bool gastpc::MCParticle::IsPrimary() const
+{ return (family_tree_level_ == 1); }
 
-inline const TLorentzVector& gastpc::MCParticle::GetInitialXYZT() const
-{ return initial_xyzt_; }
-inline const TLorentzVector& gastpc::MCParticle::GetFinalXYZT() const
-{ return final_xyzt_; }
+inline void gastpc::MCParticle::SetParent(gastpc::MCParticle* p)
+{ parent_ = p; }
+inline gastpc::MCParticle* gastpc::MCParticle::GetParent()
+{ return parent_; }
+inline void gastpc::MCParticle::SetAncestor(gastpc::MCParticle* p) 
+{ ancestor_ = p; }
+inline gastpc::MCParticle* gastpc::MCParticle::GetAncestor()
+{ return ancestor_; }
 
-inline const TLorentzVector& gastpc::MCParticle::GetInitial4Momentum() const
-{ return initial_4P_; }
-inline const TLorentzVector& gastpc::MCParticle::GetFinal4Momentum() const
-{ return final_4P_; }
-
-inline void gastpc::MCParticle::SetCreatorProcess(const std::string& name)
-{ creator_process_ = name; }
-inline const std::string& gastpc::MCParticle::GetCreatorProcess() const
-{ return creator_process_; }
-
-inline void gastpc::MCParticle::SetInitialVolume(const std::string& name)
-{ initial_volume_ = name; }
-inline const std::string& gastpc::MCParticle::GetInitialVolume() const
-{ return initial_volume_; }
-inline void gastpc::MCParticle::SetFinalVolume(const std::string& name)
-{ final_volume_ = name; }
-inline const std::string& gastpc::MCParticle::GetFinalVolume() const
-{ return final_volume_; }
-
-inline gastpc::MCParticle* gastpc::MCParticle::GetMother() const 
-{ return mother_; }
-inline void gastpc::MCParticle::SetMother(gastpc::MCParticle* p) 
-{ mother_ = p; }
-
-inline void gastpc::MCParticle::AddDaughter(gastpc::MCParticle* p)
-{ daughters_.push_back(p); }
-inline const std::vector<gastpc::MCParticle*>& 
-  gastpc::MCParticle::GetDaughters() const { return daughters_; }
-
-inline void gastpc::MCParticle::SetInteraction(gastpc::NuInteraction* i)
-{ interaction_ = i; }
-inline gastpc::NuInteraction* gastpc::MCParticle::GetInteraction() const
-{ return interaction_; }
-
-inline void gastpc::MCParticle::AddTrack(gastpc::MCTrack* p)
-{ tracks_.push_back(p); }
-inline const std::vector<gastpc::MCTrack*>& gastpc::MCParticle::GetTracks() const 
-{ return tracks_; }
+inline void gastpc::MCParticle::SetMCGenInfo(gastpc::MCGenInfo* p)
+{ mcgi_ = p; }
+inline gastpc::MCGenInfo* gastpc::MCParticle::GetMCGenInfo()
+{ return mcgi_; }
 
 #endif

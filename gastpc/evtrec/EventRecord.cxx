@@ -8,7 +8,7 @@
 
 #include "EventRecord.h"
 
-#include "NuInteraction.h"
+#include "MCGenInfo.h"
 #include "MCParticle.h"
 #include "MCTrack.h"
 
@@ -36,8 +36,8 @@ namespace gastpc {
     for (MCTrack* mct: mctracks_) delete mct;
     mctracks_.clear();
 
-    for (NuInteraction* nuint: nuints_) delete nuint;
-    nuints_.clear();
+    for (MCGenInfo* mcgi: mcgeninfo_) delete mcgi;
+    mcgeninfo_.clear();
   }
 
 
@@ -53,9 +53,9 @@ namespace gastpc {
   }
 
 
-  void EventRecord::Add(NuInteraction* p)
+  void EventRecord::Add(MCGenInfo* p)
   {
-    nuints_.push_back(p);
+    mcgeninfo_.push_back(p);
   }
 
 
@@ -71,9 +71,9 @@ namespace gastpc {
   }
 
 
-  const std::vector<NuInteraction*>& EventRecord::GetNuInteractions() const
+  const std::vector<MCGenInfo*>& EventRecord::GetMCGenInfo() const
   {
-    return nuints_;
+    return mcgeninfo_;
   }
 
 } // namespace gastpc

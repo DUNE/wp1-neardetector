@@ -12,9 +12,9 @@
 #include <Rtypes.h>
 
 namespace gastpc { class EventRecord; }
+namespace gastpc { class MCGenInfo; }
 namespace gastpc { class MCParticle; }
 namespace gastpc { class MCTrack; }
-namespace gastpc { class NuInteraction; }
 
 
 /// TODO: Class description
@@ -35,11 +35,11 @@ public:
 
   void Add(gastpc::MCParticle*);
   void Add(gastpc::MCTrack*);
-  void Add(gastpc::NuInteraction*);
+  void Add(gastpc::MCGenInfo*);
 
   const std::vector<gastpc::MCParticle*>& GetMCParticles() const;
   const std::vector<gastpc::MCTrack*>& GetMCTracks() const;
-  const std::vector<gastpc::NuInteraction*>& GetNuInteractions() const;
+  const std::vector<gastpc::MCGenInfo*>& GetMCGenInfo() const;
 
   /// Destroy all objects in the event record
   void Clear();
@@ -50,9 +50,9 @@ private:
 
   std::vector<gastpc::MCParticle*> mcparticles_;
   std::vector<gastpc::MCTrack*> mctracks_;
-  std::vector<gastpc::NuInteraction*> nuints_;
+  std::vector<gastpc::MCGenInfo*> mcgeninfo_;
 
-  ClassDef(gastpc::EventRecord, 1)
+  ClassDef(gastpc::EventRecord, 2)
 };
 
 // Inline definitions //////////////////////////////////////

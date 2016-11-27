@@ -1,20 +1,20 @@
 // -------------------------------------------------------------------
-/// \file   TrajectoryMap.h
+/// \file   TrajectoryRegister.h
 /// \brief  
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 30 July 2016
 // -------------------------------------------------------------------
 
-#ifndef TRAJECTORY_MAP_H
-#define TRAJECTORY_MAP_H
+#ifndef TRAJECTORY_REGISTER_H
+#define TRAJECTORY_REGISTER_H
 
 #include <map>
 class G4VTrajectory;
 
 /// TODO: Class description
 
-class TrajectoryMap
+class TrajectoryRegister
 {
 public:
   /// Return a trajectory given its track ID
@@ -27,9 +27,9 @@ public:
 private:
   // Constructors, destructor and assignement op are hidden
   // so that no instance of the class can be created.
-  TrajectoryMap();
-  TrajectoryMap(const TrajectoryMap&);
-  ~TrajectoryMap();
+  TrajectoryRegister();
+  TrajectoryRegister(const TrajectoryRegister&);
+  ~TrajectoryRegister();
 
 private:
   static std::map<int, G4VTrajectory*> map_;

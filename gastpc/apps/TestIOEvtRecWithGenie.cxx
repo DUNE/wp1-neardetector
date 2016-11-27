@@ -7,7 +7,7 @@
 // -------------------------------------------------------------------
 
 #include "EventRecord.h"
-#include "NuInteraction.h"
+#include "MCGenInfo.h"
 #include "RootFileWriter.h"
 #include "RootFileReader.h"
 
@@ -55,10 +55,10 @@ void CreateFile(const std::string& genie_filename,
 
   // Create a GasTPC EventRecord that includes a neutrino interaction
   // with the above GENIE record
-  gastpc::NuInteraction* nuint = new gastpc::NuInteraction();
-  nuint->SetGenieRecord(gmcrec);
+  gastpc::MCGenInfo* mcgi = new gastpc::MCGenInfo();
+  mcgi->SetGeneratorRecord(gmcrec);
   gastpc::EventRecord evtrec;
-  evtrec.Add(nuint);
+  evtrec.Add(mcgi);
 
   // Write the event record in an output file
   gastpc::RootFileWriter wr;
@@ -77,7 +77,7 @@ void ReadFile(const std::string& filename)
 
   gastpc::EventRecord evtrec = r.Read(0);
   genie::NtpMCEventRecord* gmcrec = 
-    (evtrec.GetNuInteractions())[0]->GetGenieRecord();
+    (evtrec.GetMCGenInfo())[0]->GetGeneratorRecord();
 
   PrintVertexInfo(gmcrec);
 }

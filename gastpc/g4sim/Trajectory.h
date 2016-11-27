@@ -63,6 +63,11 @@ public:
   G4int GetTrackID() const;
   /// Return id number of the parent track
   G4int GetParentID() const;
+  /// Return id number of the ancestor track
+  G4int GetAncestorID() const;
+
+  /// Return family tree level of the associated track
+  G4int GetFamilyTreeLevel() const;
 
   /// Return initial three-momentum
   G4ThreeVector GetInitialMomentum() const;
@@ -78,11 +83,6 @@ public:
   G4double GetFinalTime() const;
   /// Set decay time with respect to the start-of-event time
   void SetFinalTime(G4double);
-
-  const G4String& GetInitialVolume() const;
-
-  const G4String& GetFinalVolume() const;
-  void SetFinalVolume(const G4String&);
 
   // Trajectory points
 
@@ -106,11 +106,16 @@ private:
   /// only be constructed associated to a track.
   Trajectory();
 
+  void FindAncestorID();
+
 private:
   G4ParticleDefinition* pdef_; //< Pointer to the particle definition
 
-  G4int track_id_;  ///< Identification number of the track
-  G4int mother_id_; ///< Identification number of the parent particle
+  G4int track_id_;    ///< Identification number of the track
+  G4int mother_id_;   ///< Identification number of the parent particle
+  G4int ancestor_id_; ///< Identification number of ancestral primary particle
+
+  G4int family_tree_level_;  ///< Primary = 1, Secondary = 2, Tertiary = 3 ...
 
   G4ThreeVector initial_momentum_;
 
@@ -121,9 +126,6 @@ private:
   G4double final_time_;
 
   G4String creator_process_;
-
-  G4String initial_volume_;
-  G4String final_volume_;
 
   G4bool rec_trjpoints_;
 
@@ -136,16 +138,11 @@ extern G4TRACKING_DLL G4ThreadLocal
   G4Allocator<Trajectory>* TrajectoryAllocator;
 
 inline void* Trajectory::operator new(size_t)
-{
-  if (!TrajectoryAllocator)
-    TrajectoryAllocator = new G4Allocator<Trajectory>;
-  return (void*)TrajectoryAllocator->MallocSingle();
-}
+{ if (!TrajectoryAllocator) TrajectoryAllocator = new G4Allocator<Trajectory>;
+  return (void*)TrajectoryAllocator->MallocSingle(); }
 
 inline void Trajectory::operator delete(void* trj)
-{
-  TrajectoryAllocator->FreeSingle((Trajectory*) trj);
-}
+{ TrajectoryAllocator->FreeSingle((Trajectory*) trj); }
 
 inline G4ParticleDefinition* Trajectory::GetParticleDefinition()
 { return pdef_; }
@@ -159,11 +156,17 @@ inline G4VTrajectoryPoint* Trajectory::GetPoint(G4int i) const
 inline G4ThreeVector Trajectory::GetInitialMomentum() const
 { return initial_momentum_; }
 
-inline G4int Trajectory::GetTrackID() const
+inline G4int Trajectory::GetTrackID() const 
 { return track_id_; }
 
-inline G4int Trajectory::GetParentID() const
+inline G4int Trajectory::GetParentID() const 
 { return mother_id_; }
+
+inline G4int Trajectory::GetAncestorID() const 
+{ return ancestor_id_; }
+
+inline G4int Trajectory::GetFamilyTreeLevel() const 
+{ return family_tree_level_; }
 
 inline G4ThreeVector Trajectory::GetInitialPosition() const
 { return initial_position_; }
@@ -185,15 +188,6 @@ inline void Trajectory::SetFinalTime(G4double t)
 
 inline const G4String& Trajectory::GetCreatorProcess() const
 { return creator_process_; }
-
-inline const G4String& Trajectory::GetInitialVolume() const
-{ return initial_volume_; }
-
-inline const G4String& Trajectory::GetFinalVolume() const
-{ return final_volume_; }
-
-inline void Trajectory::SetFinalVolume(const G4String& v)
-{ final_volume_ = v; }
 
 inline void Trajectory::RecordTrajectoryPoints(G4bool b) 
 { rec_trjpoints_ = b; }

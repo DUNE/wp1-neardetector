@@ -9,7 +9,7 @@
 #include "DefaultTrackingAction.h"
 
 #include "Trajectory.h"
-#include "TrajectoryMap.h"
+#include "TrajectoryRegister.h"
 #include "PersistencyManager.h"
 
 #include <G4Track.hh>
@@ -36,12 +36,11 @@ void DefaultTrackingAction::PreUserTrackingAction(const G4Track* track)
 void DefaultTrackingAction::PostUserTrackingAction(const G4Track* track)
 {
   Trajectory* trj = 
-    dynamic_cast<Trajectory*>(TrajectoryMap::Get(track->GetTrackID()));
+    dynamic_cast<Trajectory*>(TrajectoryRegister::Get(track->GetTrackID()));
 
   if (trj) {
     // Set some end-of-tracking properties of the trajectory
     trj->SetFinalPosition(track->GetPosition());
     trj->SetFinalTime(track->GetGlobalTime());
-    trj->SetFinalVolume(track->GetVolume()->GetName());
   }
 }
