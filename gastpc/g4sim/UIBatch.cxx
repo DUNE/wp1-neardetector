@@ -149,7 +149,7 @@ G4int UIBatch::ExecCommand(const G4String& command)
       G4Exception("UIBatch::ExecCommand()", "ERROR", FatalException, error_msg);
       break;
     default:
-      G4int pn= rc%100;
+      //G4int pn= rc%100;
       error_msg = " Illegal parameter: " + command;
       G4Exception("UIBatch::ExecCommand()", "ERROR", FatalException, error_msg);
   }

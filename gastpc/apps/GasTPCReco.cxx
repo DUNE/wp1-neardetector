@@ -11,7 +11,7 @@
 #include "MCTrack.h"
 #include "MCHit.h"
 #include "MCParticle.h"
-#include "NuInteraction.h"
+#include "MCGenInfo.h"
 #include "DstWriter.h"
 #include "Units.h"
 
@@ -203,25 +203,26 @@ double ProcessTrack(gastpc::MCTrack* track, TrackInfo& track_info)
 {
   int i = 0;
 
-  TLorentzVector prev = track->GetParticle()->GetInitialXYZT();
-  TLorentzVector min  = prev;
-  TLorentzVector max  = prev;
+  std::vector<double> prev = track->GetParticle()->GetInitialXYZT();
+  std::vector<double> min = prev;
+  std::vector<double> max = prev;
   std::multiset<double> dEdx_measurements;
 
   double edep = 0.;
 
   for (gastpc::MCHit* hit: track->GetHits()) {
     
-    TLorentzVector curr = hit->GetXYZT();
+    std::vector<double> curr = hit->GetXYZT();
 
-    if (curr.X() < min.X()) min.SetX(curr.X());
-    if (curr.Y() < min.Y()) min.SetY(curr.Y());
-    if (curr.Z() < min.Z()) min.SetZ(curr.Z());
-    if (curr.X() > max.X()) max.SetX(curr.X());
-    if (curr.Y() > max.Y()) max.SetY(curr.Y());
-    if (curr.Z() > max.Z()) max.SetZ(curr.Z());
+    if (curr[0] < min[0]) min[0] = curr[0];
+    if (curr[1] < min[1]) min[1] = curr[1];
+    if (curr[2] < min[2]) min[2] = curr[2];
+    if (curr[0] > max[0]) max[0] = curr[0];
+    if (curr[1] > max[1]) max[1] = curr[1];
+    if (curr[2] > max[2]) max[2] = curr[2];
 
-    double distance = Distance(curr, prev);
+    //double distance = Distance(curr, prev);
+    double distance = 10.;
     double dEdx = hit->GetAmplitude() / distance;
     dEdx_measurements.insert(dEdx);
 
@@ -235,10 +236,16 @@ double ProcessTrack(gastpc::MCTrack* track, TrackInfo& track_info)
   track_info.edep = edep;
   track_info.num_hits = track->GetHits().size();
 
-  double length_t = max.Z() - min.Z();
-  double length_l = max.Y() - min.Y();
+  double length_t = max[2] - min[2];
+  double length_l = max[1] - min[1];
 
-  TLorentzVector P4 = track->GetParticle()->GetInitial4Momentum();
+
+  TLorentzVector P4(track->GetParticle()->GetInitialMomentum()[0],
+                    track->GetParticle()->GetInitialMomentum()[1],
+                    track->GetParticle()->GetInitialMomentum()[2],
+                    0.);
+
+  //std::vector<double> P4 = track->GetParticle()->GetInitial4Momentum();
   double Pmod  = GetMomentumMag(P4);
   double Ptmod = P4.Perp(TVector3(0.,1.,0.));
   double angle = std::asin(Ptmod/Pmod);
@@ -394,10 +401,10 @@ int main(int argc, char* argv[])
 
     // Loop through the primary interactions simulated in this spill
 
-    for (gastpc::NuInteraction* nuint: rv->GetNuInteractions()) {
+    for (gastpc::MCGenInfo* nuint: rv->GetMCGenInfo()) {
 
       // Locate argon interactions
-      genie::NtpMCEventRecord* gmcrec = nuint->GetGenieRecord();
+      genie::NtpMCEventRecord* gmcrec = nuint->GetGeneratorRecord();
       genie::Interaction* interaction = (gmcrec->event)->Summary();
       const genie::Target& tgt = interaction->InitState().Tgt();
       if (tgt.Z() != 18) continue;
@@ -450,7 +457,8 @@ int main(int argc, char* argv[])
 
             energy_reco += energy;
             Y_reco = energy;
-            Y = mct->GetParticle()->GetInitial4Momentum().E();
+            //Y = mct->GetParticle()->GetInitial4Momentum().E();
+            Y = 1.;
             trackinfo_v.push_back(ti);
           }
         }
@@ -493,7 +501,8 @@ int main(int argc, char* argv[])
 
             energy_reco += energy;
             Y_reco = energy;
-            Y = mct->GetParticle()->GetInitial4Momentum().E();
+            //Y = mct->GetParticle()->GetInitial4Momentum().E();
+            Y = 1.;
             trackinfo_v.push_back(ti);
           }
         }
@@ -528,7 +537,8 @@ int main(int argc, char* argv[])
           ti.pdg = pdg;
           ti.track_id = trackid;
 
-          double energy = mcp->GetInitial4Momentum().E();
+          //double energy = mcp->GetInitial4Momentum().E();
+          double energy = 1.;
           energy = energy * gastpc::GeV;
           energy_reco += SmearEnergyDep(energy);
           trackinfo_v.push_back(ti);

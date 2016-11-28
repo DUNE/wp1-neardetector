@@ -42,7 +42,7 @@ private:
   G4ParticleDefinition* particle_def_;
 
   G4double momentum_;
-  G4double kinetic_energy_;
+  //G4double kinetic_energy_;
 
   G4ThreeVector initial_position_;
   G4ThreeVector momentum_direction_;

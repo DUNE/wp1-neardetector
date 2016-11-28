@@ -306,6 +306,7 @@ void PersistencyManager::StoreTrackingHits(G4VHitsCollection* hc)
 
       mctrack->SetParticle(mcp);
       mcp->AddTrack(mctrack);
+
       // Add track to map and to persistent event record
       mctracks_map[hit->GetTrackID()] = mctrack;          
       evtrec_->Add(mctrack);

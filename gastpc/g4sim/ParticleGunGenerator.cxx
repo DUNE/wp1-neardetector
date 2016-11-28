@@ -19,8 +19,8 @@
 
 
 ParticleGunGenerator::ParticleGunGenerator():
-  G4VUserPrimaryGeneratorAction(), msg_(0), particle_def_(0), momentum_(0.),
-  kinetic_energy_(0.)
+  G4VUserPrimaryGeneratorAction(), msg_(0), particle_def_(0), momentum_(0.)
+  //kinetic_energy_(0.)
 {
   SetParticleID("mu-");
 
