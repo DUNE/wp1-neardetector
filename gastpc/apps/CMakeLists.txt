@@ -1,13 +1,14 @@
+
 ### CMakeLists.txt -- gastpc/apps
 
 ##############################
 
-add_executable(VertexStats VertexStats.cxx)
+# add_executable(VertexStats VertexStats.cxx)
 
-target_link_libraries(VertexStats ${GENIE_LIBRARIES}
-				                          ${Log4cpp_LIBRARIES}
-				                          ${LIBXML2_LIBRARIES}
-                                  ${ROOT_LIBRARIES})
+# target_link_libraries(VertexStats ${GENIE_LIBRARIES}
+# 				                          ${Log4cpp_LIBRARIES}
+# 				                          ${LIBXML2_LIBRARIES}
+#                                   ${ROOT_LIBRARIES})
 
 ##############################
 
@@ -19,6 +20,16 @@ target_link_libraries(GasTPCG4Sim G4Sim
                                   ${GENIE_LIBRARIES}
                                   ${Log4cpp_LIBRARIES}
                                   ${LIBXML2_LIBRARIES})
+
+##############################
+
+add_executable(TestDstWriter TestDstWriter.cxx)
+
+target_link_libraries(TestDstWriter GasTPCEvtRec NdtfDst
+                                    ${ROOT_LIBRARIES}
+                                    ${GENIE_LIBRARIES}
+                                    ${Log4cpp_LIBRARIES}
+                                    ${LIBXML2_LIBRARIES})
 
 ##############################
 
@@ -69,6 +80,5 @@ target_link_libraries(GasTPCG4Sim G4Sim
 
 ##############################
 
-install(TARGETS VertexStats GasTPCG4Sim #TestIOEvtRec TestIOEvtRecWithGenie
-               #EvtRecDump GasTPCReco TestGasTPCG4Sim
+install(TARGETS GasTPCG4Sim TestDstWriter #VertexStats TestIOEvtRec TestIOEvtRecWithGenie EvtRecDump GasTPCReco TestGasTPCG4Sim
         RUNTIME DESTINATION bin)

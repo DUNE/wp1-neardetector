@@ -1,6 +1,8 @@
 ### CMakeLists.txt -- gastpc/ndtfdst
 
-add_library(NdtfDst SHARED DstWriter.cxx)
+root_generate_dictionary(G__NdtfDst DstEntry.h LINKDEF LinkDef.h)
+
+add_library(NdtfDst SHARED DstWriter.cxx G__NdtfDst.cxx)
 
 target_link_libraries(NdtfDst   ${ROOT_LIBRARIES}
                                 ${GENIE_LIBRARIES}
