@@ -10,5 +10,9 @@ target_link_libraries(NdtfDst   ${ROOT_LIBRARIES}
                                 ${Log4cpp_LIBRARIES})
 
 install(TARGETS NdtfDst
-        LIBRARY DESTINATION lib)
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib)
+
+file(GLOB NdtfDstDict ${CMAKE_CURRENT_BINARY_DIR}/*.pcm)
+install(FILES ${NdtfDstDict} DESTINATION lib)
 

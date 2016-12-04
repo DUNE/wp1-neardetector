@@ -9,6 +9,8 @@
 #include "RootFileReader.h"
 #include "EventRecord.h"
 #include "MCGenInfo.h"
+#include "DstEntry.h"
+#include "DstWriter.h"
 
 #include <Ntuple/NtpMCEventRecord.h>
 
@@ -32,6 +34,9 @@ int main(int argc, char const *argv[])
   gastpc::RootFileReader r;
   r.OpenFile(input_filename);
 
+  DstWriter odst;
+  odst.OpenFile(output_filename);
+
   for (int i=0; i<r.GetNumberOfEntries(); ++i) {
 
     gastpc::EventRecord& evtrec = r.Read(i);
@@ -43,9 +48,14 @@ int main(int argc, char const *argv[])
       const genie::Target& tgt = interaction->InitState().Tgt();
       if (tgt.Z() != 18) continue;
 
-      std::cout << "Argon interaction" << std::endl;
+      DstEntry dst_entry;
+      dst_entry.EventID = mcgi->GetMCID();
+
+      odst.Write(dst_entry);
     }
   }
+
+  odst.CloseFile();
 
   return EXIT_SUCCESS;
 }

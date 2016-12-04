@@ -9,8 +9,6 @@
 #ifndef DST_ENTRY_H
 #define DST_ENTRY_H
 
-#include <Rtypes.h>
-
 namespace genie { class NtpMCEventRecord; }
 
 
@@ -39,8 +37,6 @@ public:
 public:
   DstEntry();
   virtual ~DstEntry();
-  
-  ClassDef(DstEntry, 1)
 };
 
 inline DstEntry::DstEntry(): gmcrec(0) {}
