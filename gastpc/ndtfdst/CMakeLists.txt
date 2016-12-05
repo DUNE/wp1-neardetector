@@ -1,8 +1,6 @@
 ### CMakeLists.txt -- gastpc/ndtfdst
 
-root_generate_dictionary(G__NdtfDst DstEntry.h LINKDEF LinkDef.h)
-
-add_library(NdtfDst SHARED DstWriter.cxx G__NdtfDst.cxx)
+add_library(NdtfDst DstWriter.cxx)
 
 target_link_libraries(NdtfDst   ${ROOT_LIBRARIES}
                                 ${GENIE_LIBRARIES}
@@ -12,7 +10,3 @@ target_link_libraries(NdtfDst   ${ROOT_LIBRARIES}
 install(TARGETS NdtfDst
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
-
-file(GLOB NdtfDstDict ${CMAKE_CURRENT_BINARY_DIR}/*.pcm)
-install(FILES ${NdtfDstDict} DESTINATION lib)
-

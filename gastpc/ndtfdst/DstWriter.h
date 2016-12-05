@@ -9,11 +9,11 @@
 #ifndef DST_WRITER_H
 #define DST_WRITER_H
 
+#include "DstEntry.h"
 #include <string>
 
 class TFile;
 class TTree;
-class DstEntry;
 
 
 /// TODO: Class description
@@ -38,7 +38,7 @@ public:
 private:
   TFile* file_;
   TTree* tree_;
-  DstEntry* entry_;
+  DstEntry entry_;
 };
 
 #endif

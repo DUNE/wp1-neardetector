@@ -8,14 +8,14 @@
 
 #include "DstWriter.h"
 
-#include "DstEntry.h"
+#include <Ntuple/NtpMCEventRecord.h>
 
 #include <TTree.h>
 #include <TFile.h>
 #include <TBranch.h>
 
 
-DstWriter::DstWriter(): file_(0), tree_(0), entry_(0)
+DstWriter::DstWriter(): file_(0), tree_(0)
 {
 }
 
@@ -23,7 +23,6 @@ DstWriter::DstWriter(): file_(0), tree_(0), entry_(0)
 DstWriter::~DstWriter()
 {
   CloseFile();
-  delete tree_;
   delete file_;
 }
 
@@ -39,7 +38,25 @@ void DstWriter::OpenFile(const std::string& filename,
 
   // Create a tree and all its branches
   tree_ = new TTree("NdtfDst", "DUNE ND-TF GArTPC DST");
-  tree_->Branch("DstEntry", &entry_, 32000, 1);
+
+  tree_->Branch("gmcrec", "genie::NtpMCEventRecord", &(entry_.gmcrec));
+  tree_->Branch("RunID",   &(entry_.RunID),   "RunID/I");
+  tree_->Branch("EventID", &(entry_.EventID), "EventID/I");
+  // tree_->Branch("EventID",        &EventID, "EventID/I");
+  // tree_->Branch("Sample",         &Sample, "Sample/I");
+  // tree_->Branch("Ev_reco",        &Ev_reco, "Ev_reco/D");
+  // tree_->Branch("Ev",             &Ev, "Ev/D");
+  // tree_->Branch("Y",              &Y, "Y/D");
+  // tree_->Branch("Y_reco",         &Y_reco, "Y_reco/D");
+  // tree_->Branch("VertexPosition", VertexPosition, "VertexPosition[4]/D");
+  // tree_->Branch("NGeantTracks",   &NGeantTracks, "NGeantTracks/I");
+  // tree_->Branch("TrackID",        TrackID, "TrackID[NGeantTracks]/I");
+  // tree_->Branch("Momentum",       Momentum, "Momentum[NGeantTracks]/D");
+  // tree_->Branch("TotalEDep",      TotalEDep, "TotalEDep[NGeantTracks]/D");
+  // tree_->Branch("Pdg",            Pdg, "Pdg[NGeantTracks]/I");
+  // tree_->Branch("dEdx",           dEdx, "dEdx[NGeantTracks]/D");
+  // tree_->Branch("NGeantHits",     NGeantHits, "NGeantHits[NGeantTracks]/I");
+
   //tree_->SetWeight(3.75E15);
 }
 
@@ -55,7 +72,7 @@ void DstWriter::CloseFile()
 
 void DstWriter::Write(DstEntry& entry)
 { 
-  entry_ = &entry; 
+  entry_ = entry; 
   tree_->Fill();
 }
 
