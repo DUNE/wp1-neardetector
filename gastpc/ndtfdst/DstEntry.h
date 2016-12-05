@@ -17,22 +17,25 @@ namespace genie { class NtpMCEventRecord;}
 class DstEntry
 {
 public:
-  genie::NtpMCEventRecord* gmcrec;
-  int     RunID;
-  int     EventID;
-/*  int     Sample;
-  double  Ev_reco;
-  double  Ev;
-  double  Y;
-  double  Y_reco;
-  double  VertexPosition[4];
-  int     NGeantTracks;
-  int     TrackID[500];
-  double  Momentum[500];
-  int     Pdg[500];
-  double  TotalEDep[500];
-  double  dEdx[500];
-  int     NGeantHits[500];*/
+  genie::NtpMCEventRecord* gmcrec; ///< Pointer to Genie's event record
+
+  int RunID;
+  int EventID;
+  int Sample;
+
+  double Ev;      ///< Neutrino energy
+  double Ev_reco; ///< Reconstructed neutrino energy
+  double Y;       ///< Inelasticity
+  double Y_reco;  ///< Reconstructed inelasticity
+
+  int NTracks;                    ///< Number of tracks in neutrino interaction
+  int TrackID[500];               ///< MC track ID number
+  int FamilyTreeLevel[500];       ///< Primary: 1; Secondary: 2 ...
+  int Pdg[500];                   ///< PDG code of each track
+  int Pdg_reco[500];              ///< Reconstructed PDG code
+  double InitialMomentum[500][3]; ///< Initial momentum
+  double Momentum_reco[500];      ///< Reconstructed momentum
+  double VertexPosition[4];      ///< Initial vertex (position and time)
 
 public:
   DstEntry();

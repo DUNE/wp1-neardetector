@@ -40,10 +40,11 @@ void DstWriter::OpenFile(const std::string& filename,
   tree_ = new TTree("NdtfDst", "DUNE ND-TF GArTPC DST");
 
   tree_->Branch("gmcrec", "genie::NtpMCEventRecord", &(entry_.gmcrec));
+
   tree_->Branch("RunID",   &(entry_.RunID),   "RunID/I");
   tree_->Branch("EventID", &(entry_.EventID), "EventID/I");
-  // tree_->Branch("EventID",        &EventID, "EventID/I");
-  // tree_->Branch("Sample",         &Sample, "Sample/I");
+  tree_->Branch("Sample",  &(entry_.Sample),  "Sample/I");
+
   // tree_->Branch("Ev_reco",        &Ev_reco, "Ev_reco/D");
   // tree_->Branch("Ev",             &Ev, "Ev/D");
   // tree_->Branch("Y",              &Y, "Y/D");
