@@ -52,7 +52,15 @@ void DstWriter::OpenFile(const std::string& filename,
 
   tree_->Branch("VertexPosition", entry_.VertexPosition, "VertexPosition[4]/D");
 
-  tree_->Branch("NTracks", &(entry_.NTracks), "NTracks/I");
+  tree_->Branch("NTracks",  &(entry_.NTracks), "NTracks/I");
+
+  tree_->Branch("TrackID",  (entry_.TrackID),  "TrackID[NTracks]/I");
+  tree_->Branch("FamilyTreeLevel", (entry_.FamilyTreeLevel), "FamilyTreeLevel[NTracks]/I");
+  tree_->Branch("Pdg",      (entry_.Pdg),      "Pdg[NTracks]/I");
+  tree_->Branch("Pdg_reco", (entry_.Pdg),      "Pdg_reco[NTracks]/I");
+
+  tree_->Branch("InitialMomentum", (entry_.InitialMomentum), "InitialMomentum[NTracks][3]/D");
+  tree_->Branch("Momentum_reco", (entry_.Momentum_reco), "Momentum_reco[NTracks]/D");
 
   // tree_->Branch("TrackID",        TrackID, "TrackID[NGeantTracks]/I");
   // tree_->Branch("Momentum",       Momentum, "Momentum[NGeantTracks]/D");
