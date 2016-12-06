@@ -45,12 +45,15 @@ void DstWriter::OpenFile(const std::string& filename,
   tree_->Branch("EventID", &(entry_.EventID), "EventID/I");
   tree_->Branch("Sample",  &(entry_.Sample),  "Sample/I");
 
-  // tree_->Branch("Ev_reco",        &Ev_reco, "Ev_reco/D");
-  // tree_->Branch("Ev",             &Ev, "Ev/D");
-  // tree_->Branch("Y",              &Y, "Y/D");
-  // tree_->Branch("Y_reco",         &Y_reco, "Y_reco/D");
-  // tree_->Branch("VertexPosition", VertexPosition, "VertexPosition[4]/D");
-  // tree_->Branch("NGeantTracks",   &NGeantTracks, "NGeantTracks/I");
+  tree_->Branch("Ev",      &(entry_.Ev),      "Ev/D");
+  tree_->Branch("Ev_reco", &(entry_.Ev_reco), "Ev_reco/D");
+  tree_->Branch("Y",       &(entry_.Y),       "Y/D");
+  tree_->Branch("Y_reco",  &(entry_.Y_reco),  "Y_reco/D");
+
+  tree_->Branch("VertexPosition", entry_.VertexPosition, "VertexPosition[4]/D");
+
+  tree_->Branch("NTracks", &(entry_.NTracks), "NTracks/I");
+
   // tree_->Branch("TrackID",        TrackID, "TrackID[NGeantTracks]/I");
   // tree_->Branch("Momentum",       Momentum, "Momentum[NGeantTracks]/D");
   // tree_->Branch("TotalEDep",      TotalEDep, "TotalEDep[NGeantTracks]/D");
