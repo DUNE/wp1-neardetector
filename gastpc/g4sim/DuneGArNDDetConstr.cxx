@@ -395,10 +395,10 @@ void DuneGArNDDetConstr::DefineCommands()
   barrel_ecal_scint_thickness_cmd.SetRange("value>0.");
 
   G4GenericMessenger::Command& barrel_ecal_num_layers_cmd =
-    msg_->DeclarePropertyWithUnit("barrel_ecal_num_layers", "cm",
+    msg_->DeclareProperty("barrel_ecal_num_layers",
       barrel_ecal_num_layers_, 
       "Number of layers in barrel ECAL.");
-  barrel_ecal_num_layers_cmd.SetRange("value>0.");
+  barrel_ecal_num_layers_cmd.SetRange("value>0");
 
 
   G4GenericMessenger::Command& upstream_ecal_abs_thickness_cmd =
@@ -414,10 +414,10 @@ void DuneGArNDDetConstr::DefineCommands()
   upstream_ecal_scint_thickness_cmd.SetRange("value>0.");
 
   G4GenericMessenger::Command& upstream_ecal_num_layers_cmd =
-    msg_->DeclarePropertyWithUnit("upstream_ecal_num_layers", "cm",
+    msg_->DeclareProperty("upstream_ecal_num_layers",
       upstream_ecal_num_layers_, 
       "Number of layers in upstream ECAL.");
-  upstream_ecal_num_layers_cmd.SetRange("value>0.");
+  upstream_ecal_num_layers_cmd.SetRange("value>0");
 
   G4GenericMessenger::Command& downstream_ecal_abs_thickness_cmd =
     msg_->DeclarePropertyWithUnit("downstream_ecal_abs_thickness", "cm",
@@ -432,10 +432,10 @@ void DuneGArNDDetConstr::DefineCommands()
   downstream_ecal_scint_thickness_cmd.SetRange("value>0.");
 
   G4GenericMessenger::Command& downstream_ecal_num_layers_cmd =
-    msg_->DeclarePropertyWithUnit("downstream_ecal_num_layers", "cm",
+    msg_->DeclareProperty("downstream_ecal_num_layers",
       downstream_ecal_num_layers_, 
       "Number of layers in downstream ECAL.");
-  downstream_ecal_num_layers_cmd.SetRange("value>0.");
+  downstream_ecal_num_layers_cmd.SetRange("value>0");
 
   ////////////////////////////////////////////////
 
