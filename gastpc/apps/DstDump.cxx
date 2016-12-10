@@ -28,9 +28,8 @@ void PrintUsage()
 }
 
 
-bool ReadGenieRecord(gastpc::MCGenInfo* mcgi)
+bool ReadGenieRecord(genie::NtpMCEventRecord* gmcrec)
 {
-  genie::NtpMCEventRecord* gmcrec = mcgi->GetGeneratorRecord();
   std::cout << *gmcrec << std::endl;
 
   //genie::Interaction* interaction = (gmcrec->event)->Summary();
@@ -47,19 +46,17 @@ int main(int argc, char* argv[])
 {
   if (argc < 2) PrintUsage();
 
-  std::string input_filename(argv[1]);
+  TFile dstfile(argv[1]);
+  TTree* tree = dynamic_cast<TTree*>(dstfile.Get("NdtfDst"));
+  genie::NtpMCEventRecord* gmcrec = 0;
+  tree->GetBranch("gmcrec")->SetAddress(&gmcrec);
 
-  gastpc::RootFileReader r;
-  r.OpenFile(input_filename);
+  for (Long64_t i=0; i<tree->GetEntries(); ++i) {
 
-  for (int i=0; i<r.GetNumberOfEntries(); ++i) {
+    tree->GetEntry(i);
+    ReadGenieRecord(gmcrec);
 
-    gastpc::EventRecord& evtrec = r.Read(i);
-
-    for (gastpc::MCGenInfo* mcgi: evtrec.GetMCGenInfo()) {
-      ReadGenieRecord(mcgi);
-   } 
-  }
+  }  
 
   return EXIT_SUCCESS;
 }

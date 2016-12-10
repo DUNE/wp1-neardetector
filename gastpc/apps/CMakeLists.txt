@@ -33,30 +33,22 @@ target_link_libraries(TestDstWriter GasTPCEvtRec NdtfDst
 
 ##############################
 
-# add_executable(TestIOEvtRec TestIOEvtRec.cxx)
+add_executable(EvtRecDump EvtRecDump.cxx)
 
-# target_link_libraries(TestIOEvtRec GasTPCEvtRec
-#                                    ${ROOT_LIBRARIES})
-
-##############################
-
-# add_executable(TestIOEvtRecWithGenie TestIOEvtRecWithGenie.cxx)
-
-# target_link_libraries(TestIOEvtRecWithGenie GasTPCEvtRec
-#                                      	    ${ROOT_LIBRARIES}
-#                                      	    ${GENIE_LIBRARIES}
-#                                      	    ${Log4cpp_LIBRARIES}
-#                                      	    ${LIBXML2_LIBRARIES})
+target_link_libraries(EvtRecDump  GasTPCEvtRec
+                                  ${ROOT_LIBRARIES}
+                                  ${GENIE_LIBRARIES}
+                                  ${Log4cpp_LIBRARIES}
+                                  ${LIBXML2_LIBRARIES})
 
 ##############################
 
-# add_executable(EvtRecDump EvtRecDump.cxx)
+add_executable(DstDump DstDump.cxx)
 
-# target_link_libraries(EvtRecDump  GasTPCEvtRec
-#                                   ${ROOT_LIBRARIES}
-#                                   ${GENIE_LIBRARIES}
-#                                   ${Log4cpp_LIBRARIES}
-#                                   ${LIBXML2_LIBRARIES})
+target_link_libraries(DstDump ${ROOT_LIBRARIES}
+                              ${GENIE_LIBRARIES}
+                              ${Log4cpp_LIBRARIES}
+                              ${LIBXML2_LIBRARIES})
 
 ##############################
 
@@ -80,5 +72,5 @@ target_link_libraries(TestDstWriter GasTPCEvtRec NdtfDst
 
 ##############################
 
-install(TARGETS GasTPCG4Sim TestDstWriter #VertexStats TestIOEvtRec TestIOEvtRecWithGenie EvtRecDump GasTPCReco TestGasTPCG4Sim
+install(TARGETS GasTPCG4Sim TestDstWriter EvtRecDump DstDump #VertexStats
         RUNTIME DESTINATION bin)
