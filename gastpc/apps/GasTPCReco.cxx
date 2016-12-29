@@ -13,6 +13,7 @@
 #include "MCParticle.h"
 #include "MCGenInfo.h"
 #include "DstWriter.h"
+#include "DstEntry.h"
 #include "Units.h"
 
 #include <TRandom3.h>
@@ -52,10 +53,9 @@ namespace {
 
   struct TrackInfo {
     double pdg;
-    double dEdx;
-    double edep;
     double length;
     double length_T;
+    double momentum_reco;
     double momentum;
     int    num_hits;
     int    track_id;
@@ -72,7 +72,7 @@ void PrintUsage()
   std::cerr << "   -r, --random-seed    : Random seed\n"
             << "   -m, --mode           : neutrino or antineutrino\n"
             << "   -i, --input-file     : Input file"
-            << "   -i, --output-file    : Output file"
+            << "   -o, --output-file    : Output file"
             << std::endl; 
 
   exit(EXIT_FAILURE);
@@ -232,9 +232,9 @@ double ProcessTrack(gastpc::MCTrack* track, TrackInfo& track_info)
     prev = curr;
   }
 
-  track_info.dEdx = TruncatedMean(dEdx_measurements);
-  track_info.edep = edep;
-  track_info.num_hits = track->GetHits().size();
+  //track_info.dEdx = TruncatedMean(dEdx_measurements);
+  //track_info.edep = edep;
+  //track_info.num_hits = track->GetHits().size();
 
   double length_t = max[2] - min[2];
   double length_l = max[1] - min[1];
@@ -252,7 +252,8 @@ double ProcessTrack(gastpc::MCTrack* track, TrackInfo& track_info)
 
   double momentum = 
     SmearPt(Pmod,length_t) / std::sin(SmearAngle(angle, Pmod, length_l));
-  track_info.momentum = momentum;
+  track_info.momentum = Pmod;
+  track_info.momentum_reco = momentum;
 
   return momentum;
 }
@@ -409,6 +410,8 @@ int main(int argc, char* argv[])
       const genie::Target& tgt = interaction->InitState().Tgt();
       if (tgt.Z() != 18) continue;
 
+      DstEntry entry;
+
       double energy_reco = 0.;
       double energy_nu = 
         (interaction->InitState().ProbeE(genie::kRfLab)) * gastpc::GeV;
@@ -417,18 +420,19 @@ int main(int argc, char* argv[])
       std::vector<TrackInfo> trackinfo_v;
       ParticleContent pc{ 0, 0, 0, 0, 0, 0, 0, 0 };
 
-      dst_->RunID   = rv->GetRunID();
-      dst_->EventID = rv->GetEventID();
+      entry.RunID   = rv->GetRunID();
+      entry.EventID = rv->GetEventID();
 
       TLorentzVector* vertex = gmcrec->event->Vertex();
-      dst_->VertexPosition[0] = vertex->X();
-      dst_->VertexPosition[1] = vertex->Y();
-      dst_->VertexPosition[2] = vertex->Z();
-      dst_->VertexPosition[3] = vertex->T();
+      entry.VertexPosition[0] = vertex->X();
+      entry.VertexPosition[1] = vertex->Y();
+      entry.VertexPosition[2] = vertex->Z();
+      entry.VertexPosition[3] = vertex->T();
 
-      genie::NtpMCEventRecord* gmcrec_copy = new genie::NtpMCEventRecord();
-      gmcrec_copy->Copy(*gmcrec);
-      dst_->gmcrec = gmcrec_copy;
+      //genie::NtpMCEventRecord* gmcrec_copy = new genie::NtpMCEventRecord();
+      //gmcrec_copy->Copy(*gmcrec);
+      //entry.gmcrec = gmcrec_copy;
+      entry.gmcrec = gmcrec;
 
       // Loop through the primary particles
       for (gastpc::MCParticle* mcp: nuint->GetParticles()) {
@@ -446,7 +450,7 @@ int main(int argc, char* argv[])
             if (pdg == pdg_muon) pc.num_muons += 1;
             else pc.num_wsmuons += 1;
 
-            TrackInfo ti{ 0., 0., 0., 0., 0., 0., 0, 0 };
+            TrackInfo ti{ 0., 0., 0., 0., 0., 0, 0 };
             ti.pdg = pdg;
             ti.track_id = trackid;
 
@@ -458,7 +462,7 @@ int main(int argc, char* argv[])
             energy_reco += energy;
             Y_reco = energy;
             //Y = mct->GetParticle()->GetInitial4Momentum().E();
-            Y = 1.;
+            Y = std::sqrt(ti.momentum*ti.momentum + mass_muon*mass_muon);
             trackinfo_v.push_back(ti);
           }
         }
@@ -471,7 +475,7 @@ int main(int argc, char* argv[])
 
             pc.num_protons += 1;
 
-            TrackInfo ti{ 0., 0., 0., 0., 0., 0., 0, 0 };
+            TrackInfo ti{ 0., 0., 0., 0., 0., 0, 0 };
             ti.pdg = pdg;
             ti.track_id = trackid;
             
@@ -490,7 +494,7 @@ int main(int argc, char* argv[])
             if (pdg == pdg_electron) pc.num_electrons += 1;
             else pc.num_wselectrons += 1;
 
-            TrackInfo ti{ 0., 0., 0., 0., 0., 0., 0, 0 };
+            TrackInfo ti{ 0., 0., 0., 0., 0., 0, 0 };
             ti.pdg = pdg;
             ti.track_id = trackid;
 
@@ -502,7 +506,7 @@ int main(int argc, char* argv[])
             energy_reco += energy;
             Y_reco = energy;
             //Y = mct->GetParticle()->GetInitial4Momentum().E();
-            Y = 1.;
+            Y = std::sqrt(ti.momentum*ti.momentum + mass_electron*mass_electron);
             trackinfo_v.push_back(ti);
           }
         }
@@ -515,7 +519,7 @@ int main(int argc, char* argv[])
 
             pc.num_picharged += 1;
 
-            TrackInfo ti{ 0., 0., 0., 0., 0., 0., 0, 0 };
+            TrackInfo ti{ 0., 0., 0., 0., 0., 0, 0 };
             ti.pdg = pdg;
             ti.track_id = trackid;
 
@@ -533,7 +537,7 @@ int main(int argc, char* argv[])
 
           pc.num_pizeroes += 1;
 
-          TrackInfo ti{ 0., 0., 0., 0., 0., 0., 0, 0 };
+          TrackInfo ti{ 0., 0., 0., 0., 0., 0, 0 };
           ti.pdg = pdg;
           ti.track_id = trackid;
 
@@ -545,27 +549,25 @@ int main(int argc, char* argv[])
         }        
       } // for (gastpc::MCParticle* mcp: nuint->GetParticles())
 
-      dst_->Sample  = AnalyzeParticleContent(pc);
-      dst_->Ev_reco = energy_reco;
-      dst_->Ev      = energy_nu;
-      dst_->Y       = 1. - Y / energy_nu;
-      dst_->Y_reco  = 1. - Y_reco / energy_reco;
+      entry.Sample  = AnalyzeParticleContent(pc);
+      entry.Ev_reco = energy_reco;
+      entry.Ev      = energy_nu;
+      entry.Y       = 1. - Y / energy_nu;
+      entry.Y_reco  = 1. - Y_reco / energy_reco;
 
       int num_tracks = trackinfo_v.size();
-      dst_->NGeantTracks = num_tracks;
+      entry.NTracks = num_tracks;
 
       for (int i=0; i<num_tracks; ++i) {
-        dst_->TrackID[i]    = trackinfo_v[i].track_id;
-        dst_->Pdg[i]        = trackinfo_v[i].pdg;
-        dst_->Momentum[i]   = trackinfo_v[i].momentum;
-        dst_->dEdx[i]       = trackinfo_v[i].dEdx;
-        dst_->TotalEDep[i]  = trackinfo_v[i].edep;
-        dst_->NGeantHits[i] = trackinfo_v[i].num_hits;
+        entry.TrackID[i]       = trackinfo_v[i].track_id;
+        entry.Pdg[i]           = trackinfo_v[i].pdg;
+        entry.Momentum_reco[i] = trackinfo_v[i].momentum_reco;
+        entry.Momentum[i]      = trackinfo_v[i].momentum;
       }
 
-      dst_->Write();
+      dst_->Write(entry);
       trackinfo_v.clear();
-      dst_->gmcrec->Clear();
+
 
     } // for (gastpc::NuInteraction* nuint: rv->GetNuInteractions())
   } // while (rd.Next())

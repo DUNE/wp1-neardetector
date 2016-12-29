@@ -72,9 +72,9 @@ int main(int argc, char const *argv[])
         dst_entry.Pdg[num_mcp] = mcp->GetPDGCode();
         dst_entry.Pdg_reco[num_mcp] = mcp->GetPDGCode();
 
-        dst_entry.InitialMomentum[num_mcp][0] = mcp->GetInitialMomentum()[0];
-        dst_entry.InitialMomentum[num_mcp][1] = mcp->GetInitialMomentum()[1];
-        dst_entry.InitialMomentum[num_mcp][2] = mcp->GetInitialMomentum()[2];
+        //dst_entry.InitialMomentum[num_mcp][0] = mcp->GetInitialMomentum()[0];
+        //dst_entry.InitialMomentum[num_mcp][1] = mcp->GetInitialMomentum()[1];
+        //dst_entry.InitialMomentum[num_mcp][2] = mcp->GetInitialMomentum()[2];
 
         dst_entry.Momentum_reco[num_mcp] = 0.;
 
