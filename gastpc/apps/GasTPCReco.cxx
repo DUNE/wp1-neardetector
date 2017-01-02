@@ -52,6 +52,7 @@ namespace {
   };
 
   struct TrackInfo {
+    //bool   is_reco;
     double pdg;
     double length;
     double length_T;
@@ -563,6 +564,7 @@ int main(int argc, char* argv[])
         entry.Pdg[i]           = trackinfo_v[i].pdg;
         entry.Momentum_reco[i] = trackinfo_v[i].momentum_reco;
         entry.Momentum[i]      = trackinfo_v[i].momentum;
+        entry.RecoTrack[i]     = 1;
       }
 
       dst_->Write(entry);
