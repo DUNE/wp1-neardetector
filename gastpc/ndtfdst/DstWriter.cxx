@@ -84,8 +84,6 @@ void DstWriter::CloseFile()
 
 void DstWriter::Write(DstEntry& entry)
 { 
-  std::cout << entry.gmcrec << std::endl;
-
   entry_ = entry; 
   tree_->Fill();
 }

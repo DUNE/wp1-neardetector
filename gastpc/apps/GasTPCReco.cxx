@@ -52,7 +52,7 @@ namespace {
   };
 
   struct TrackInfo {
-    //bool   is_reco;
+    bool   is_reco;
     double pdg;
     double length;
     double length_T;
@@ -178,7 +178,10 @@ double SmearPt(double Pt, double length)
 
   int N = std::ceil(length);
 
-  double sigma = sigma_x * Pt * Pt * std::sqrt(720/(N+4)) / (0.3 * magfield * length * length) + 0.05 * std::sqrt(1.43 * length / X0) / (magfield * length);
+  double sigma_1 = sigma_x * Pt * Pt * std::sqrt(720/(N+4)) / (0.3 * magfield * length * length);
+  double sigma_2 = 0.05 * std::sqrt(1.43 * length / X0) / (magfield * length);
+
+  double sigma = std::sqrt(sigma_1*sigma_1 + sigma_2*sigma_2);
 
   return rnd_->Gaus(Pt, sigma);
 }
@@ -240,6 +243,7 @@ double ProcessTrack(gastpc::MCTrack* track, TrackInfo& track_info)
   double length_t = max[2] - min[2];
   double length_l = max[1] - min[1];
 
+  track_info.length_T = length_t;
 
   TLorentzVector P4(track->GetParticle()->GetInitialMomentum()[0],
                     track->GetParticle()->GetInitialMomentum()[1],
@@ -448,14 +452,19 @@ int main(int argc, char* argv[])
 
             if (mct->GetLabel() != "TPC") continue;
 
-            if (pdg == pdg_muon) pc.num_muons += 1;
-            else pc.num_wsmuons += 1;
-
-            TrackInfo ti{ 0., 0., 0., 0., 0., 0, 0 };
+            TrackInfo ti{false, 0., 0., 0., 0., 0., 0, 0 };
             ti.pdg = pdg;
             ti.track_id = trackid;
 
             double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
+
+            if (ti.length_T < (4.*gastpc::cm)) continue;
+
+            if (pdg == pdg_muon) pc.num_muons += 1;
+            else pc.num_wsmuons += 1;
+
+            ti.is_reco = true;
+
             double mass_muon = 105.6583715 * gastpc::MeV;
             double energy = 
               std::sqrt( measured_mom * measured_mom + mass_muon * mass_muon);
@@ -474,13 +483,16 @@ int main(int argc, char* argv[])
 
             if (mct->GetLabel() != "TPC") continue;
 
-            pc.num_protons += 1;
+            TrackInfo ti{false, 0., 0., 0., 0., 0., 0, 0 };
+            double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
 
-            TrackInfo ti{ 0., 0., 0., 0., 0., 0, 0 };
+            if (ti.length_T < (4.*gastpc::cm)) continue;
+
+            pc.num_protons += 1;            
+            ti.is_reco = true;
             ti.pdg = pdg;
             ti.track_id = trackid;
             
-            double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
             energy_reco += measured_mom;
             trackinfo_v.push_back(ti);
           }
@@ -492,14 +504,18 @@ int main(int argc, char* argv[])
 
             if (mct->GetLabel() != "TPC") continue;
 
+            TrackInfo ti{false, 0., 0., 0., 0., 0., 0, 0 };
+            double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
+
+            if (ti.length_T < (4.*gastpc::cm)) continue;
+
             if (pdg == pdg_electron) pc.num_electrons += 1;
             else pc.num_wselectrons += 1;
 
-            TrackInfo ti{ 0., 0., 0., 0., 0., 0, 0 };
+            ti.is_reco = true;
             ti.pdg = pdg;
             ti.track_id = trackid;
-
-            double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
+            
             double mass_electron = 0.511 * gastpc::MeV;
             double energy = 
               std::sqrt( measured_mom * measured_mom + mass_electron * mass_electron);
@@ -518,13 +534,16 @@ int main(int argc, char* argv[])
 
             if (mct->GetLabel() != "TPC") continue;
 
-            pc.num_picharged += 1;
+            TrackInfo ti{false, 0., 0., 0., 0., 0., 0, 0 };
+            double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
 
-            TrackInfo ti{ 0., 0., 0., 0., 0., 0, 0 };
+            if (ti.length_T < (4.*gastpc::cm)) continue;
+
+            pc.num_picharged += 1;
+            ti.is_reco = true;
             ti.pdg = pdg;
             ti.track_id = trackid;
 
-            double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
             double mass_pion = 139.57018 * gastpc::MeV;
             double energy = 
               std::sqrt( measured_mom * measured_mom + mass_pion * mass_pion);
@@ -538,7 +557,7 @@ int main(int argc, char* argv[])
 
           pc.num_pizeroes += 1;
 
-          TrackInfo ti{ 0., 0., 0., 0., 0., 0, 0 };
+          TrackInfo ti{true, 0., 0., 0., 0., 0., 0, 0 };
           ti.pdg = pdg;
           ti.track_id = trackid;
 
@@ -564,7 +583,7 @@ int main(int argc, char* argv[])
         entry.Pdg[i]           = trackinfo_v[i].pdg;
         entry.Momentum_reco[i] = trackinfo_v[i].momentum_reco;
         entry.Momentum[i]      = trackinfo_v[i].momentum;
-        entry.RecoTrack[i]     = 1;
+        entry.RecoTrack[i]     = trackinfo_v[i].is_reco;
       }
 
       dst_->Write(entry);
