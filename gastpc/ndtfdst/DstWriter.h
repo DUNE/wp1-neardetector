@@ -9,8 +9,9 @@
 #ifndef DST_WRITER_H
 #define DST_WRITER_H
 
-#include "DstEntry.h"
 #include <string>
+
+namespace genie { class NtpMCEventRecord; } 
 
 class TFile;
 class TTree;
@@ -20,6 +21,30 @@ class TTree;
 
 class DstWriter
 {
+public:
+  genie::NtpMCEventRecord* gmcrec; ///< Pointer to Genie's event record
+
+  int RunID;
+  int EventID; 
+  int Sample;  ///< Sample ID (as defined by VALOR)
+  int NTracks; ///< Number of tracks in neutrino interaction
+
+  double Ev;      ///< Neutrino energy
+  double Ev_reco; ///< Reconstructed neutrino energy
+  double Y;       ///< Inelasticity
+  double Y_reco;  ///< Reconstructed inelasticity
+
+  double VertexPosition[4]; ///< Initial vertex (position and time)
+
+  int TrackID[500];         ///< MC track ID number
+  int RecoTrack[500];       ///< Reconstructed: 1; Not reco: 0
+  int FamilyTreeLevel[500]; ///< Primary: 1; Secondary: 2 ...
+  int Pdg[500];             ///< PDG code of each track
+  int Pdg_reco[500];        ///< Reconstructed PDG code
+
+  double Momentum[500];      ///< Initial momentum
+  double Momentum_reco[500]; ///< Reconstructed momentum
+
 public:
   /// Constructor
   DstWriter();
@@ -31,14 +56,13 @@ public:
 
   void CloseFile();
 
-  void Write(DstEntry&);
+  void Write();
 
   bool IsFileOpen() const;
 
 private:
   TFile* file_;
   TTree* tree_;
-  DstEntry entry_;
 };
 
 #endif
