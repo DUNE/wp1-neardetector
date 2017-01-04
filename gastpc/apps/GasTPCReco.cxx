@@ -383,9 +383,12 @@ int main(int argc, char* argv[])
 
   rnd_ = new TRandom3(rnd_seed_);
 
-  TFile* file = new TFile(input_file_.c_str());
-  TTreeReader rd("EventRecord", file);
-  TTreeReaderValue<gastpc::EventRecord> rv(rd, "EventRecord");
+  gastpc::RootFileReader rd;
+  rd.OpenFile(input_file_);
+
+  // TFile* file = new TFile(input_file_.c_str());
+  // TTreeReader rd("EventRecord", file);
+  // TTreeReaderValue<gastpc::EventRecord> rv(rd, "EventRecord");
 
   dst_ = new DstWriter();
   dst_->OpenFile(output_file_);
@@ -402,7 +405,11 @@ int main(int argc, char* argv[])
 
   // Loop through the simulated spills/events
 
-  while (rd.Next()) {
+  for (int i=0; i<rd.GetNumberOfEntries(); ++i) {
+  //while (rd.Next()) {
+
+    gastpc::EventRecord* rv = 0;
+    *rv = rd.Read(i);
 
     // Loop through the primary interactions simulated in this spill
 
