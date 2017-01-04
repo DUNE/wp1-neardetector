@@ -434,10 +434,10 @@ int main(int argc, char* argv[])
       entry.VertexPosition[2] = vertex->Z();
       entry.VertexPosition[3] = vertex->T();
 
-      //genie::NtpMCEventRecord* gmcrec_copy = new genie::NtpMCEventRecord();
-      //gmcrec_copy->Copy(*gmcrec);
-      //entry.gmcrec = gmcrec_copy;
-      entry.gmcrec = gmcrec;
+      genie::NtpMCEventRecord* gmcrec_copy = new genie::NtpMCEventRecord();
+      gmcrec_copy->Copy(*gmcrec);
+      entry.gmcrec = gmcrec_copy;
+      //entry.gmcrec = gmcrec;
 
       // Loop through the primary particles
       for (gastpc::MCParticle* mcp: nuint->GetParticles()) {
@@ -588,7 +588,7 @@ int main(int argc, char* argv[])
 
       dst_->Write(entry);
       trackinfo_v.clear();
-
+      entry.gmcrec->Clear();
 
     } // for (gastpc::NuInteraction* nuint: rv->GetNuInteractions())
   } // while (rd.Next())
