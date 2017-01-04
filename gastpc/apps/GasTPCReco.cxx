@@ -410,7 +410,7 @@ int main(int argc, char* argv[])
 
     gastpc::EventRecord* rv = 0;
     *rv = rd.Read(i);
-
+/*
     // Loop through the primary interactions simulated in this spill
 
     for (gastpc::MCGenInfo* nuint: rv->GetMCGenInfo()) {
@@ -594,7 +594,7 @@ int main(int argc, char* argv[])
       trackinfo_v.clear();
       dst_->gmcrec->Clear();
 
-    } // for (gastpc::NuInteraction* nuint: rv->GetNuInteractions())
+    } */// for (gastpc::NuInteraction* nuint: rv->GetNuInteractions())
   } // while (rd.Next())
 
   dst_->CloseFile();
