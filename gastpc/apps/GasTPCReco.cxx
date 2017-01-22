@@ -56,10 +56,9 @@ namespace {
     double pdg;
     double length;
     double length_T;
-    double momentum_reco;
-    double momentum;
-    int    num_hits;
     int    track_id;
+    double momentum_reco[3];
+    double momentum[3];
   };
 
 }
@@ -257,8 +256,20 @@ double ProcessTrack(gastpc::MCTrack* track, TrackInfo& track_info)
 
   double momentum = 
     SmearPt(Pmod,length_t) / std::sin(SmearAngle(angle, Pmod, length_l));
-  track_info.momentum = Pmod;
-  track_info.momentum_reco = momentum;
+
+  track_info.momentum[0] = 
+    track->GetParticle()->GetInitialMomentum()[0];
+  track_info.momentum[1] = 
+    track->GetParticle()->GetInitialMomentum()[1];
+  track_info.momentum[2] = 
+    track->GetParticle()->GetInitialMomentum()[2];
+
+  track_info.momentum_reco[0] =
+    track->GetParticle()->GetInitialMomentum()[0] * momentum / Pmod;
+  track_info.momentum_reco[1] =
+    track->GetParticle()->GetInitialMomentum()[1] * momentum / Pmod;
+  track_info.momentum_reco[2] =
+    track->GetParticle()->GetInitialMomentum()[2] * momentum / Pmod;
 
   return momentum;
 }
@@ -452,7 +463,8 @@ int main(int argc, char* argv[])
 
             if (mct->GetLabel() != "TPC") continue;
 
-            TrackInfo ti{false, 0., 0., 0., 0., 0., 0, 0 };
+            TrackInfo ti;
+            ti.is_reco = false;
             ti.pdg = pdg;
             ti.track_id = trackid;
 
@@ -472,7 +484,16 @@ int main(int argc, char* argv[])
             energy_reco += energy;
             Y_reco = energy;
             //Y = mct->GetParticle()->GetInitial4Momentum().E();
-            Y = std::sqrt(ti.momentum*ti.momentum + mass_muon*mass_muon);
+
+            double true_mom = 
+              mct->GetParticle()->GetInitialMomentum()[0] * 
+              mct->GetParticle()->GetInitialMomentum()[0] +
+              mct->GetParticle()->GetInitialMomentum()[1] * 
+              mct->GetParticle()->GetInitialMomentum()[1] +
+              mct->GetParticle()->GetInitialMomentum()[2] * 
+              mct->GetParticle()->GetInitialMomentum()[2] ;
+            true_mom = std::sqrt(true_mom);
+            Y = std::sqrt(true_mom*true_mom + mass_muon*mass_muon);
             trackinfo_v.push_back(ti);
           }
         }
@@ -483,7 +504,8 @@ int main(int argc, char* argv[])
 
             if (mct->GetLabel() != "TPC") continue;
 
-            TrackInfo ti{false, 0., 0., 0., 0., 0., 0, 0 };
+            TrackInfo ti;
+            ti.is_reco = false;
             double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
 
             if (ti.length_T < (4.*gastpc::cm)) continue;
@@ -504,7 +526,8 @@ int main(int argc, char* argv[])
 
             if (mct->GetLabel() != "TPC") continue;
 
-            TrackInfo ti{false, 0., 0., 0., 0., 0., 0, 0 };
+            TrackInfo ti;
+            ti.is_reco = false;
             double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
 
             if (ti.length_T < (4.*gastpc::cm)) continue;
@@ -522,8 +545,17 @@ int main(int argc, char* argv[])
 
             energy_reco += energy;
             Y_reco = energy;
-            //Y = mct->GetParticle()->GetInitial4Momentum().E();
-            Y = std::sqrt(ti.momentum*ti.momentum + mass_electron*mass_electron);
+
+            double true_mom = 
+              mct->GetParticle()->GetInitialMomentum()[0] * 
+              mct->GetParticle()->GetInitialMomentum()[0] +
+              mct->GetParticle()->GetInitialMomentum()[1] * 
+              mct->GetParticle()->GetInitialMomentum()[1] +
+              mct->GetParticle()->GetInitialMomentum()[2] * 
+              mct->GetParticle()->GetInitialMomentum()[2] ;
+            true_mom = std::sqrt(true_mom);
+            Y = std::sqrt(true_mom*true_mom + mass_electron*mass_electron);
+
             trackinfo_v.push_back(ti);
           }
         }
@@ -534,7 +566,8 @@ int main(int argc, char* argv[])
 
             if (mct->GetLabel() != "TPC") continue;
 
-            TrackInfo ti{false, 0., 0., 0., 0., 0., 0, 0 };
+            TrackInfo ti;
+            ti.is_reco = false;
             double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
 
             if (ti.length_T < (4.*gastpc::cm)) continue;
@@ -557,7 +590,8 @@ int main(int argc, char* argv[])
 
           pc.num_pizeroes += 1;
 
-          TrackInfo ti{true, 0., 0., 0., 0., 0., 0, 0 };
+          TrackInfo ti;
+          ti.is_reco = true;
           ti.pdg = pdg;
           ti.track_id = trackid;
 
@@ -579,11 +613,15 @@ int main(int argc, char* argv[])
       entry.NTracks = num_tracks;
 
       for (int i=0; i<num_tracks; ++i) {
-        entry.TrackID[i]       = trackinfo_v[i].track_id;
-        entry.Pdg[i]           = trackinfo_v[i].pdg;
-        entry.Momentum_reco[i] = trackinfo_v[i].momentum_reco;
-        entry.Momentum[i]      = trackinfo_v[i].momentum;
-        entry.RecoTrack[i]     = trackinfo_v[i].is_reco;
+        entry.TrackID[i]          = trackinfo_v[i].track_id;
+        entry.Pdg[i]              = trackinfo_v[i].pdg;
+        entry.Momentum_reco[i][0] = trackinfo_v[i].momentum_reco[0];
+        entry.Momentum_reco[i][1] = trackinfo_v[i].momentum_reco[1];
+        entry.Momentum_reco[i][2] = trackinfo_v[i].momentum_reco[2];
+        entry.Momentum[i][0]      = trackinfo_v[i].momentum[0];
+        entry.Momentum[i][1]      = trackinfo_v[i].momentum[1];
+        entry.Momentum[i][2]      = trackinfo_v[i].momentum[2];
+        entry.RecoTrack[i]        = trackinfo_v[i].is_reco;
       }
 
       dst_->Write(entry);

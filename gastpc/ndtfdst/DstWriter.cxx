@@ -59,8 +59,8 @@ void DstWriter::OpenFile(const std::string& filename,
   tree_->Branch("Pdg",      (entry_.Pdg),      "Pdg[NTracks]/I");
   tree_->Branch("Pdg_reco", (entry_.Pdg),      "Pdg_reco[NTracks]/I");
 
-  tree_->Branch("Momentum", (entry_.Momentum), "Momentum[NTracks]/D");
-  tree_->Branch("Momentum_reco", (entry_.Momentum_reco), "Momentum_reco[NTracks]/D");
+  tree_->Branch("Momentum", (entry_.Momentum), "Momentum[NTracks][3]/D");
+  tree_->Branch("Momentum_reco", (entry_.Momentum_reco), "Momentum_reco[NTracks][3]/D");
 
   // tree_->Branch("TrackID",        TrackID, "TrackID[NGeantTracks]/I");
   // tree_->Branch("Momentum",       Momentum, "Momentum[NGeantTracks]/D");
