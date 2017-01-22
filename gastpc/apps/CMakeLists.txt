@@ -23,13 +23,13 @@ target_link_libraries(GasTPCG4Sim G4Sim
 
 ##############################
 
-add_executable(TestDstWriter TestDstWriter.cxx)
+# add_executable(TestDstWriter TestDstWriter.cxx)
 
-target_link_libraries(TestDstWriter GasTPCEvtRec NdtfDst
-                                    ${ROOT_LIBRARIES}
-                                    ${GENIE_LIBRARIES}
-                                    ${Log4cpp_LIBRARIES}
-                                    ${LIBXML2_LIBRARIES})
+# target_link_libraries(TestDstWriter GasTPCEvtRec NdtfDst
+#                                     ${ROOT_LIBRARIES}
+#                                     ${GENIE_LIBRARIES}
+#                                     ${Log4cpp_LIBRARIES}
+#                                     ${LIBXML2_LIBRARIES})
 
 ##############################
 
@@ -72,5 +72,5 @@ target_link_libraries(GasTPCReco  GasTPCEvtRec NdtfDst
 
 ##############################
 
-install(TARGETS GasTPCG4Sim TestDstWriter EvtRecDump DstDump GasTPCReco
+install(TARGETS GasTPCG4Sim EvtRecDump DstDump GasTPCReco
         RUNTIME DESTINATION bin)
