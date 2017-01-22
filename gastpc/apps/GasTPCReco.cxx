@@ -257,6 +257,8 @@ double ProcessTrack(gastpc::MCTrack* track, TrackInfo& track_info)
   double momentum = 
     SmearPt(Pmod,length_t) / std::sin(SmearAngle(angle, Pmod, length_l));
 
+  std::cout << "Smeared momentum: " << momentum << std::endl;
+
   track_info.momentum[0] = 
     track->GetParticle()->GetInitialMomentum()[0];
   track_info.momentum[1] = 
