@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   GasTPCReco.cxx
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 9 Aug 2016
@@ -73,7 +73,7 @@ void PrintUsage()
             << "   -m, --mode           : neutrino or antineutrino\n"
             << "   -i, --input-file     : Input file"
             << "   -o, --output-file    : Output file"
-            << std::endl; 
+            << std::endl;
 
   exit(EXIT_FAILURE);
 }
@@ -214,7 +214,7 @@ double ProcessTrack(gastpc::MCTrack* track, TrackInfo& track_info)
   double edep = 0.;
 
   for (gastpc::MCHit* hit: track->GetHits()) {
-    
+
     std::vector<double> curr = hit->GetXYZT();
 
     if (curr[0] < min[0]) min[0] = curr[0];
@@ -254,14 +254,14 @@ double ProcessTrack(gastpc::MCTrack* track, TrackInfo& track_info)
   double Ptmod = P4.Perp(TVector3(0.,1.,0.));
   double angle = std::asin(Ptmod/Pmod);
 
-  double momentum = 
+  double momentum =
     SmearPt(Pmod,length_t) / std::sin(SmearAngle(angle, Pmod, length_l)) * gastpc::GeV;
 
-  track_info.momentum[0] = 
+  track_info.momentum[0] =
     track->GetParticle()->GetInitialMomentum()[0];
-  track_info.momentum[1] = 
+  track_info.momentum[1] =
     track->GetParticle()->GetInitialMomentum()[1];
-  track_info.momentum[2] = 
+  track_info.momentum[2] =
     track->GetParticle()->GetInitialMomentum()[2];
 
   track_info.momentum_reco[0] =
@@ -429,7 +429,7 @@ int main(int argc, char* argv[])
       DstEntry entry;
 
       double energy_reco = 0.;
-      double energy_nu = 
+      double energy_nu =
         (interaction->InitState().ProbeE(genie::kRfLab)) * gastpc::GeV;
       double Y = -1.;
       double Y_reco = 0.;
@@ -468,7 +468,7 @@ int main(int argc, char* argv[])
             ti.pdg = pdg;
             ti.track_id = trackid;
 
-            double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
+            double measured_mom = ProcessTrack(mct, ti);
 
             if (ti.length_T < (4.*gastpc::cm)) continue;
 
@@ -478,19 +478,19 @@ int main(int argc, char* argv[])
             ti.is_reco = true;
 
             double mass_muon = 105.6583715 * gastpc::MeV;
-            double energy = 
+            double energy =
               std::sqrt( measured_mom * measured_mom + mass_muon * mass_muon);
 
             energy_reco += energy;
             Y_reco = energy;
             //Y = mct->GetParticle()->GetInitial4Momentum().E();
 
-            double true_mom = 
-              mct->GetParticle()->GetInitialMomentum()[0] * 
+            double true_mom =
+              mct->GetParticle()->GetInitialMomentum()[0] *
               mct->GetParticle()->GetInitialMomentum()[0] +
-              mct->GetParticle()->GetInitialMomentum()[1] * 
+              mct->GetParticle()->GetInitialMomentum()[1] *
               mct->GetParticle()->GetInitialMomentum()[1] +
-              mct->GetParticle()->GetInitialMomentum()[2] * 
+              mct->GetParticle()->GetInitialMomentum()[2] *
               mct->GetParticle()->GetInitialMomentum()[2] ;
             true_mom = std::sqrt(true_mom);
             Y = std::sqrt(true_mom*true_mom + mass_muon*mass_muon);
@@ -506,15 +506,15 @@ int main(int argc, char* argv[])
 
             TrackInfo ti;
             ti.is_reco = false;
-            double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
+            double measured_mom = ProcessTrack(mct, ti);
 
             if (ti.length_T < (4.*gastpc::cm)) continue;
 
-            pc.num_protons += 1;            
+            pc.num_protons += 1;
             ti.is_reco = true;
             ti.pdg = pdg;
             ti.track_id = trackid;
-            
+
             energy_reco += measured_mom;
             trackinfo_v.push_back(ti);
           }
@@ -528,7 +528,7 @@ int main(int argc, char* argv[])
 
             TrackInfo ti;
             ti.is_reco = false;
-            double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
+            double measured_mom = ProcessTrack(mct, ti);
 
             if (ti.length_T < (4.*gastpc::cm)) continue;
 
@@ -538,20 +538,20 @@ int main(int argc, char* argv[])
             ti.is_reco = true;
             ti.pdg = pdg;
             ti.track_id = trackid;
-            
+
             double mass_electron = 0.511 * gastpc::MeV;
-            double energy = 
+            double energy =
               std::sqrt( measured_mom * measured_mom + mass_electron * mass_electron);
 
             energy_reco += energy;
             Y_reco = energy;
 
-            double true_mom = 
-              mct->GetParticle()->GetInitialMomentum()[0] * 
+            double true_mom =
+              mct->GetParticle()->GetInitialMomentum()[0] *
               mct->GetParticle()->GetInitialMomentum()[0] +
-              mct->GetParticle()->GetInitialMomentum()[1] * 
+              mct->GetParticle()->GetInitialMomentum()[1] *
               mct->GetParticle()->GetInitialMomentum()[1] +
-              mct->GetParticle()->GetInitialMomentum()[2] * 
+              mct->GetParticle()->GetInitialMomentum()[2] *
               mct->GetParticle()->GetInitialMomentum()[2] ;
             true_mom = std::sqrt(true_mom);
             Y = std::sqrt(true_mom*true_mom + mass_electron*mass_electron);
@@ -568,7 +568,7 @@ int main(int argc, char* argv[])
 
             TrackInfo ti;
             ti.is_reco = false;
-            double measured_mom = ProcessTrack(mct, ti) * gastpc::GeV;
+            double measured_mom = ProcessTrack(mct, ti);
 
             if (ti.length_T < (4.*gastpc::cm)) continue;
 
@@ -578,7 +578,7 @@ int main(int argc, char* argv[])
             ti.track_id = trackid;
 
             double mass_pion = 139.57018 * gastpc::MeV;
-            double energy = 
+            double energy =
               std::sqrt( measured_mom * measured_mom + mass_pion * mass_pion);
 
             energy_reco += energy;
@@ -596,11 +596,11 @@ int main(int argc, char* argv[])
           ti.track_id = trackid;
 
           //double energy = mcp->GetInitial4Momentum().E();
-          double energy = 1.;
-          energy = energy * gastpc::GeV;
-          energy_reco += SmearEnergyDep(energy);
+          //double energy = 1.;
+          //energy = energy * gastpc::GeV;
+          //energy_reco += SmearEnergyDep(energy);
           trackinfo_v.push_back(ti);
-        }        
+        }
       } // for (gastpc::MCParticle* mcp: nuint->GetParticles())
 
       entry.Sample  = AnalyzeParticleContent(pc);
