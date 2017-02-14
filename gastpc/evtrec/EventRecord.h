@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   EventRecord.h
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 12 Mar 2016
@@ -56,7 +56,6 @@ private:
 };
 
 // Inline definitions //////////////////////////////////////
-
 inline void gastpc::EventRecord::SetRunID(int id) { run_id_ = id; }
 inline int  gastpc::EventRecord::GetRunID() const { return run_id_; }
 inline void gastpc::EventRecord::SetEventID(int id) { event_id_ = id; }

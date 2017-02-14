@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   EventRecord.cxx
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 12 Mar 2016
@@ -30,14 +30,14 @@ namespace gastpc {
 
   void EventRecord::Clear()
   {
+    for (MCGenInfo* mcgi: mcgeninfo_) delete mcgi;
+    mcgeninfo_.clear();
+
     for (MCParticle* mcp: mcparticles_) delete mcp;
     mcparticles_.clear();
 
     for (MCTrack* mct: mctracks_) delete mct;
     mctracks_.clear();
-
-    for (MCGenInfo* mcgi: mcgeninfo_) delete mcgi;
-    mcgeninfo_.clear();
   }
 
 
