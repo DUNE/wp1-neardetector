@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   MCParticle.cxx
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 30 July 2016
@@ -13,8 +13,7 @@ ClassImp(gastpc::MCHit);
 
 namespace gastpc {
 
-  MCHit::MCHit():
-    x_(0.), y_(0.), z_(0.), time_(0.), amplitude_(0.)
+  MCHit::MCHit(): xyzt_(), amplitude_(0.)
   {
   }
 
@@ -26,17 +25,16 @@ namespace gastpc {
 
   void MCHit::SetXYZT(double x, double y, double z, double t)
   {
-    x_ = x;
-    y_ = y;
-    z_ = z;
-    time_ = t;
+    xyzt_.SetX(x);
+    xyzt_.SetY(y);
+    xyzt_.SetZ(z);
+    xyzt_.SetT(t);
   }
 
 
-  std::vector<double> MCHit::GetXYZT() const
+  const Vector4D& MCHit::GetXYZT() const
   {
-    std::vector<double> v = {x_, y_, z_, time_};
-    return v;
+    return xyzt_;
   }
 
 } // namespace gastpc

@@ -37,7 +37,7 @@
 
 
 
-PersistencyManager::PersistencyManager(): 
+PersistencyManager::PersistencyManager():
   G4VPersistencyManager(), msg_(0), writer_(0), evtrec_(0),
   store_current_event_(true), depth_output_family_tree_(3)
 {
@@ -75,7 +75,7 @@ void PersistencyManager::OpenFile(G4String filename)
         FatalException, "Failed opening output file.");
   }
   else {
-    G4Exception("PersistencyManager::OpenFile()", "WARNING", 
+    G4Exception("PersistencyManager::OpenFile()", "WARNING",
       JustWarning, "Output file already open.");
   }
 }
@@ -84,9 +84,9 @@ void PersistencyManager::OpenFile(G4String filename)
 void PersistencyManager::CloseFile()
 {
   if (!writer_)
-    G4Exception("PersistencyManager::CloseFile()", "WARNING", JustWarning, 
+    G4Exception("PersistencyManager::CloseFile()", "WARNING", JustWarning,
       "No writer available at this time. Cannot close output file.");
-  else 
+  else
     writer_->CloseFile();
 }
 
@@ -144,7 +144,7 @@ void PersistencyManager::ProcessTrajectories(G4TrajectoryContainer* tc)
 
   // Loop through all the trajectories stored in this event
   for(G4int i=0; i<tc->entries(); ++i) {
-    
+
     Trajectory* trj = dynamic_cast<Trajectory*>((*tc)[i]);
     if (!trj) continue; // Make sure the pointer is defined
 
@@ -165,12 +165,12 @@ void PersistencyManager::StoreTrajectory(Trajectory* trj)
                       trj->GetInitialPosition().y(),
                       trj->GetInitialPosition().z(),
                       trj->GetInitialTime());
- 
+
   mcp->SetFinalXYZT(trj->GetFinalPosition().x(),
                     trj->GetFinalPosition().y(),
                     trj->GetFinalPosition().z(),
                     trj->GetFinalTime());
- 
+
   mcp->SetInitialMomentum(trj->GetInitialMomentum().x(),
                           trj->GetInitialMomentum().y(),
                           trj->GetInitialMomentum().z());
@@ -202,7 +202,7 @@ void PersistencyManager::ProcessEventGenerationInfo(const G4Event* event)
 
   // Remove entries from event generation info container to avoid
   // memory-deallocation problems at destruction
-  egi->DropEntries(); 
+  egi->DropEntries();
 
   // Associate primary particles to the mc generation info entries
   for (G4int i=0; i<event->GetNumberOfPrimaryVertex(); ++i) {
@@ -219,7 +219,7 @@ void PersistencyManager::ProcessEventGenerationInfo(const G4Event* event)
         PrimaryParticleInfo* pp_info =
           dynamic_cast<PrimaryParticleInfo*>(particle->GetUserInformation());
         mcp->SetMCGenInfo(vmcgi[pp_info->GetInteractionID()]);
-        vmcgi[pp_info->GetInteractionID()]->AddParticle(mcp);
+        vmcgi[pp_info->GetInteractionID()]->AddMCParticle(mcp);
       }
       else {
         // We seem to have found a primary particle that didn't make it
@@ -251,11 +251,11 @@ void PersistencyManager::ProcessDetectorHits(G4HCofThisEvent* hce)
     // Fetch collection using the above id number
     G4VHitsCollection* hits = hce->GetHC(hcid);
 
-    if (hcname == TrackingSD::HitCollectionUniqueName()) 
+    if (hcname == TrackingSD::HitCollectionUniqueName())
       StoreTrackingHits(hits);
     else
       G4Exception("PersistencyManager::StoreDetectorHits()", "WARNING",
-        JustWarning, "Unknown collection of hits will not be stored."); 
+        JustWarning, "Unknown collection of hits will not be stored.");
   }
 }
 
@@ -284,10 +284,10 @@ void PersistencyManager::StoreTrackingHits(G4VHitsCollection* hc)
     auto result = mctracks_map.find(hit->GetTrackID());
 
     if (result == mctracks_map.end()) {
-      // We have not seen this track before. 
+      // We have not seen this track before.
       // Let's then create a new MCTrack and set its properties.
       mctrack = new gastpc::MCTrack();
-      mctrack->SetLabel(hits->GetSDname());  
+      mctrack->SetLabel(hits->GetSDname());
 
       // Find the particle associated to this track and set
       // the bi-directional relationship pointers
@@ -304,11 +304,11 @@ void PersistencyManager::StoreTrackingHits(G4VHitsCollection* hc)
         mcp = result2->second;
       }
 
-      mctrack->SetParticle(mcp);
-      mcp->AddTrack(mctrack);
+      mctrack->SetMCParticle(mcp);
+      mcp->AddMCTrack(mctrack);
 
       // Add track to map and to persistent event record
-      mctracks_map[hit->GetTrackID()] = mctrack;          
+      mctracks_map[hit->GetTrackID()] = mctrack;
       evtrec_->Add(mctrack);
     }
     else {

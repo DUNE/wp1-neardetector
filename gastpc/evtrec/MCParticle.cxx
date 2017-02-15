@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   MCParticle.cxx
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 12 Mar 2016
@@ -15,7 +15,7 @@ ClassImp(gastpc::MCParticle);
 namespace gastpc {
 
   MCParticle::MCParticle():
-    mcid_(-1), pdg_code_(0), family_tree_level_(0), 
+    mcid_(-1), pdg_code_(0), family_tree_level_(0),
     parent_(0), ancestor_(0), mcgi_(0)
   {
   }
@@ -23,22 +23,19 @@ namespace gastpc {
 
   MCParticle::~MCParticle()
   {
-    this->Clear();
-  }
-
-
-  void MCParticle::Clear()
-  {
   }
 
 
   void MCParticle::SetInitialXYZT(double x, double y, double z, double t)
   {
-    initial_xyzt_ = {x, y, z, t};
+    initial_xyzt_.SetX(x);
+    initial_xyzt_.SetY(y);
+    initial_xyzt_.SetZ(z);
+    initial_xyzt_.SetT(t);
   }
 
 
-  const std::vector<double>& MCParticle::GetInitialXYZT() const
+  const Vector4D& MCParticle::GetInitialXYZT() const
   {
     return initial_xyzt_;
   }
@@ -46,35 +43,40 @@ namespace gastpc {
 
   void MCParticle::SetFinalXYZT(double x, double y, double z, double t)
   {
-    initial_xyzt_ = {x, y, z, t};
+    final_xyzt_.SetX(x);
+    final_xyzt_.SetY(y);
+    final_xyzt_.SetZ(z);
+    final_xyzt_.SetT(t);
   }
 
 
-  const std::vector<double>& MCParticle::GetFinalXYZT() const
+  const Vector4D& MCParticle::GetFinalXYZT() const
   {
-    return initial_xyzt_;
+    return final_xyzt_;
   }
 
 
   void MCParticle::SetInitialMomentum(double x, double y, double z)
   {
-    initial_mom = {x, y, z};
+    initial_momentum_.SetX(x);
+    initial_momentum_.SetY(y);
+    initial_momentum_.SetZ(z);
   }
 
 
-  const std::vector<double>& MCParticle::GetInitialMomentum() const
+  const Vector3D& MCParticle::GetInitialMomentum() const
   {
-    return initial_mom;
+    return initial_momentum_;
   }
 
 
-  void MCParticle::AddTrack(MCTrack* mct)
+  void MCParticle::AddMCTrack(MCTrack* mct)
   {
     tracks_.push_back(mct);
   }
 
 
-  const std::vector<MCTrack*>& MCParticle::GetTracks() const
+  const std::vector<MCTrack*>& MCParticle::GetMCTracks() const
   {
     return tracks_;
   }
@@ -84,27 +86,11 @@ namespace gastpc {
   {
     daughters_.push_back(p);
   }
-  
-  
+
+
   const std::vector<gastpc::MCParticle*>& MCParticle::GetDaughters() const
   {
     return daughters_;
   }
-  
-  
-  void MCParticle::Info(std::ostream& /*os*/) const 
-  {
-    // os << "MCParticle::Info()" << std::endl;
-    // os << " - MC ID: " << this->GetMCID() << std::endl;
-    // os << " - PDG code: " << this->GetPDGCode() << std::endl;
-  }
 
-} // namespace gastpc
-
-
-std::ostream& operator << (std::ostream& os, const gastpc::MCParticle& obj)
-{
-  obj.Info(os);
-  return os;
 }
-

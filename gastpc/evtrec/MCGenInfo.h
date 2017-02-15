@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   MCGenInfo.h
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 27 Nov 2016
@@ -14,8 +14,7 @@
 
 namespace gastpc { class MCGenInfo; }
 namespace gastpc { class MCParticle; }
-
-namespace genie { class NtpMCEventRecord; }
+namespace genie  { class NtpMCEventRecord; }
 
 
 /// TODO: class description
@@ -27,7 +26,7 @@ public:
   MCGenInfo();
   /// Destructor
   virtual ~MCGenInfo();
-  
+
   ///
   void SetMCID(int);
   ///
@@ -39,20 +38,19 @@ public:
   genie::NtpMCEventRecord* GetGeneratorRecord();
 
   ///
-  void AddParticle(gastpc::MCParticle*);
+  void AddMCParticle(gastpc::MCParticle*);
   ///
-  const std::vector<gastpc::MCParticle*>& GetParticles() const;
+  const std::vector<gastpc::MCParticle*>& GetMCParticles() const;
 
 private:
   int mcid_; ///< Identification number for this interaction
-  genie::NtpMCEventRecord* gheprec_; ///< Pointer to MC generator record
+  genie::NtpMCEventRecord* grec_; ///< Pointer to MC generator record
   std::vector<MCParticle*> mcparticles_;
 
   ClassDef(gastpc::MCGenInfo, 1)
 };
 
 // Inline definitions //////////////////////////////////////
-
 inline void gastpc::MCGenInfo::SetMCID(int id) { mcid_ = id; }
 inline int  gastpc::MCGenInfo::GetMCID() const { return mcid_; }
 

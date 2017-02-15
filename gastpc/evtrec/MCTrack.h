@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   MCTrack.h
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 31 July 2016
@@ -28,11 +28,11 @@ public:
 
   ///
   void Clear();
-  
+
   /// Add a hit to the track
   void Add(gastpc::MCHit*);
   /// Return the hits forming this track
-  const std::vector<gastpc::MCHit*>& GetHits() const;
+  const std::vector<gastpc::MCHit*>& GetMCHits() const;
 
   ///
   double GetEnergy() const;
@@ -45,8 +45,8 @@ public:
   void SetLabel(const std::string&);
   const std::string& GetLabel() const;
 
-  void SetParticle(gastpc::MCParticle*);
-  gastpc::MCParticle* GetParticle() const;
+  void SetMCParticle(gastpc::MCParticle*);
+  gastpc::MCParticle* GetMCParticle() const;
 
 private:
   double energy_; ///< Total energy of the track
@@ -72,7 +72,7 @@ inline double gastpc::MCTrack::GetLenght() const { return length_; }
 inline void gastpc::MCTrack::SetLabel(const std::string& l) { label_ = l; }
 inline const std::string& gastpc::MCTrack::GetLabel() const { return label_; }
 
-inline void gastpc::MCTrack::SetParticle(gastpc::MCParticle* p) { mcp_ = p; }
-inline gastpc::MCParticle* gastpc::MCTrack::GetParticle() const { return mcp_; }
+inline void gastpc::MCTrack::SetMCParticle(gastpc::MCParticle* p) { mcp_ = p; }
+inline gastpc::MCParticle* gastpc::MCTrack::GetMCParticle() const { return mcp_; }
 
 #endif

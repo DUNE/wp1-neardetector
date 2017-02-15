@@ -33,32 +33,32 @@ target_link_libraries(GasTPCG4Sim G4Sim
 
 ##############################
 
-add_executable(EvtRecDump EvtRecDump.cxx)
-
-target_link_libraries(EvtRecDump  GasTPCEvtRec
-                                  ${ROOT_LIBRARIES}
-                                  ${GENIE_LIBRARIES}
-                                  ${Log4cpp_LIBRARIES}
-                                  ${LIBXML2_LIBRARIES})
-
-##############################
-
-add_executable(DstDump DstDump.cxx)
-
-target_link_libraries(DstDump ${ROOT_LIBRARIES}
-                              ${GENIE_LIBRARIES}
-                              ${Log4cpp_LIBRARIES}
-                              ${LIBXML2_LIBRARIES})
+# add_executable(EvtRecDump EvtRecDump.cxx)
+#
+# target_link_libraries(EvtRecDump  GasTPCEvtRec
+#                                   ${ROOT_LIBRARIES}
+#                                   ${GENIE_LIBRARIES}
+#                                   ${Log4cpp_LIBRARIES}
+#                                   ${LIBXML2_LIBRARIES})
 
 ##############################
 
-add_executable(GasTPCReco GasTPCReco.cxx)
+# add_executable(DstDump DstDump.cxx)
+#
+# target_link_libraries(DstDump ${ROOT_LIBRARIES}
+#                               ${GENIE_LIBRARIES}
+#                               ${Log4cpp_LIBRARIES}
+#                               ${LIBXML2_LIBRARIES})
 
-target_link_libraries(GasTPCReco  GasTPCEvtRec NdtfDst
-                                  ${ROOT_LIBRARIES}
-                                  ${GENIE_LIBRARIES}
-                                  ${Log4cpp_LIBRARIES}
-                                  ${LIBXML2_LIBRARIES})
+##############################
+
+# add_executable(GasTPCReco GasTPCReco.cxx)
+#
+# target_link_libraries(GasTPCReco  GasTPCEvtRec NdtfDst
+#                                   ${ROOT_LIBRARIES}
+#                                   ${GENIE_LIBRARIES}
+#                                   ${Log4cpp_LIBRARIES}
+#                                   ${LIBXML2_LIBRARIES})
 
 ##############################
 
@@ -72,5 +72,5 @@ target_link_libraries(GasTPCReco  GasTPCEvtRec NdtfDst
 
 ##############################
 
-install(TARGETS GasTPCG4Sim EvtRecDump DstDump GasTPCReco
+install(TARGETS GasTPCG4Sim #EvtRecDump DstDump GasTPCReco
         RUNTIME DESTINATION bin)

@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   MCHit.h
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 30 July 2016
@@ -9,6 +9,7 @@
 #ifndef GASTPC_MCHIT_H
 #define GASTPC_MCHIT_H
 
+#include "Vector4D.h"
 #include <Rtypes.h>
 #include <vector>
 
@@ -27,21 +28,19 @@ public:
 
   /// Set position and time associated to this hit
   void SetXYZT(double, double, double, double);
-  /// Return hit's position and time
-  std::vector<double> GetXYZT() const;
+  /// Return hit position and time
+  const gastpc::Vector4D& GetXYZT() const;
 
   ///
   void SetAmplitude(double);
   ///
   double GetAmplitude() const;
 
-
 private:
-  double x_, y_, z_;  ///< Hit position
-  double time_;       ///< Hit time
-  double amplitude_;  ///< Hit signal amplitude (e.g. edep)
+  gastpc::Vector4D xyzt_; ///< Hit position and time
+  double amplitude_;      ///< Hit signal amplitude (e.g. edep)
 
-  ClassDef(gastpc::MCHit, 2)
+  ClassDef(gastpc::MCHit, 3)
 };
 
 // Inline definitions //////////////////////////////////////

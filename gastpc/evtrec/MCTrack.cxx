@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   MCTrack.cxx
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 31 July 2016
@@ -14,7 +14,7 @@ ClassImp(gastpc::MCTrack);
 
 namespace gastpc {
 
-  MCTrack::MCTrack(): 
+  MCTrack::MCTrack():
     energy_(0.), length_(0.), mcp_(0)
   {
   }
@@ -41,7 +41,7 @@ namespace gastpc {
   }
 
 
-  const std::vector<MCHit*>& MCTrack::GetHits() const
+  const std::vector<MCHit*>& MCTrack::GetMCHits() const
   {
     return mchits_;
   }

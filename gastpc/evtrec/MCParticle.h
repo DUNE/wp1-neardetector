@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   MCParticle.h
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 12 Mar 2016
@@ -9,8 +9,9 @@
 #ifndef GASTPC_MCPARTICLE_H
 #define GASTPC_MCPARTICLE_H
 
+#include "Vector3D.h"
+#include "Vector4D.h"
 #include <Rtypes.h>
-#include <vector>
 #include <string>
 #include <iostream>
 
@@ -21,15 +22,13 @@ namespace gastpc { class MCTrack; }
 
 /// TODO: Class description
 
-class gastpc::MCParticle 
+class gastpc::MCParticle
 {
 public:
   /// Default constructor
   MCParticle();
   /// Destructor
   virtual ~MCParticle();
-
-  void Clear();
 
   /// Set Monte Carlo ID number for the particle
   void SetMCID(int);
@@ -60,16 +59,16 @@ public:
   /// Set initial position and time of particle
   void SetInitialXYZT(double, double, double, double);
   /// Return initial position and time of particle
-  const std::vector<double>& GetInitialXYZT() const;
+  const gastpc::Vector4D& GetInitialXYZT() const;
   /// Set final position and time of particle
   void SetFinalXYZT(double, double, double, double);
   /// Return final position and time of particle
-  const std::vector<double>& GetFinalXYZT() const;
+  const gastpc::Vector4D& GetFinalXYZT() const;
 
   /// Set initial momentum of particle
   void SetInitialMomentum(double, double, double);
   /// Return initial momentum of particle
-  const std::vector<double>& GetInitialMomentum() const;
+  const gastpc::Vector3D& GetInitialMomentum() const;
 
   ///
   void SetMCGenInfo(gastpc::MCGenInfo*);
@@ -82,22 +81,19 @@ public:
   const std::vector<gastpc::MCParticle*>& GetDaughters() const;
 
   ///
-  void AddTrack(gastpc::MCTrack*);
+  void AddMCTrack(gastpc::MCTrack*);
   ///
-  const std::vector<gastpc::MCTrack*>& GetTracks() const;
-
-  // 
-  void Info(std::ostream& s=std::cout) const;
+  const std::vector<gastpc::MCTrack*>& GetMCTracks() const;
 
 private:
   int mcid_;              ///< Monte Carlo ID number
   int pdg_code_;          ///< PDG code for particle identification
   int family_tree_level_; ///< Primary = 1, Secondary = 2, Tertiary = 3 ...
 
-  std::vector<double> initial_xyzt_; ///< Particle's initial position
-  std::vector<double> final_xyzt_;   ///< Particle's final position
+  gastpc::Vector4D initial_xyzt_; ///< Particle's initial position
+  gastpc::Vector4D final_xyzt_;   ///< Particle's final position
 
-  std::vector<double> initial_mom; ///< Particle's initial momentum
+  gastpc::Vector3D initial_momentum_; ///< Particle's initial momentum
 
   gastpc::MCParticle* parent_;   ///< Pointer to parent particle
   gastpc::MCParticle* ancestor_; ///< Pointer to primary ancestor
@@ -110,11 +106,9 @@ private:
   ClassDef(gastpc::MCParticle, 1)
 };
 
-std::ostream& operator <<(std::ostream&, const gastpc::MCParticle&);
-
 // Inline definitions //////////////////////////////////////
 
-inline void gastpc::MCParticle::SetMCID(int id) 
+inline void gastpc::MCParticle::SetMCID(int id)
 { mcid_ = id; }
 inline int  gastpc::MCParticle::GetMCID() const
 { return mcid_; }
@@ -135,7 +129,7 @@ inline void gastpc::MCParticle::SetParent(gastpc::MCParticle* p)
 { parent_ = p; }
 inline gastpc::MCParticle* gastpc::MCParticle::GetParent()
 { return parent_; }
-inline void gastpc::MCParticle::SetAncestor(gastpc::MCParticle* p) 
+inline void gastpc::MCParticle::SetAncestor(gastpc::MCParticle* p)
 { ancestor_ = p; }
 inline gastpc::MCParticle* gastpc::MCParticle::GetAncestor()
 { return ancestor_; }
