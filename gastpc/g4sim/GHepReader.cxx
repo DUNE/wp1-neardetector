@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   GHepReader.cxx
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 7 June 2016
@@ -30,7 +30,7 @@
 
 
 GHepReader::GHepReader(const G4String& path, G4double mean):
-  BeamSpillSource(mean), 
+  BeamSpillSource(mean),
   ghep_chain_(0), num_entries_(0), current_entry_(0), gmcrec_(0)
 {
   this->Initialize(path);
@@ -61,7 +61,7 @@ void GHepReader::GeneratePrimaryVertices(G4Event* event)
   // (The G4Event is organized in terms of vertices (a position and time)
   // and primary particles associated to them. In the GHEP record, in contrast,
   // we are given a single vertex (typically, the point at which the neutrino
-  // interacted) and relative positions and times for each final-state 
+  // interacted) and relative positions and times for each final-state
   // particle. We'll keep track of the different Geant4-like vertices we
   // create using the map defined below.)
   std::map<G4LorentzVector, G4PrimaryVertex*> vertex_map;
@@ -73,7 +73,7 @@ void GHepReader::GeneratePrimaryVertices(G4Event* event)
 
   // Fetch the event generation info class in which we'll store a copy
   // of the GHEP record
-  EventGenerationInfo* eg_info = 
+  EventGenerationInfo* eg_info =
     dynamic_cast<EventGenerationInfo*>(event->GetUserInformation());
 
   for (G4int i=0; i<num_interactions; ++i) {
@@ -113,7 +113,7 @@ void GHepReader::GeneratePrimaryVertices(G4Event* event)
 
       if (!gpart_def) continue; // Make sure the pointer is defined
 
-      // Get the position and time of the current GHEP particle 
+      // Get the position and time of the current GHEP particle
       // (the common position is in meters; the relative one, in fermis)
       G4LorentzVector gpart_xyzt;
       gpart_xyzt.setX(gpart->Vx()*fermi + xyzt->X()*meter);
@@ -127,8 +127,8 @@ void GHepReader::GeneratePrimaryVertices(G4Event* event)
       auto result = vertex_map.find(gpart_xyzt);
       if (result == vertex_map.end()) {
         // This vertex is not in the map yet
-        vertex = new G4PrimaryVertex(gpart_xyzt.x(), 
-                                     gpart_xyzt.y(), 
+        vertex = new G4PrimaryVertex(gpart_xyzt.x(),
+                                     gpart_xyzt.y(),
                                      gpart_xyzt.z(),
                                      gpart_xyzt.t());
         vertex_map[gpart_xyzt] = vertex;
@@ -148,7 +148,7 @@ void GHepReader::GeneratePrimaryVertices(G4Event* event)
     // Add a user info object to the primary particle so that we are able
     // to trace it back to the GHEP record that originated it
     PrimaryParticleInfo* pp_info = new PrimaryParticleInfo();
-    pp_info->SetInteractionID((eg_info->GetEntries().size())-1);
+    pp_info->SetEventGenerationID((eg_info->GetEntries().size())-1);
     particle->SetUserInformation(pp_info);
 
     // Add some extra info to the Geant4 particle

@@ -38,7 +38,7 @@ const std::vector<genie::NtpMCEventRecord*>& EventGenerationInfo::GetEntries() c
 
 void EventGenerationInfo::DropEntries()
 {
-  // Empty the vector. The user is responsible now 
+  // Empty the vector. The user is responsible now
   // for the destruction of the GHEP records.
   gmcrecs_.clear();
 }

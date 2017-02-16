@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   CosmicsSource.cxx
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 20 Aug 2016
@@ -28,7 +28,7 @@
 
 
 CosmicsSource::CosmicsSource(const G4String& path):
-  BeamSpillSource(), 
+  BeamSpillSource(),
   ghep_chain_(0), gmcrec_(0)
 {
   this->Initialize(path);
@@ -59,12 +59,12 @@ void CosmicsSource::GeneratePrimaryVertices(G4Event* event)
   // Select t0 for cosmic window
   G4double cosmic_window_length = 5. * ms;
   G4double  spill_window_length = 9434.5 * ns;
-  G4double t0 = 
+  G4double t0 =
     G4RandFlat::shoot(0., cosmic_window_length - spill_window_length);
 
   // Fetch the event generation info class in which we'll store a copy
   // of the GHEP record
-  EventGenerationInfo* eg_info = 
+  EventGenerationInfo* eg_info =
     dynamic_cast<EventGenerationInfo*>(event->GetUserInformation());
 
   ghep_chain_->GetEntry(entry_num);
@@ -83,11 +83,11 @@ void CosmicsSource::GeneratePrimaryVertices(G4Event* event)
   // Loop through the particles in the GHEP record
   genie::GHepParticle* gpart = 0;
   TIter gpart_iter(record);
-  while ((gpart = dynamic_cast<genie::GHepParticle*>(gpart_iter.Next()))) {  
+  while ((gpart = dynamic_cast<genie::GHepParticle*>(gpart_iter.Next()))) {
 
     // We only care about final-state particles (status 1)
     if (gpart->Status() != 1) continue;
- 
+
     // Find out the particle id using the PDG code
     G4int pdgcode = gpart->Pdg();
 
@@ -99,10 +99,10 @@ void CosmicsSource::GeneratePrimaryVertices(G4Event* event)
 
     if (!gpart_def) continue; // Make sure the pointer is defined
 
-    // Get the position and time of the current GHEP particle 
+    // Get the position and time of the current GHEP particle
     // (the common position is in meters; the relative one, in fermis).
     // If the time does not fall in the spill window, skip this particle.
-    if ((gpart->Vt() < t0) || 
+    if ((gpart->Vt() < t0) ||
         (gpart->Vt() > (t0 + spill_window_length))) continue;
 
     G4LorentzVector gpart_xyzt;
@@ -117,7 +117,7 @@ void CosmicsSource::GeneratePrimaryVertices(G4Event* event)
     event->AddPrimaryVertex(vertex);
 
     // Create a Geant4 primary particle
-    G4PrimaryParticle* particle = 
+    G4PrimaryParticle* particle =
       new G4PrimaryParticle(gpart_def, gpart->Px() * GeV,
                                        gpart->Py() * GeV,
                                        gpart->Pz() * GeV);
@@ -125,7 +125,7 @@ void CosmicsSource::GeneratePrimaryVertices(G4Event* event)
     // Add a user info object to the primary particle so that we are able
     // to trace it back to the GHEP record that originated it
     PrimaryParticleInfo* pp_info = new PrimaryParticleInfo();
-    pp_info->SetInteractionID((eg_info->GetEntries().size())-1);
+    pp_info->SetEventGenerationID((eg_info->GetEntries().size())-1);
     particle->SetUserInformation(pp_info);
 
     // Add some extra info to the Geant4 particle
@@ -140,5 +140,3 @@ void CosmicsSource::GeneratePrimaryVertices(G4Event* event)
     vertex->SetPrimary(particle);
   }
 }
-
-

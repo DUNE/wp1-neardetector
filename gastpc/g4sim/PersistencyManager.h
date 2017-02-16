@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 ///  \file   PersistencyManager.h
-///  \brief  
+///  \brief  Wrapper class that contains all used GHEP records
 ///
 ///  \author  <justo.martin-albo \at physics.ox.ac.uk>
 ///  \date    Created 14 Mar 2016
@@ -13,21 +13,23 @@
 #include <G4String.hh>
 #include <map>
 
-namespace gastpc { class RootFileWriter; }
-namespace gastpc { class EventRecord; }
-namespace gastpc { class MCParticle; }
-namespace gastpc { class MCTrack; }
-
-class Trajectory;
-class EventGenerationInfo;
-
 class G4GenericMessenger;
 class G4VPhysicalVolume;
 class G4Event;
 class G4Run;
 class G4TrajectoryContainer;
+class G4VUserEventInformation;
 class G4HCofThisEvent;
 class G4VHitsCollection;
+
+class Trajectory;
+class EventGenerationInfo;
+
+namespace gastpc { class RootFileWriter; }
+namespace gastpc { class EventRecord; }
+namespace gastpc { class MCGenInfo; }
+namespace gastpc { class MCParticle; }
+namespace gastpc { class MCTrack; }
 
 
 
@@ -50,12 +52,7 @@ public:
   void CloseFile();
 
 private:
-  /// Constructor (private, singleton class)
-  PersistencyManager();
-  /// Destructor
-  ~PersistencyManager();  
-
-  ///
+  /// Store current event in output file
   virtual G4bool Store(const G4Event*);
 
   /// Process and store the trajectories generated in this event
@@ -64,7 +61,7 @@ private:
   void StoreTrajectory(Trajectory*);
 
   /// Process and store the primary generator information of the event
-  void ProcessEventGenerationInfo(const G4Event*);
+  void ProcessEventGenerationInfo(G4VUserEventInformation*);
 
   /// Lorem ipsum dolor sit amet, consectetur adipiscing elit
   void ProcessDetectorHits(G4HCofThisEvent*);
@@ -72,6 +69,11 @@ private:
   void StoreTrackingHits(G4VHitsCollection*);
 
 private:
+  /// Constructor (private, singleton class)
+  PersistencyManager();
+  /// Destructor
+  virtual ~PersistencyManager();
+
   virtual G4bool Store(const G4Run*);
   virtual G4bool Store(const G4VPhysicalVolume*);
   virtual G4bool Retrieve(G4Event*&);
@@ -80,31 +82,31 @@ private:
 
 private:
   G4GenericMessenger* msg_; ///< Pointer to the user-command messenger
-
   gastpc::RootFileWriter* writer_; ///< Pointer to the ROOT file writer
-  gastpc::EventRecord* evtrec_;    ///< Pointer to the persistent event record
+  gastpc::EventRecord* evtrec_; ///< Pointer to the persistent event record
 
   G4bool store_current_event_;
 
   G4int depth_output_family_tree_;
 
-  std::map<G4int, gastpc::MCParticle*> mcparticles_map_;
+  std::map<int, gastpc::MCParticle*> mcparticles_map_;
+  std::map<int, gastpc::MCGenInfo*> mcgeninfos_map_;
 };
 
 // Inline definitions //////////////////////////////////////
 
-inline void PersistencyManager::StoreCurrentEvent(G4bool b) 
+inline void PersistencyManager::StoreCurrentEvent(G4bool b)
 { store_current_event_ = b; }
 
-inline G4bool PersistencyManager::Store(const G4Run*) 
+inline G4bool PersistencyManager::Store(const G4Run*)
 { return false; }
 inline G4bool PersistencyManager::Store(const G4VPhysicalVolume*)
 { return true; }
-inline G4bool PersistencyManager::Retrieve(G4Run*&) 
+inline G4bool PersistencyManager::Retrieve(G4Run*&)
 { return false; }
-inline G4bool PersistencyManager::Retrieve(G4Event*&) 
+inline G4bool PersistencyManager::Retrieve(G4Event*&)
 { return false; }
-inline G4bool PersistencyManager::Retrieve(G4VPhysicalVolume*&) 
+inline G4bool PersistencyManager::Retrieve(G4VPhysicalVolume*&)
 { return false; }
 
 #endif
