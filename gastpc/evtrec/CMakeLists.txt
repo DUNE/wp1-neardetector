@@ -4,14 +4,16 @@ set(EvtRec_HDRS   EventRecord.h
                   MCGenInfo.h
                   MCParticle.h
                   MCTrack.h
-                  MCHit.h )
+                  MCHit.h
+                  Vector3D.h
+                  Vector4D.h )
 
 set(EvtRec_SRCS   EventRecord.cxx
                   MCGenInfo.cxx
                   MCParticle.cxx
                   MCTrack.cxx
-                  MCHit.cxx 
-                  RootFileReader.cxx 
+                  MCHit.cxx
+                  RootFileReader.cxx
                   RootFileWriter.cxx )
 
 root_generate_dictionary(G__GasTPCEvtRec ${EvtRec_HDRS} LINKDEF LinkDef.h)

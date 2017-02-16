@@ -9,6 +9,8 @@
 #ifndef GASTPC_VECTOR3D_H
 #define GASTPC_VECTOR3D_H
 
+#include <Rtypes.h>
+
 namespace gastpc { class Vector3D; }
 
 /// TODO: class description

@@ -9,6 +9,8 @@
 #ifndef GASTPC_VECTOR4D_H
 #define GASTPC_VECTOR4D_H
 
+#include <Rtypes.h>
+
 namespace gastpc { class Vector4D; }
 
 /// TODO: class description
