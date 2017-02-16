@@ -34,6 +34,8 @@ public:
 
 private:
   double x_, y_, z_;
+
+  ClassDef(gastpc::Vector3D, 1);
 };
 
 // Inline definitions //////////////////////////////////////
