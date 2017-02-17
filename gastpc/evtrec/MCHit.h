@@ -40,7 +40,7 @@ private:
   gastpc::Vector4D xyzt_; ///< Hit position and time
   double amplitude_;      ///< Hit signal amplitude (e.g. edep)
 
-  ClassDef(gastpc::MCHit, 3)
+  ClassDef(gastpc::MCHit, 4)
 };
 
 // Inline definitions //////////////////////////////////////

@@ -47,7 +47,7 @@ private:
   genie::NtpMCEventRecord* grec_; ///< Pointer to MC generator record
   std::vector<MCParticle*> mcparticles_;
 
-  ClassDef(gastpc::MCGenInfo, 1)
+  ClassDef(gastpc::MCGenInfo, 2)
 };
 
 // Inline definitions //////////////////////////////////////

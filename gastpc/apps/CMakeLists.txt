@@ -33,13 +33,13 @@ target_link_libraries(GasTPCG4Sim G4Sim
 
 ##############################
 
-# add_executable(EvtRecDump EvtRecDump.cxx)
-#
-# target_link_libraries(EvtRecDump  GasTPCEvtRec
-#                                   ${ROOT_LIBRARIES}
-#                                   ${GENIE_LIBRARIES}
-#                                   ${Log4cpp_LIBRARIES}
-#                                   ${LIBXML2_LIBRARIES})
+add_executable(EventRecordDump EventRecordDump.cxx)
+
+target_link_libraries(EventRecordDump   GasTPCEvtRec
+                                        ${ROOT_LIBRARIES}
+                                        ${GENIE_LIBRARIES}
+                                        ${Log4cpp_LIBRARIES}
+                                        ${LIBXML2_LIBRARIES})
 
 ##############################
 
@@ -72,5 +72,5 @@ target_link_libraries(GasTPCG4Sim G4Sim
 
 ##############################
 
-install(TARGETS GasTPCG4Sim #EvtRecDump DstDump GasTPCReco
+install(TARGETS GasTPCG4Sim EventRecordDump #DstDump GasTPCReco
         RUNTIME DESTINATION bin)

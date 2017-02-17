@@ -103,7 +103,7 @@ private:
   std::vector<gastpc::MCParticle*> daughters_;
   std::vector<gastpc::MCTrack*> tracks_;
 
-  ClassDef(gastpc::MCParticle, 1)
+  ClassDef(gastpc::MCParticle, 2)
 };
 
 // Inline definitions //////////////////////////////////////
