@@ -82,7 +82,7 @@ namespace gastpc {
   void EventRecord::Print(std::ostream& os) const
   {
     os << "EVENT RECORD " << this->GetEventID()
-       << "(RUN " << this->GetRunID() << ")" << std::endl;
+       << " (RUN " << this->GetRunID() << ")" << std::endl;
 
     for (gastpc::MCGenInfo* mcgi: this->GetMCGenInfo()) {
       genie::NtpMCEventRecord* gmcrec = mcgi->GetGeneratorRecord();

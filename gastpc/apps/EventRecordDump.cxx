@@ -72,25 +72,6 @@ void ParseCmdLineOptions(int argc, char** argv)
 }
 
 
-void PrintMCGenInfo(gastpc::MCGenInfo* mcgi)
-{
-  genie::NtpMCEventRecord* gmcrec = mcgi->GetGeneratorRecord();
-  std::cout << *gmcrec << std::endl;
-}
-
-
-void PrintMCParticle(gastpc::MCParticle* mcp)
-{
-  std::cout << "MCParticle " << mcp->GetMCID() << std::endl;
-  std::cout << "   - PDG code: " << mcp->GetPDGCode() << std::endl;
-  std::cout << "   - Initial vertex: (" << mcp->GetInitialXYZT().GetX() << ", "
-                                        << mcp->GetInitialXYZT().GetY() << ", "
-                                        << mcp->GetInitialXYZT().GetX() << ", "
-                                        << mcp->GetInitialXYZT().GetT() << ")"
-                                        << std::endl;
-}
-
-
 int main(int argc, char* argv[])
 {
   ParseCmdLineOptions(argc, argv);
@@ -107,6 +88,8 @@ int main(int argc, char* argv[])
     gastpc::EventRecord& evtrec = r.Read(i);
     std::cout << evtrec << std::endl;
   }
+
+  r.CloseFile();
 
   return EXIT_SUCCESS;
 }
