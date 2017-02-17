@@ -13,6 +13,8 @@ set(EvtRec_SRCS   EventRecord.cxx
                   MCParticle.cxx
                   MCTrack.cxx
                   MCHit.cxx
+                  Vector3D.cxx
+                  Vector4D.cxx
                   RootFileReader.cxx
                   RootFileWriter.cxx )
 

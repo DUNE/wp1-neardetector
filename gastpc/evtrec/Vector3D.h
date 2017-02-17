@@ -10,6 +10,7 @@
 #define GASTPC_VECTOR3D_H
 
 #include <Rtypes.h>
+#include <iostream>
 
 namespace gastpc { class Vector3D; }
 
@@ -34,16 +35,17 @@ public:
   void SetZ(double);
   double GetZ() const;
 
+  void Print(std::ostream& os=std::cout) const;
+
 private:
   double x_, y_, z_;
 
-  ClassDef(gastpc::Vector3D, 1)
+  ClassDef(gastpc::Vector3D, 2)
 };
 
+std::ostream& operator <<(std::ostream&, const gastpc::Vector3D&);
+
 // Inline definitions //////////////////////////////////////
-inline gastpc::Vector3D::Vector3D(double x, double y, double z): x_(x), y_(y), z_(z) {}
-inline gastpc::Vector3D::Vector3D(): x_(0.), y_(0.), z_(0.) {}
-inline gastpc::Vector3D::~Vector3D() {}
 inline void gastpc::Vector3D::SetX(double x) { x_ = x; }
 inline double gastpc::Vector3D::GetX() const { return x_; }
 inline void gastpc::Vector3D::SetY(double y) { y_ = y; }

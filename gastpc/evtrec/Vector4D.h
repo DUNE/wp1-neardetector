@@ -10,6 +10,7 @@
 #define GASTPC_VECTOR4D_H
 
 #include <Rtypes.h>
+#include <iostream>
 
 namespace gastpc { class Vector4D; }
 
@@ -37,17 +38,17 @@ public:
   void SetT(double);
   double GetT() const;
 
+  void Print(std::ostream& os=std::cout) const;
+
 private:
   double x_, y_, z_, t_;
 
-  ClassDef(gastpc::Vector4D, 1)
+  ClassDef(gastpc::Vector4D, 2)
 };
 
+std::ostream& operator <<(std::ostream&, const gastpc::Vector4D&);
+
 // Inline definitions //////////////////////////////////////
-inline gastpc::Vector4D::Vector4D(double x, double y, double z, double t):
-  x_(x), y_(y), z_(z), t_(t) {}
-inline gastpc::Vector4D::Vector4D(): x_(0.), y_(0.), z_(0.), t_(0.) {}
-inline gastpc::Vector4D::~Vector4D() {}
 inline void gastpc::Vector4D::SetX(double x) { x_ = x; }
 inline double gastpc::Vector4D::GetX() const { return x_; }
 inline void gastpc::Vector4D::SetY(double y) { y_ = y; }
