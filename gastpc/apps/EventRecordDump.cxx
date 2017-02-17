@@ -60,6 +60,7 @@ void ParseCmdLineOptions(int argc, char** argv)
         break;
       case 'n':
         event_number_ = std::atoi(optarg);
+        break;
       case '?':
         PrintUsage();
       default:
@@ -71,18 +72,22 @@ void ParseCmdLineOptions(int argc, char** argv)
 }
 
 
-bool ReadGenieRecord(gastpc::MCGenInfo* mcgi)
+void PrintMCGenInfo(gastpc::MCGenInfo* mcgi)
 {
   genie::NtpMCEventRecord* gmcrec = mcgi->GetGeneratorRecord();
   std::cout << *gmcrec << std::endl;
+}
 
-  //genie::Interaction* interaction = (gmcrec->event)->Summary();
-  //const genie::Target& tgt = interaction->InitState().Tgt();
-  //std::cout << "Interaction in Z = " <<
 
-  //if (tgt.Z() != 18) continue;
-
-  return true;
+void PrintMCParticle(gastpc::MCParticle* mcp)
+{
+  std::cout << "MCParticle " << mcp->GetMCID() << std::endl;
+  std::cout << "   - PDG code: " << mcp->GetPDGCode() << std::endl;
+  std::cout << "   - Initial vertex: (" << mcp->GetInitialXYZT().GetX() << ", "
+                                        << mcp->GetInitialXYZT().GetY() << ", "
+                                        << mcp->GetInitialXYZT().GetX() << ", "
+                                        << mcp->GetInitialXYZT().GetT() << ")"
+                                        << std::endl;
 }
 
 
@@ -101,8 +106,11 @@ int main(int argc, char* argv[])
   for (int i=min_range; i<max_range; ++i) {
     gastpc::EventRecord& evtrec = r.Read(i);
     for (gastpc::MCGenInfo* mcgi: evtrec.GetMCGenInfo()) {
-      ReadGenieRecord(mcgi);
-   }
+      PrintMCGenInfo(mcgi);
+    }
+    for (gastpc::MCParticle* mcp: evtrec.GetMCParticles()) {
+      PrintMCParticle(mcp);
+    }
   }
 
   return EXIT_SUCCESS;
