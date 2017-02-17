@@ -30,7 +30,7 @@ namespace gastpc {
 
   void Vector3D::Print(std::ostream& os) const
   {
-    os << "()" << std::endl;
+    os << "(" << x_ << ", " << y_ << ", " << z_ << ")";
   }
 
 } // namespace gastpc

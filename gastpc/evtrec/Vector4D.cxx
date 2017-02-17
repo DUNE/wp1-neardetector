@@ -31,7 +31,7 @@ namespace gastpc {
 
   void Vector4D::Print(std::ostream& os) const
   {
-    os << "()" << std::endl;
+    os << "(" << x_ << ", " << y_ << ", " << z_ << ", " << t_ << ")";
   }
 
 } // namespace gastpc
