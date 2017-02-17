@@ -85,6 +85,8 @@ public:
   ///
   const std::vector<gastpc::MCTrack*>& GetMCTracks() const;
 
+  void Print(std::ostream& os=std::cout) const;
+
 private:
   int mcid_;              ///< Monte Carlo ID number
   int pdg_code_;          ///< PDG code for particle identification
@@ -103,8 +105,10 @@ private:
   std::vector<gastpc::MCParticle*> daughters_;
   std::vector<gastpc::MCTrack*> tracks_;
 
-  ClassDef(gastpc::MCParticle, 2)
+  ClassDef(gastpc::MCParticle, 3)
 };
+
+std::ostream& operator << (std::ostream&, const gastpc::MCParticle&);
 
 // Inline definitions //////////////////////////////////////
 

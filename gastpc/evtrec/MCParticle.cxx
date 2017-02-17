@@ -93,4 +93,21 @@ namespace gastpc {
     return daughters_;
   }
 
+
+  void MCParticle::Print(std::ostream& os) const
+  {
+    os << "MC Particle " << this->GetMCID() << std::endl;
+    os << "   - PDG code: "       << this->GetPDGCode()         << "\n"
+       << "   - Initial vertex: " << this->GetInitialXYZT()     << "\n"
+       << "   - Final vertex: "   << this->GetFinalXYZT()       << "\n"
+       << "   - Momentum: "       << this->GetInitialMomentum() << "\n"
+       << std::endl;
+  }
+
+} // namespace gastpc
+
+std::ostream& operator << (std::ostream& os, const gastpc::MCParticle& mcp)
+{
+  mcp.Print(os);
+  return os;
 }
