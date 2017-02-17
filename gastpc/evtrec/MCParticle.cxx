@@ -97,11 +97,10 @@ namespace gastpc {
   void MCParticle::Print(std::ostream& os) const
   {
     os << "MC Particle " << this->GetMCID() << std::endl;
-    os << "   - PDG code: "       << this->GetPDGCode()         << "\n"
-       << "   - Initial vertex: " << this->GetInitialXYZT()     << "\n"
-       << "   - Final vertex: "   << this->GetFinalXYZT()       << "\n"
-       << "   - Momentum: "       << this->GetInitialMomentum() << "\n"
-       << std::endl;
+    os << "   - PDG code: "       << this->GetPDGCode()         << std::endl;
+    os << "   - Initial vertex: " << this->GetInitialXYZT()     << std::endl;
+    os << "   - Final vertex: "   << this->GetFinalXYZT()       << std::endl;
+    os << "   - Momentum: "       << this->GetInitialMomentum() << std::endl;
   }
 
 } // namespace gastpc

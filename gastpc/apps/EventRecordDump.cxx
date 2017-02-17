@@ -105,12 +105,7 @@ int main(int argc, char* argv[])
 
   for (int i=min_range; i<max_range; ++i) {
     gastpc::EventRecord& evtrec = r.Read(i);
-    for (gastpc::MCGenInfo* mcgi: evtrec.GetMCGenInfo()) {
-      PrintMCGenInfo(mcgi);
-    }
-    for (gastpc::MCParticle* mcp: evtrec.GetMCParticles()) {
-      PrintMCParticle(mcp);
-    }
+    std::cout << evtrec << std::endl;
   }
 
   return EXIT_SUCCESS;

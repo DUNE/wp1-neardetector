@@ -12,6 +12,8 @@
 #include "MCParticle.h"
 #include "MCTrack.h"
 
+#include <Ntuple/NtpMCEventRecord.h>
+
 ClassImp(gastpc::EventRecord);
 
 
@@ -76,4 +78,25 @@ namespace gastpc {
     return mcgeninfo_;
   }
 
+
+  void EventRecord::Print(std::ostream& os) const
+  {
+    os << "EVENT RECORD " << this->GetEventID()
+       << "(RUN " << this->GetRunID() << ")" << std::endl;
+
+    for (gastpc::MCGenInfo* mcgi: this->GetMCGenInfo()) {
+      genie::NtpMCEventRecord* gmcrec = mcgi->GetGeneratorRecord();
+      std::cout << *gmcrec << std::endl;
+      for (gastpc::MCParticle* mcp: mcgi->GetMCParticles()) {
+        os << *mcp << std::endl;
+      }
+    }
+  }
+
 } // namespace gastpc
+
+std::ostream& operator << (std::ostream& os, const gastpc::EventRecord& mcp)
+{
+  mcp.Print(os);
+  return os;
+}

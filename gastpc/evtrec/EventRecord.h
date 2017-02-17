@@ -10,6 +10,7 @@
 #define GASTPC_EVENT_RECORD_H
 
 #include <Rtypes.h>
+#include <iostream>
 
 namespace gastpc { class EventRecord; }
 namespace gastpc { class MCGenInfo; }
@@ -44,6 +45,8 @@ public:
   /// Destroy all objects in the event record
   void Clear();
 
+  void Print(std::ostream& os=std::cout) const;
+
 private:
   int run_id_;
   int event_id_;
@@ -52,8 +55,10 @@ private:
   std::vector<gastpc::MCTrack*> mctracks_;
   std::vector<gastpc::MCGenInfo*> mcgeninfo_;
 
-  ClassDef(gastpc::EventRecord, 2)
+  ClassDef(gastpc::EventRecord, 3)
 };
+
+std::ostream& operator << (std::ostream&, const gastpc::EventRecord&);
 
 // Inline definitions //////////////////////////////////////
 inline void gastpc::EventRecord::SetRunID(int id) { run_id_ = id; }
