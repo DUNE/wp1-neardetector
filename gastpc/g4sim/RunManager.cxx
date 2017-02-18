@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   RunManager.cxx
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 1 June 2016
@@ -10,6 +10,7 @@
 
 #include "PersistencyManager.h"
 #include "DuneGArNDDetConstr.h"
+#include "ArgonBox.h"
 #include "BeamSpillGenerator.h"
 #include "ParticleGunGenerator.h"
 #include "DefaultRunAction.h"
@@ -30,7 +31,7 @@
 
 
 RunManager::RunManager(const std::string& detector_tag,
-                       const std::string& generator_tag): 
+                       const std::string& generator_tag):
   G4RunManager(), msg_(0)
 {
   DefineCommands();
@@ -98,10 +99,11 @@ void RunManager::SetRandomSeed(G4int seed)
 }
 
 
-G4VUserDetectorConstruction* 
+G4VUserDetectorConstruction*
   RunManager::CreateDetectorConstruction(const std::string& tag)
 {
-  if (tag == "DUNE") return (new DuneGArNDDetConstr());
+  if      (tag == "DUNE") return (new DuneGArNDDetConstr());
+  else if (tag == "ARGON_BOX") return (new ArgonBox());
   else {
     G4String error_msg =  "Unknown detector construction class: " + tag;
     G4Exception("RunManager::CreateDetectorConstruction()", "ERROR",
@@ -118,7 +120,7 @@ G4VUserPrimaryGeneratorAction*
   else if (tag == "PARTICLE_GUN") return (new ParticleGunGenerator());
   else {
     G4String error_msg = "Unknown primary generator class: " + tag;
-    G4Exception("RunManager::CreatePrimaryGenerator()", "ERROR", 
+    G4Exception("RunManager::CreatePrimaryGenerator()", "ERROR",
       FatalException, error_msg);
     return 0;
   }
@@ -130,5 +132,3 @@ void RunManager::DefineCommands()
   msg_ = new G4GenericMessenger(this, "/gastpc/manager/");
   msg_->DeclareMethod("random_seed", &RunManager::SetRandomSeed, "");
 }
-
-
