@@ -31,5 +31,6 @@ install(TARGETS GasTPCEvtRec
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
 
-file(GLOB GasTPCEvtRecDicts ${CMAKE_CURRENT_BINARY_DIR}/*.pcm)
-install(FILES ${GasTPCEvtRecDicts} DESTINATION lib)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/G__GasTPCEvtRec_rdict.pcm
+        DESTINATION lib)
+#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libGasTPCEvtRec_rdict.pcm DESTINATION lib)
