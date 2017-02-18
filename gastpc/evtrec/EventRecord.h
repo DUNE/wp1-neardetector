@@ -16,6 +16,7 @@ namespace gastpc { class EventRecord; }
 namespace gastpc { class MCGenInfo; }
 namespace gastpc { class MCParticle; }
 namespace gastpc { class MCTrack; }
+namespace gastpc { class RecoParticle; }
 
 
 /// TODO: Class description
@@ -37,10 +38,12 @@ public:
   void Add(gastpc::MCParticle*);
   void Add(gastpc::MCTrack*);
   void Add(gastpc::MCGenInfo*);
+  void Add(gastpc::RecoParticle*);
 
   const std::vector<gastpc::MCParticle*>& GetMCParticles() const;
   const std::vector<gastpc::MCTrack*>& GetMCTracks() const;
   const std::vector<gastpc::MCGenInfo*>& GetMCGenInfo() const;
+  const std::vector<gastpc::RecoParticle*>& GetRecoParticles() const;
 
   /// Destroy all objects in the event record
   void Clear();
@@ -54,6 +57,7 @@ private:
   std::vector<gastpc::MCParticle*> mcparticles_;
   std::vector<gastpc::MCTrack*> mctracks_;
   std::vector<gastpc::MCGenInfo*> mcgeninfo_;
+  std::vector<gastpc::RecoParticle*> recoparticles_;
 
   ClassDef(gastpc::EventRecord, 3)
 };

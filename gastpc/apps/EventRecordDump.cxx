@@ -22,7 +22,7 @@
 
 
 namespace {
-  int event_number_ = 0;
+  int event_number_ = -1;
   std::string input_filename_("");
 }
 
@@ -80,9 +80,15 @@ int main(int argc, char* argv[])
   r.OpenFile(input_filename_);
 
   int min_range, max_range;
-  min_range = event_number_;
-  if (min_range > 0) max_range = min_range;
-  else max_range = r.GetNumberOfEntries();
+
+  if (event_number_ >= 0) {
+    min_range = event_number_;
+    max_range = event_number_ + 1;
+  }
+  else {
+    min_range = 0;
+    max_range = r.GetNumberOfEntries();
+  }
 
   for (int i=min_range; i<max_range; ++i) {
     gastpc::EventRecord& evtrec = r.Read(i);

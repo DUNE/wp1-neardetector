@@ -11,6 +11,7 @@
 #include "MCGenInfo.h"
 #include "MCParticle.h"
 #include "MCTrack.h"
+#include "RecoParticle.h"
 
 #include <Ntuple/NtpMCEventRecord.h>
 
@@ -40,6 +41,9 @@ namespace gastpc {
 
     for (MCTrack* mct: mctracks_) delete mct;
     mctracks_.clear();
+
+    for (RecoParticle* rp: recoparticles_) delete rp;
+    recoparticles_.clear();
   }
 
 
@@ -61,6 +65,12 @@ namespace gastpc {
   }
 
 
+  void EventRecord::Add(RecoParticle* p)
+  {
+    recoparticles_.push_back(p);
+  }
+
+
   const std::vector<MCParticle*>& EventRecord::GetMCParticles() const
   {
     return mcparticles_;
@@ -76,6 +86,12 @@ namespace gastpc {
   const std::vector<MCGenInfo*>& EventRecord::GetMCGenInfo() const
   {
     return mcgeninfo_;
+  }
+
+
+  const std::vector<RecoParticle*>& EventRecord::GetRecoParticles() const
+  {
+    return recoparticles_;
   }
 
 

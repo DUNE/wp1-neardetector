@@ -5,6 +5,7 @@ set(EvtRec_HDRS   EventRecord.h
                   MCParticle.h
                   MCTrack.h
                   MCHit.h
+                  RecoParticle.h
                   Vector3D.h
                   Vector4D.h )
 
@@ -13,6 +14,7 @@ set(EvtRec_SRCS   EventRecord.cxx
                   MCParticle.cxx
                   MCTrack.cxx
                   MCHit.cxx
+                  RecoParticle.cxx
                   Vector3D.cxx
                   Vector4D.cxx
                   RootFileReader.cxx

@@ -12,7 +12,6 @@
 #include "Vector3D.h"
 #include "Vector4D.h"
 #include <Rtypes.h>
-#include <string>
 #include <iostream>
 
 namespace gastpc { class MCParticle; }
