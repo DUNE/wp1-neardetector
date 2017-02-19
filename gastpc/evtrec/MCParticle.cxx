@@ -98,6 +98,7 @@ namespace gastpc {
   {
     os << "MC Particle " << this->GetMCID() << std::endl;
     os << "   - PDG code: "       << this->GetPDGCode()         << std::endl;
+    os << "   - Family level: "   << this->GetFamilyTreeLevel() << std::endl;
     os << "   - Initial vertex: " << this->GetInitialXYZT()     << std::endl;
     os << "   - Final vertex: "   << this->GetFinalXYZT()       << std::endl;
     os << "   - Momentum: "       << this->GetInitialMomentum() << std::endl;

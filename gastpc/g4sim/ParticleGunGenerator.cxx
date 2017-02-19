@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   ParticleGunGenerator.cxx
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 29 July 2016
@@ -49,7 +49,7 @@ void ParticleGunGenerator::GeneratePrimaries(G4Event* event)
   momentum_direction_.setZ(1);
 
 
-  G4PrimaryParticle* particle = 
+  G4PrimaryParticle* particle =
     new G4PrimaryParticle(particle_def_, momentum_direction_.x()*momentum_,
                                          momentum_direction_.y()*momentum_,
                                          momentum_direction_.z()*momentum_);
@@ -62,7 +62,7 @@ void ParticleGunGenerator::GeneratePrimaries(G4Event* event)
 
 void ParticleGunGenerator::SetParticleID(G4String particle_name)
 {
-  particle_def_ = 
+  particle_def_ =
     G4ParticleTable::GetParticleTable()->FindParticle(particle_name);
   if (!particle_def_)
     G4Exception("SetParticleID()", "ParticleGunGenerator",
@@ -73,7 +73,6 @@ void ParticleGunGenerator::SetParticleID(G4String particle_name)
 void ParticleGunGenerator::DefineCommands()
 {
   msg_ = new G4GenericMessenger(this, "/gastpc/generator/");
-
   msg_->DeclareMethod("particle_id", &ParticleGunGenerator::SetParticleID, "");
 
 }

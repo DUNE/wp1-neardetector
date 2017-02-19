@@ -113,36 +113,43 @@ G4bool PersistencyManager::Store(const G4Event* event)
   // generator info.
 
   // Loop through all the primary vertices and then through all primary
-  // particles that were generated in this event
-  for (G4int i=0; i<event->GetNumberOfPrimaryVertex(); ++i) {
-    G4PrimaryVertex* vertex = event->GetPrimaryVertex(i);
-    for (G4int j=0; j<vertex->GetNumberOfParticle(); ++j) {
-      G4PrimaryParticle* particle = vertex->GetPrimary(j);
+  // particles that were generated in this event.
+  // (Skip this step if there is no MCGenInfo in the event.)
 
-      // We'll try to locate now the persistent MCParticle object
-      // corresponding to this primary particle
-      G4int mcid = particle->GetTrackID();
-      auto result = mcparticles_map_.find(mcid);
+  if (!mcgeninfos_map_.empty()) {
 
-      if (result != mcparticles_map_.end()) {
-        // We've got a match!
-        // Link now the MCParticle and its associated MCGenInfo
+    for (G4int i=0; i<event->GetNumberOfPrimaryVertex(); ++i) {
+      G4PrimaryVertex* vertex = event->GetPrimaryVertex(i);
+      for (G4int j=0; j<vertex->GetNumberOfParticle(); ++j) {
+        G4PrimaryParticle* particle = vertex->GetPrimary(j);
 
-        gastpc::MCParticle* mcp = result->second;
+        // We'll try to locate now the persistent MCParticle object
+        // corresponding to this primary particle
+        G4int mcid = particle->GetTrackID();
+        auto result = mcparticles_map_.find(mcid);
 
-        PrimaryParticleInfo* pp_info =
-          dynamic_cast<PrimaryParticleInfo*>(particle->GetUserInformation());
-        gastpc::MCGenInfo* mcgi =
-          mcgeninfos_map_[pp_info->GetEventGenerationID()];
+        if (result != mcparticles_map_.end()) {
+          // We've got a match!
+          // Link now the MCParticle and its associated MCGenInfo
 
-        mcp->SetMCGenInfo(mcgi);
-        mcgi->AddMCParticle(mcp);
-      }
-      else {
-        // We seem to have found a primary particle without MC ID
-        G4Exception("PersistencyManager::ProcessPrimaryGenerationInfo()",
-          "WARNING", JustWarning, "Found a track without ID.");
-        continue;
+          gastpc::MCParticle* mcp = result->second;
+
+          PrimaryParticleInfo* pp_info =
+            dynamic_cast<PrimaryParticleInfo*>(particle->GetUserInformation());
+          if (!pp_info) continue; // make sure the pointer is valid
+
+          gastpc::MCGenInfo* mcgi =
+            mcgeninfos_map_[pp_info->GetEventGenerationID()];
+
+          mcp->SetMCGenInfo(mcgi);
+          mcgi->AddMCParticle(mcp);
+        }
+        else {
+          // We seem to have found a primary particle without MC ID
+          G4Exception("PersistencyManager::ProcessPrimaryGenerationInfo()",
+            "WARNING", JustWarning, "Found a track without ID.");
+          continue;
+        }
       }
     }
   }
@@ -167,8 +174,10 @@ G4bool PersistencyManager::Store(const G4Event* event)
     if (result != mcparticles_map_.end()) {
       mcp->SetAncestor(result->second);
     }
-  }
 
+    std::cout << *mcp << std::endl;
+  }
+  
   // Write the current event and ready for the next one
   writer_->Write(*evtrec_);
 

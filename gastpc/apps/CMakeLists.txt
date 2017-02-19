@@ -43,6 +43,16 @@ target_link_libraries(EventRecordDump   GasTPCEvtRec
 
 ##############################
 
+add_executable(GArEnergyLoss GArEnergyLoss.cxx)
+
+target_link_libraries(GArEnergyLoss   GasTPCEvtRec GasTPCPsReco
+                                      ${ROOT_LIBRARIES}
+                                      ${GENIE_LIBRARIES}
+                                      ${Log4cpp_LIBRARIES}
+                                      ${LIBXML2_LIBRARIES})
+
+##############################
+
 # add_executable(DstDump DstDump.cxx)
 #
 # target_link_libraries(DstDump ${ROOT_LIBRARIES}
@@ -72,5 +82,5 @@ target_link_libraries(EventRecordDump   GasTPCEvtRec
 
 ##############################
 
-install(TARGETS GasTPCG4Sim EventRecordDump #DstDump GasTPCReco
+install(TARGETS GasTPCG4Sim EventRecordDump GArEnergyLoss
         RUNTIME DESTINATION bin)
