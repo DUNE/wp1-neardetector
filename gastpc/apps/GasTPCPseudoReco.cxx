@@ -8,7 +8,13 @@
 
 #include "RootFileReader.h"
 #include "EventRecord.h"
+#include "MCGenInfo.h"
+#include "MCParticle.h"
+#include "RecoParticle.h"
 #include "InteractionFinder.h"
+#include "MomentumSmearer.h"
+
+#include <TRandom3.h>
 
 #include <getopt.h>
 #include <string>
@@ -28,15 +34,13 @@ namespace {
 void PrintUsage()
 {
   std::cerr << "\nUsage: GasTPCReco [-r <number>] -m <string>\n"
-            << "                   -i <path> -o <path>"
-            << "                   -g <path> -d <path>"
+            << "                   -i <path> -o <path> -d <path>"
             << "\n" << std::endl;
   std::cerr << "   -r, --random-seed    : Random seed\n"
             << "   -m, --mode           : neutrino or antineutrino\n"
             << "   -i, --input-file     : Input file\n"
             << "   -o, --output-file    : Output file\n"
-            << "   -g, --geometry       : GDML file\n"
-            << "   -d, --ecal-data      : ROOT file with ECAL data"
+            << "   -d, --ecal-data      : ROOT file with ECAL data\n"
             << std::endl;
 
   exit(EXIT_FAILURE);
@@ -56,12 +60,11 @@ void ParseCmdLineOptions(int argc, char** argv)
       {"input-file",  required_argument, 0, 'i'},
       {"output-file", required_argument, 0, 'o'},
       {"ecal-data",   required_argument, 0, 'd'},
-      {"geometry",    required_argument, 0, 'g'},
       {0, 0, 0, 0}
     };
 
     int option_index = 0;
-    c = getopt_long(argc, argv, "r:m:i:o:d:g:", long_options, &option_index);
+    c = getopt_long(argc, argv, "r:m:i:o:d:", long_options, &option_index);
 
     if (c == -1) break;
 
@@ -81,9 +84,6 @@ void ParseCmdLineOptions(int argc, char** argv)
       case 'd':
         ecal_data_ = std::string(optarg);
         break;
-      case 'g':
-        geometry_file_ = std::string(optarg);
-        break;
       case '?':
         PrintUsage();
         break;
@@ -101,14 +101,24 @@ int main(int argc, char** argv)
 {
   ParseCmdLineOptions(argc, argv);
 
+  TRandom3* random = new TRandom3(rnd_);
+  MomentumSmearer momentum_smearer(random);
+
   gastpc::RootFileReader r;
   r.OpenFile(input_file_);
 
   for (int i=0; i<r.GetNumberOfEntries(); ++i) {
 
     gastpc::EventRecord& evtrec = r.Read(i);
-    InteractionFinder::ProcessEvent(evtrec.GetMCGenInfo());
 
+    // Select neutrino interactions in active volume
+    gastpc::MCGenInfo* mcgi =
+      InteractionFinder::ProcessEvent(evtrec.GetMCGenInfo());
+
+    // Process mc particles
+    for (gastpc::MCParticle* mcp: mcgi->GetMCParticles()) {
+      momentum_smearer.ProcessParticle(mcp);
+    }
   }
 
   return EXIT_SUCCESS;

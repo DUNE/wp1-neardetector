@@ -32,7 +32,6 @@ gastpc::MCGenInfo* InteractionFinder::ProcessEvent(const std::vector<gastpc::MCG
     double limit = (2.46/2.) * gastpc::meter;
 
     if (std::abs(x) < limit && std::abs(y) < limit) {
-      std::cout << "Argon" << std::endl;
       result = mcgi;
       break;
     }
