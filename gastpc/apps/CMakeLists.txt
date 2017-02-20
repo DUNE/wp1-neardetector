@@ -45,7 +45,7 @@ target_link_libraries(GArEnergyLoss   GasTPCEvtRec GasTPCPsReco
 
 add_executable(GasTPCPseudoReco GasTPCPseudoReco.cxx)
 
-target_link_libraries(GasTPCPseudoReco  GasTPCEvtRec
+target_link_libraries(GasTPCPseudoReco  GasTPCEvtRec GasTPCPsReco
                                         ${ROOT_LIBRARIES}
                                         ${GENIE_LIBRARIES}
                                         ${Log4cpp_LIBRARIES}

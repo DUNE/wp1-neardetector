@@ -8,6 +8,7 @@
 
 #include "RootFileReader.h"
 #include "EventRecord.h"
+#include "InteractionFinder.h"
 
 #include <getopt.h>
 #include <string>
@@ -15,10 +16,12 @@
 
 
 namespace {
-  int rnd_;
+  int rnd_=123456;
   std::string mode_("");
   std::string input_file_("");
   std::string output_file_("");
+  std::string geometry_file_("");
+  std::string ecal_data_("");
 }
 
 
@@ -26,6 +29,7 @@ void PrintUsage()
 {
   std::cerr << "\nUsage: GasTPCReco [-r <number>] -m <string>\n"
             << "                   -i <path> -o <path>"
+            << "                   -g <path> -d <path>"
             << "\n" << std::endl;
   std::cerr << "   -r, --random-seed    : Random seed\n"
             << "   -m, --mode           : neutrino or antineutrino\n"
@@ -74,6 +78,12 @@ void ParseCmdLineOptions(int argc, char** argv)
       case 'o':
         output_file_ = std::string(optarg);
         break;
+      case 'd':
+        ecal_data_ = std::string(optarg);
+        break;
+      case 'g':
+        geometry_file_ = std::string(optarg);
+        break;
       case '?':
         PrintUsage();
         break;
@@ -94,9 +104,12 @@ int main(int argc, char** argv)
   gastpc::RootFileReader r;
   r.OpenFile(input_file_);
 
+  InteractionFinder nufinder(geometry_file_);
+
   for (int i=0; i<r.GetNumberOfEntries(); ++i) {
 
-
+    gastpc::EventRecord& evtrec = r.Read(i);
+    nufinder.ProcessEvent(evtrec.GetMCGenInfo());
 
   }
 

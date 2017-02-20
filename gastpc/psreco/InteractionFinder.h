@@ -22,14 +22,14 @@ class InteractionFinder
 {
 public:
   /// Constructor
-  InteractionFinder(std::string geometry_file);
+  InteractionFinder(const std::string& geometry);
   /// Destructor
   ~InteractionFinder();
 
   gastpc::MCGenInfo* ProcessEvent(const std::vector<gastpc::MCGenInfo*>&);
 
 private:
-  void LoadGeometry(std::string geometry_file);
+  void LoadGeometry(const std::string&);
 
 private:
   TGeoManager* gm_;
