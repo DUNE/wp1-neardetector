@@ -9,6 +9,7 @@
 #ifndef INTERACTION_FINDER_H
 #define INTERACTION_FINDER_H
 
+#include <string>
 #include <vector>
 
 namespace gastpc { class MCGenInfo; }
