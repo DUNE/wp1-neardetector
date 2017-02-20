@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   ParticleGunGenerator.h
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 29 July 2016
@@ -17,7 +17,6 @@ class G4GenericMessenger;
 class G4ParticleDefinition;
 
 
-
 /// TODO: Class descriptions
 
 class ParticleGunGenerator: public G4VUserPrimaryGeneratorAction
@@ -29,23 +28,18 @@ public:
   virtual ~ParticleGunGenerator();
 
   virtual void GeneratePrimaries(G4Event*);
-  
+
 private:
 
   void DefineCommands();
-
-  void SetParticleID(G4String);
+  void SetParticleID(G4int);
+  G4double RandomMomentum() const;
 
 private:
-  G4GenericMessenger* msg_;
-
-  G4ParticleDefinition* particle_def_;
-
-  G4double momentum_;
-  //G4double kinetic_energy_;
-
-  G4ThreeVector initial_position_;
-  G4ThreeVector momentum_direction_;
+  G4GenericMessenger* msg_; ///< Messenger for configuration commands
+  G4ParticleDefinition* particle_def_; ///< Particle definition
+  G4double momentum_range_min_; ///< Lower value of momentum
+  G4double momentum_range_max_; ///< Upper value of momentum
 };
 
 #endif

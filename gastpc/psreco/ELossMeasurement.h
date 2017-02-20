@@ -27,6 +27,8 @@ public:
   /// Destructor
   ~ELossMeasurement();
 
+  double Mean(double truncation=1.0);
+
   TH1F* Histogram(double min, double max, double truncation=1.0);
 
 private:

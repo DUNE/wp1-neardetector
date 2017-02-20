@@ -44,12 +44,28 @@ void ELossMeasurement::ProcessTrack(gastpc::MCTrack* track)
   for (unsigned int i=1; i<mchits.size(); ++i) {
     post = mchits[i]->GetXYZT();
     double step_length = Utils::Distance(pre, post);
-    std::cout << step_length << std::endl;
     double dEdx = mchits[i]->GetAmplitude() / step_length;
-    std::cout << dEdx / (gastpc::keV/gastpc::cm) << std::endl;
     measurements_.insert(dEdx);
     pre = post;
   }
+}
+
+
+double ELossMeasurement::Mean(double truncation)
+{
+  if (truncation > 1. || truncation < 0.) truncation = 1.0;
+  int max_n = std::floor(measurements_.size() * truncation);
+
+  int n = 0;
+  double sum = 0.;
+
+  for (double entry: measurements_) {
+    if (n >= max_n) break;
+    sum += entry;
+    ++n;
+  }
+
+  return (sum / max_n);
 }
 
 

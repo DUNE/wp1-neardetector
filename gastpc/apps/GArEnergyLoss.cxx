@@ -120,6 +120,7 @@ int main(int argc, char* argv[])
   r.OpenFile(input_filename_);
 
   TFile file("plots.root", "RECREATE");
+  TH1F* h1 = new TH1F("mean", "", 200, 0., 100.);
 
   double min = 0.;
   double max = 100. * (gastpc::keV / gastpc::cm);
@@ -130,8 +131,12 @@ int main(int argc, char* argv[])
     for (gastpc::MCParticle* mcp: evtrec.GetMCParticles()) {
 
       if (mcp->GetFamilyTreeLevel() == 1) {
+        std::cout << *mcp << std::endl;
         ELossMeasurement eloss(mcp->GetMCTracks()[0]);
-        TH1F* histo = eloss.Histogram(min, max, .7);
+        std::cout << "mean: " << eloss.Mean(0.7) / (gastpc::keV / gastpc::cm)
+                  << std::endl;
+        h1->Fill(eloss.Mean(0.7) / (gastpc::keV / gastpc::cm));
+        //TH1F* histo = eloss.Histogram(min, max, .7);
         //histo->Write();
       }
     }

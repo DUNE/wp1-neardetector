@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 /// \file   VertexStats.cxx
-/// \brief  
+/// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
 /// \date    Creation: 24 July 2016
@@ -37,7 +37,7 @@ void ParseCmdLineOptions(int argc, char** argv)
   int c;
 
   while (true) {
-    static struct option long_options[] = 
+    static struct option long_options[] =
     {
       {"geometry",    required_argument, 0, 'g'},
       {"genie_files", required_argument, 0, 'i'},
@@ -122,7 +122,7 @@ int main(int argc, char** argv)
       current_file = new_file;
     }
 
-    // Locate the interaction vertex in the geometry. 
+    // Locate the interaction vertex in the geometry.
     // (Quantities stored by GENIE are expressed in the SI, while ROOT's
     // TGeoManager uses the CGS. Therefore, we multiply the vertex position
     // by a factor of 100 to transform from m to cm.)
@@ -131,7 +131,7 @@ int main(int argc, char** argv)
                                       record->Vertex()->Z() * 100.);
 
     // The method above locates the deepest node in the geometry hierarchy.
-    // In some cases (ECAL layers and TPC), however, we want to compute 
+    // In some cases (ECAL layers and TPC), however, we want to compute
     // the statistics for a volume higher in the hierarchy.
 
     if (geomgr->GetLevel() > 2) {
@@ -142,8 +142,8 @@ int main(int argc, char** argv)
       if (found == std::string::npos) {
         geomgr->CdUp();
         node = geomgr->GetCurrentNode();
-      } 
-    }  
+      }
+    }
 
     // Create an entry for this geometry node if we have not seen it before.
     // Update the vertex statistics otherwise.
@@ -176,7 +176,7 @@ int main(int argc, char** argv)
 
   ofile << "Total POT analyzed: " << total_pot << std::endl;
 
-  ofile << "Total num. vertices: " << total_num_vertices << std::endl; 
+  ofile << "Total num. vertices: " << total_num_vertices << std::endl;
 
   ofile << "\nVertex distribution per geometry volumes:" << std::endl;
 
@@ -185,8 +185,8 @@ int main(int argc, char** argv)
   for (auto kv: node_map) {
     ofile << " Name: " << kv.second.name << std::endl;
     ofile << " Position (cm) = (" << kv.second.position.x() << ", "
-	                                    << kv.second.position.y() << ", " 
-                                      << kv.second.position.z() << ")" 
+	                                    << kv.second.position.y() << ", "
+                                      << kv.second.position.z() << ")"
                                       << std::endl;
     ofile << " Num. vertices: " << kv.second.num_vertices << std::endl;
     ofile << "----------" << std::endl;

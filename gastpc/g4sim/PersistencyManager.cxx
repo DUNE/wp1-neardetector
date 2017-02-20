@@ -174,10 +174,8 @@ G4bool PersistencyManager::Store(const G4Event* event)
     if (result != mcparticles_map_.end()) {
       mcp->SetAncestor(result->second);
     }
-
-    std::cout << *mcp << std::endl;
   }
-  
+
   // Write the current event and ready for the next one
   writer_->Write(*evtrec_);
 
