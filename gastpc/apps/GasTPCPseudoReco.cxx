@@ -104,12 +104,10 @@ int main(int argc, char** argv)
   gastpc::RootFileReader r;
   r.OpenFile(input_file_);
 
-  InteractionFinder nufinder(geometry_file_);
-
   for (int i=0; i<r.GetNumberOfEntries(); ++i) {
 
     gastpc::EventRecord& evtrec = r.Read(i);
-    nufinder.ProcessEvent(evtrec.GetMCGenInfo());
+    InteractionFinder::ProcessEvent(evtrec.GetMCGenInfo());
 
   }
 

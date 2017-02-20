@@ -21,18 +21,11 @@ class TGeoManager;
 class InteractionFinder
 {
 public:
-  /// Constructor
-  InteractionFinder(const std::string& geometry);
-  /// Destructor
+  static gastpc::MCGenInfo* ProcessEvent(const std::vector<gastpc::MCGenInfo*>&);
+
+private:
+  InteractionFinder();
   ~InteractionFinder();
-
-  gastpc::MCGenInfo* ProcessEvent(const std::vector<gastpc::MCGenInfo*>&);
-
-private:
-  void LoadGeometry(const std::string&);
-
-private:
-  TGeoManager* gm_;
 };
 
 #endif
