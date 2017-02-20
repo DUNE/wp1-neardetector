@@ -61,7 +61,7 @@ void ParseCmdLineOptions(int argc, char** argv)
     };
 
     int option_index = 0;
-    c = getopt_long(argc, argv, "r:m:i:o:", long_options, &option_index);
+    c = getopt_long(argc, argv, "r:m:i:o:d:g:", long_options, &option_index);
 
     if (c == -1) break;
 
