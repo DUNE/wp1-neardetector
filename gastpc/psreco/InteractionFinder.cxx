@@ -9,6 +9,7 @@
 #include "InteractionFinder.h"
 
 #include "MCGenInfo.h"
+#include "Units.h"
 
 #include <Ntuple/NtpMCEventRecord.h>
 #include <EVGCore/EventRecord.h>
@@ -46,17 +47,17 @@ gastpc::MCGenInfo* InteractionFinder::ProcessEvent(const std::vector<gastpc::MCG
   gastpc::MCGenInfo* result = 0;
 
   for (gastpc::MCGenInfo* mcgi: v) {
-
     genie::NtpMCEventRecord* gmcrec = mcgi->GetGeneratorRecord();
-    genie::EventRecord* record = gmcrec->event;
+    genie::Interaction* interaction = (gmcrec->event)->Summary();
+    const genie::Target& tgt = interaction->InitState().Tgt();
+    if (tgt.Z() != 18) continue;
 
-    TGeoNode* node = gm_->FindNode(record->Vertex()->X() * 100.,
-                                   record->Vertex()->Y() * 100.,
-                                   record->Vertex()->Z() * 100.);
+    double x = (gmcrec->event)->Vertex()->X() * gastpc::meter;
+    double y = (gmcrec->event)->Vertex()->Y() * gastpc::meter;
+    double limit = 2.45/2. * gastpc::meter;
 
-    std::cout << node->GetName() << std::endl;
-
-    if (strncmp(node->GetName(), "ACTIVE", 6) == 0)  {
+    if (std::abs(x) < limit && std::abs(y) < limit) {
+      std::cout << "Argon" << std::endl;
       result = mcgi;
       break;
     }
