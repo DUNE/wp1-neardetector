@@ -117,6 +117,7 @@ int main(int argc, char** argv)
 
     // Process mc particles
     for (gastpc::MCParticle* mcp: mcgi->GetMCParticles()) {
+      std::cout << *mcp << std::endl;
       momentum_smearer.ProcessParticle(mcp);
     }
   }
