@@ -84,8 +84,10 @@ gastpc::RecoParticle* MomentumSmearer::ProcessTrack(gastpc::MCTrack* track)
     SmearPt(p_mag, length_transv) / std::sin(SmearAngle(angle, p_mag, length_longit));
   p_reco = p_reco * gastpc::GeV;
 
-  std::cout << "Mom true: " << p_mag / gastpc::GeV  << std::endl;
-  std::cout << "Mom reco: " << p_reco / gastpc::GeV << std::endl;
+  /// The following avoids obtaining absurd values for very short tracks
+  /// (typically low-energy protons)
+  double limit = 5. * gastpc::cm;
+  if (length_transv < limit) p_reco = p_mag;
 
   gastpc::Vector3D momentum_reco;
   momentum_reco.SetX(momentum.X() * p_reco / p_mag);
