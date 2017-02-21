@@ -174,13 +174,11 @@ int main(int argc, char** argv)
     bool found_lepton = false;
 
     // Try to identify the electron candidate
-    if (electron.second != 0) {
-      int reco_pdg = pid.Electron(electron.first, electron.second);
-      if (std::abs(reco_pdg) == 11) found_lepton = true;
-    }
+    int reco_pdg = pid.Electron(electron.first, electron.second);
+    if (std::abs(reco_pdg) == 11) found_lepton = true;
 
     // Try to identify the muon candidate if no lepton has been found
-    if (!found_lepton) {
+    if (found_lepton == false) {
       int reco_pdg = pid.Muon(muon.first, muon.second);
       if (std::abs(reco_pdg) == 13) found_lepton = true;
     }

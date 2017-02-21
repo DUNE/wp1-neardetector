@@ -34,6 +34,8 @@ ParticleIdentification::~ParticleIdentification()
 int ParticleIdentification::Electron(gastpc::MCParticle* mcp,
                                       gastpc::RecoParticle* recop)
 {
+  if (!mcp || !recop) return 0;
+
   int pdg = mcp->GetPDGCode();
   int sgn = Utils::sgn(pdg);
 
@@ -63,6 +65,8 @@ int ParticleIdentification::Electron(gastpc::MCParticle* mcp,
 int ParticleIdentification::Muon(gastpc::MCParticle* mcp,
                                   gastpc::RecoParticle* recop)
 {
+  if (!mcp || !recop) return 0;
+
   int pdg = mcp->GetPDGCode();
   int sgn = Utils::sgn(pdg);
 
@@ -85,6 +89,8 @@ int ParticleIdentification::Pion(gastpc::MCParticle* mcp,
                                  gastpc::RecoParticle* recop,
                                  bool found_lepton, bool FHC)
 {
+  if (!mcp || !recop) return 0;
+
   int pdg = mcp->GetPDGCode();
 
   // If a lepton was found, pions below 1.5 GeV are identified univocally.
@@ -111,6 +117,8 @@ int ParticleIdentification::Pion(gastpc::MCParticle* mcp,
 int ParticleIdentification::Proton(gastpc::MCParticle* mcp,
                                     gastpc::RecoParticle* recop)
 {
+  if (!mcp || !recop) return 0;
+  
   int pdg = mcp->GetPDGCode();
 
   // dE/dx measurement in TPC allows the identification of protons
