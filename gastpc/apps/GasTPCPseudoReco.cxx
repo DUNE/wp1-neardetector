@@ -115,9 +115,10 @@ int main(int argc, char** argv)
     gastpc::MCGenInfo* mcgi =
       InteractionFinder::ProcessEvent(evtrec.GetMCGenInfo());
 
+    if (!mcgi) continue; // No argon interaction in this spill
+
     // Process mc particles
     for (gastpc::MCParticle* mcp: mcgi->GetMCParticles()) {
-      std::cout << *mcp << std::endl;
       momentum_smearer.ProcessParticle(mcp);
     }
   }
