@@ -14,8 +14,14 @@
 #include "InteractionFinder.h"
 #include "MomentumSmearer.h"
 #include "ParticleIdentification.h"
+#include "NeutrinoEnergy.h"
+#include "Units.h"
+
+#include <Ntuple/NtpMCEventRecord.h>
 
 #include <TRandom3.h>
+#include <TFile.h>
+#include <TTree.h>
 
 #include <getopt.h>
 #include <string>
@@ -29,6 +35,31 @@ namespace {
   std::string output_file_("");
   std::string geometry_file_("");
   std::string ecal_data_("");
+}
+
+namespace dst {
+  genie::NtpMCEventRecord* gmcrec = 0; ///< Pointer to Genie's event record
+
+  int RunID;
+  int EventID;
+  int Sample;  ///< Sample ID (as defined by VALOR)
+  int NTracks; ///< Number of tracks in neutrino interaction
+
+  double Ev;      ///< Neutrino energy
+  double Ev_reco; ///< Reconstructed neutrino energy
+  double Y;       ///< Inelasticity
+  double Y_reco;  ///< Reconstructed inelasticity
+
+  double VertexPosition[4]; ///< Initial vertex (position and time)
+
+  int TrackID[500];         ///< MC track ID number
+  int RecoTrack[500];       ///< Reconstructed: 1; Not reco: 0
+  int FamilyTreeLevel[500]; ///< Primary: 1; Secondary: 2 ...
+  int Pdg[500];             ///< PDG code of each track
+  int Pdg_reco[500];        ///< Reconstructed PDG code
+
+  double Momentum[500][3];      ///< Initial momentum
+  double Momentum_reco[500][3]; ///< Reconstructed momentum
 }
 
 
@@ -98,6 +129,38 @@ void ParseCmdLineOptions(int argc, char** argv)
 }
 
 
+TTree* DefineOutputTree()
+{
+  TTree* tree = new TTree("NdtfDst", "DUNE ND-TF GArTPC DST");
+
+  tree->Branch("gmcrec", "genie::NtpMCEventRecord", &(dst::gmcrec));
+
+  tree->Branch("RunID",   &(dst::RunID),   "RunID/I");
+  tree->Branch("EventID", &(dst::EventID), "EventID/I");
+  tree->Branch("Sample",  &(dst::Sample),  "Sample/I");
+
+  tree->Branch("Ev",      &(dst::Ev),      "Ev/D");
+  tree->Branch("Ev_reco", &(dst::Ev_reco), "Ev_reco/D");
+  tree->Branch("Y",       &(dst::Y),       "Y/D");
+  tree->Branch("Y_reco",  &(dst::Y_reco),  "Y_reco/D");
+
+  tree->Branch("VertexPosition", dst::VertexPosition, "VertexPosition[4]/D");
+
+  tree->Branch("NTracks",  &(dst::NTracks), "NTracks/I");
+
+  tree->Branch("TrackID",   dst::TrackID,   "TrackID[NTracks]/I");
+  tree->Branch("RecoTrack", dst::RecoTrack, "RecoTrack[NTracks]/I");
+  tree->Branch("Pdg",       dst::Pdg,       "Pdg[NTracks]/I");
+  tree->Branch("Pdg_reco",  dst::Pdg_reco,  "Pdg_reco[NTracks]/I");
+
+  tree->Branch("Momentum",      dst::Momentum,      "Momentum[NTracks][3]/D");
+  tree->Branch("Momentum_reco", dst::Momentum_reco, "Momentum_reco[NTracks][3]/D");
+
+  return tree;
+}
+
+
+
 int main(int argc, char** argv)
 {
   ParseCmdLineOptions(argc, argv);
@@ -109,6 +172,9 @@ int main(int argc, char** argv)
   TRandom3* random = new TRandom3(rnd_);
   MomentumSmearer momentum_smearer(random);
   ParticleIdentification pid(random);
+
+  TFile ofile(output_file_.c_str(), "RECREATE");
+  TTree* tree = DefineOutputTree();
 
   gastpc::RootFileReader r;
   r.OpenFile(input_file_);
@@ -136,10 +202,15 @@ int main(int argc, char** argv)
     std::vector<std::pair<gastpc::MCParticle*, gastpc::RecoParticle*>> pions;
     std::vector<std::pair<gastpc::MCParticle*, gastpc::RecoParticle*>> other;
 
+    std::vector<std::pair<gastpc::MCParticle*, gastpc::RecoParticle*>> all;
+
     for (gastpc::MCParticle* mcp: mcgi->GetMCParticles()) {
 
       // Smear momentum of mc particles
       gastpc::RecoParticle* recop = momentum_smearer.ProcessParticle(mcp);
+
+      auto p = std::make_pair(mcp, recop);
+      all.push_back(p);
 
       // We classify the particles according to their pdg code
       // for simpler classification in next step
@@ -193,8 +264,66 @@ int main(int argc, char** argv)
       pid.Proton(p.first, p.second);
     }
 
+    ////////////////////////////////////////////////////////
+
+    // NEUTRINO ENERGY RECONSTRUCTION
+
+    NeutrinoEnergy nuE(all);
+
+    ////////////////////////////////////////////////////////
+
+    // OUTPUT DST
+
+
+    genie::NtpMCEventRecord* gmcrec = mcgi->GetGeneratorRecord();
+    genie::NtpMCEventRecord* gmcrec_copy = new genie::NtpMCEventRecord();
+    gmcrec_copy->Copy(*gmcrec);
+    dst::gmcrec = gmcrec_copy;
+
+    dst::RunID   = evtrec.GetRunID();
+    dst::EventID = evtrec.GetEventID();
+    dst::Sample  = 0; // We don't classify the events this time
+
+    dst::Ev      = nuE.TrueEnergy();
+    dst::Ev_reco = nuE.RecoEnergy();
+    dst::Y       = nuE.TrueY();
+    dst::Y_reco  = nuE.RecoY();
+
+    TLorentzVector* vertex = gmcrec->event->Vertex();
+    dst::VertexPosition[0] = vertex->X() * gastpc::meter;
+    dst::VertexPosition[1] = vertex->Y() * gastpc::meter;
+    dst::VertexPosition[2] = vertex->Z() * gastpc::meter;
+    dst::VertexPosition[3] = vertex->T() * gastpc::meter;
+
+    dst::NTracks = all.size();
+
+    unsigned int track_num = 0;
+
+    for (auto p: all) {
+
+      dst::TrackID[track_num] = p.first->GetMCID();
+      dst::Pdg[track_num] = p.first->GetPDGCode();
+      dst::Momentum[track_num][0] = p.first->GetInitialMomentum().GetX();
+      dst::Momentum[track_num][1] = p.first->GetInitialMomentum().GetY();
+      dst::Momentum[track_num][2] = p.first->GetInitialMomentum().GetZ();
+
+      if (!p.second) {
+        dst::RecoTrack[track_num] = 0;
+      }
+      else {
+        dst::RecoTrack[track_num] = 1;
+        dst::Pdg_reco[track_num] = p.second->GetPDGCode();
+        dst::Momentum_reco[track_num][0] = p.second->GetInitialMomentum().GetX();
+        dst::Momentum_reco[track_num][1] = p.second->GetInitialMomentum().GetY();
+        dst::Momentum_reco[track_num][2] = p.second->GetInitialMomentum().GetZ();
+      }
+    }
+
+    tree->Fill();
   }
 
+  ofile.Write();
+  ofile.Close();
   delete random;
   return EXIT_SUCCESS;
 }

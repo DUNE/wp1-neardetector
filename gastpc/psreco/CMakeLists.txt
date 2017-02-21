@@ -5,6 +5,7 @@ add_library(GasTPCPsReco SHARED ELossMeasurement.cxx
                                 MomentumSmearer.cxx
                                 ParticleIdentification.cxx
                                 EcalPid.cxx
+                                NeutrinoEnergy.cxx
                                 Utils.cxx)
 
 target_link_libraries(GasTPCPsReco  GasTPCEvtRec
