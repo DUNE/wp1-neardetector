@@ -13,6 +13,7 @@
 #include "RecoParticle.h"
 #include "InteractionFinder.h"
 #include "MomentumSmearer.h"
+#include "ParticleIdentification.h"
 
 #include <TRandom3.h>
 
@@ -101,8 +102,13 @@ int main(int argc, char** argv)
 {
   ParseCmdLineOptions(argc, argv);
 
+  bool FHC;
+  if (mode_=="neutrino") FHC = true;
+  else FHC = false;
+
   TRandom3* random = new TRandom3(rnd_);
   MomentumSmearer momentum_smearer(random);
+  ParticleIdentification pid(random);
 
   gastpc::RootFileReader r;
   r.OpenFile(input_file_);
@@ -111,17 +117,86 @@ int main(int argc, char** argv)
 
     gastpc::EventRecord& evtrec = r.Read(i);
 
-    // Select neutrino interactions in active volume
+    ////////////////////////////////////////////////////////
+
+    // VERTEX FINDING
+
     gastpc::MCGenInfo* mcgi =
       InteractionFinder::ProcessEvent(evtrec.GetMCGenInfo());
 
     if (!mcgi) continue; // No argon interaction in this spill
 
-    // Process mc particles
+    ////////////////////////////////////////////////////////
+
+    // MOMENTUM PSEUDO-RECONSTRUCTION
+
+    std::pair<gastpc::MCParticle*, gastpc::RecoParticle*> electron(0,0);
+    std::pair<gastpc::MCParticle*, gastpc::RecoParticle*> muon(0,0);
+    std::vector<std::pair<gastpc::MCParticle*, gastpc::RecoParticle*>> protons;
+    std::vector<std::pair<gastpc::MCParticle*, gastpc::RecoParticle*>> pions;
+    std::vector<std::pair<gastpc::MCParticle*, gastpc::RecoParticle*>> other;
+
     for (gastpc::MCParticle* mcp: mcgi->GetMCParticles()) {
-      momentum_smearer.ProcessParticle(mcp);
+
+      // Smear momentum of mc particles
+      gastpc::RecoParticle* recop = momentum_smearer.ProcessParticle(mcp);
+
+      // We classify the particles according to their pdg code
+      // for simpler classification in next step
+      int pdg = std::abs(mcp->GetPDGCode());
+
+      if (pdg == 11) {
+        electron.first  = mcp;
+        electron.second = recop;
+      }
+      else if (pdg == 13) {
+        muon.first  = mcp;
+        muon.second = recop;
+      }
+      else if (pdg == 211) {
+        auto p = std::make_pair(mcp, recop);
+        pions.push_back(p);
+      }
+      else if (pdg == 2212) {
+        auto p = std::make_pair(mcp, recop);
+        protons.push_back(p);
+      }
+      else {
+        auto p = std::make_pair(mcp, recop);
+        other.push_back(p);
+      }
     }
+
+    ////////////////////////////////////////////////////////
+
+    // PARTICLE IDENTIFICATION
+
+    bool found_lepton = false;
+
+    // Try to identify the electron candidate
+    if (electron.second != 0) {
+      int reco_pdg = pid.Electron(electron.first, electron.second);
+      if (std::abs(reco_pdg) == 11) found_lepton = true;
+    }
+
+    // Try to identify the muon candidate if no lepton has been found
+    if (!found_lepton) {
+      int reco_pdg = pid.Muon(muon.first, muon.second);
+      if (std::abs(reco_pdg) == 13) found_lepton = true;
+    }
+
+    // Process now the charged pions
+    for (auto p: pions) {
+      int reco_pdg = pid.Pion(p.first, p.second, found_lepton, FHC);
+      if (std::abs(reco_pdg) == 13) found_lepton = true;
+    }
+
+    for (auto p: protons) {
+      pid.Proton(p.first, p.second);
+    }
+
   }
 
+  delete random;
   return EXIT_SUCCESS;
 }

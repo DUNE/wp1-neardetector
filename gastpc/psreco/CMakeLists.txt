@@ -3,6 +3,8 @@
 add_library(GasTPCPsReco SHARED ELossMeasurement.cxx
                                 InteractionFinder.cxx
                                 MomentumSmearer.cxx
+                                ParticleIdentification.cxx
+                                EcalPid.cxx
                                 Utils.cxx)
 
 target_link_libraries(GasTPCPsReco  GasTPCEvtRec

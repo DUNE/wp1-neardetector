@@ -23,11 +23,18 @@ public:
   /// Calculate the Euclidean distance between two points
   static double Distance(const gastpc::Vector3D&, const gastpc::Vector3D&);
 
+  static double Magnitude(const gastpc::Vector3D&);
+
+  template <typename T> static int sgn(T val); // { return (T(0) < val) - (val < T(0));}
+
 private:
   /// Hidden constructor (all methods are static)
   Utils();
   /// Hidden destructor
   ~Utils();
 };
+
+template <typename T>
+inline int Utils::sgn(T val) { return (T(0) < val) - (val < T(0));}
 
 #endif

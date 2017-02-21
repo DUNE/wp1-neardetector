@@ -1,18 +1,102 @@
 // -------------------------------------------------------------------
-/// \file   LLR_ECAL.C
+/// \file   EcalPid.cxx
 /// \brief
 ///
 /// \author  <justo.martin-albo@physics.ox.ac.uk>
-/// \date    Creation: 20 Feb 2017
+/// \date    Creation: 21 Feb 2017
 // -------------------------------------------------------------------
 
-#include <TFile.h>
+#include "EcalPid.h"
+
 #include <TH1F.h>
 
-#include <vector>
 
 
-std::vector<std::vector<double>> LLR_MIP_EM_muon()
+EcalPid::EcalPid()
+{
+  LLR_MIP_EM_muon_ = new TH1F("LLR_MIP_EM_muon", "", 60, -60, 60);
+  auto v_LLR_MIP_EM_muon = Data_LLR_MIP_EM_muon();
+  FillHistogram(LLR_MIP_EM_muon_, v_LLR_MIP_EM_muon);
+
+  LLR_MIP_EM_electron_ = new TH1F("LLR_MIP_EM_electron", "", 60, -60, 60);
+  auto v_LLR_MIP_EM_electron = Data_LLR_MIP_EM_electron();
+  FillHistogram(LLR_MIP_EM_electron_, v_LLR_MIP_EM_electron);
+
+  LLR_MIP_PION_muon_ = new TH1F("LLR_MIP_PION_muon", "", 60, -60, 60);
+  auto v_LLR_MIP_PION_muon = Data_LLR_MIP_PION_muon();
+  FillHistogram(LLR_MIP_PION_muon_, v_LLR_MIP_PION_muon);
+
+  LLR_MIP_PION_pion_ = new TH1F("LLR_MIP_PION_pion", "", 60, -60, 60);
+  auto v_LLR_MIP_PION_pion = Data_LLR_MIP_PION_pion();
+  FillHistogram(LLR_MIP_PION_pion_, v_LLR_MIP_PION_pion);
+
+  LLR_EM_HIP_electron_ = new TH1F("LLR_EM_HIP_electron", "", 60, -60, 60);
+  auto v_LLR_EM_HIP_electron = Data_LLR_EM_HIP_electron();
+  FillHistogram(LLR_EM_HIP_electron_, v_LLR_EM_HIP_electron);
+
+  LLR_EM_HIP_proton_ = new TH1F("LLR_EM_HIP_proton", "", 60, -60, 60);
+  auto v_LLR_EM_HIP_proton = Data_LLR_EM_HIP_proton();
+  FillHistogram(LLR_EM_HIP_proton_, v_LLR_EM_HIP_proton);
+}
+
+
+EcalPid::~EcalPid()
+{
+  delete LLR_MIP_EM_muon_;
+  delete LLR_MIP_EM_electron_;
+  delete LLR_MIP_PION_muon_;
+  delete LLR_MIP_PION_pion_;
+  delete LLR_EM_HIP_electron_;
+  delete LLR_EM_HIP_proton_;
+}
+
+
+void EcalPid::FillHistogram(TH1F* hist, const std::vector<std::vector<double>>& v)
+{
+  for (unsigned int i=0; i<v.size(); ++i) {
+      int n_bin = hist->FindBin(v[i][0]);
+      hist->SetBinContent(n_bin, v[i][1]);
+  }
+}
+
+
+double EcalPid::LLR_MIP_EM_muon() const
+{
+  return LLR_MIP_EM_muon_->GetRandom();
+}
+
+
+double EcalPid::LLR_MIP_EM_electron() const
+{
+  return LLR_MIP_EM_electron_->GetRandom();
+}
+
+
+double EcalPid::LLR_MIP_PION_muon() const
+{
+  return LLR_MIP_PION_muon_->GetRandom();
+}
+
+
+double EcalPid::LLR_MIP_PION_pion() const
+{
+  return LLR_MIP_PION_pion_->GetRandom();
+}
+
+
+double EcalPid::LLR_EM_HIP_electron() const
+{
+  return LLR_EM_HIP_electron_->GetRandom();
+}
+
+
+double EcalPid::LLR_EM_HIP_proton() const
+{
+  return LLR_EM_HIP_proton_->GetRandom();
+}
+
+
+std::vector<std::vector<double>> EcalPid::Data_LLR_MIP_EM_muon()
 {
   std::vector<std::vector<double>> v =
     { {-29.236363636363635, 0.00316883116883115},
@@ -49,7 +133,7 @@ std::vector<std::vector<double>> LLR_MIP_EM_muon()
 }
 
 
-std::vector<std::vector<double>> LLR_MIP_EM_electron()
+std::vector<std::vector<double>> EcalPid::Data_LLR_MIP_EM_electron()
 {
   std::vector<std::vector<double>> v =
   {{-18.181818181818173, 0.00109090909090908},
@@ -93,7 +177,7 @@ std::vector<std::vector<double>> LLR_MIP_EM_electron()
   return v;
 }
 
-std::vector<std::vector<double>> LLR_MIP_PION_muon()
+std::vector<std::vector<double>> EcalPid::Data_LLR_MIP_PION_muon()
 {
   std::vector<std::vector<double>> v =
     {{-17.39280295225072, 0.00142180094786731},
@@ -124,7 +208,7 @@ std::vector<std::vector<double>> LLR_MIP_PION_muon()
 }
 
 
-std::vector<std::vector<double>> LLR_MIP_PION_pion()
+std::vector<std::vector<double>> EcalPid::Data_LLR_MIP_PION_pion()
 {
   std::vector<std::vector<double>> v =
     {{-14.864282636794485, 0.002559241706161147},
@@ -159,7 +243,7 @@ std::vector<std::vector<double>> LLR_MIP_PION_pion()
   return v;
 }
 
-std::vector<std::vector<double>> LLR_EM_HIP_electron()
+std::vector<std::vector<double>> EcalPid::Data_LLR_EM_HIP_electron()
 {
   std::vector<std::vector<double>> v =
     {{-27.277898147128056, 0.00085176616519577},
@@ -187,7 +271,7 @@ std::vector<std::vector<double>> LLR_EM_HIP_electron()
 }
 
 
-std::vector<std::vector<double>> LLR_EM_HIP_proton()
+std::vector<std::vector<double>> EcalPid::Data_LLR_EM_HIP_proton()
 {
   std::vector<std::vector<double>> v =
     {{ 20.92207002639968, 0.00380673170691903},
@@ -212,60 +296,4 @@ std::vector<std::vector<double>> LLR_EM_HIP_proton()
      {-15.26250719155862, 0.00262996829593725}};
 
   return v;
-}
-
-
-void FillHistogram(TH1F* hist, const std::vector<std::vector<double>>& v)
-{
-  for (unsigned int i=0; i<v.size(); ++i) {
-      int n_bin = hist->FindBin(v[i][0]);
-      hist->SetBinContent(n_bin, v[i][1]);
-  }
-}
-
-
-void LLR_ECAL()
-{
-  TFile file("LLR_ECAL.root", "RECREATE");
-
-  TH1F* h_LLR_MIP_EM_muon = new TH1F("LLR_MIP_EM_muon", "", 60, -60, 60);
-  auto v_LLR_MIP_EM_muon = LLR_MIP_EM_muon();
-  FillHistogram(h_LLR_MIP_EM_muon, v_LLR_MIP_EM_muon);
-
-  //h_LLR_MIP_EM_muon->Draw();
-
-  TH1F* h_LLR_MIP_EM_electron = new TH1F("LLR_MIP_EM_electron", "", 60, -60, 60);
-  auto v_LLR_MIP_EM_electron = LLR_MIP_EM_electron();
-  FillHistogram(h_LLR_MIP_EM_electron, v_LLR_MIP_EM_electron);
-
-  //h_LLR_MIP_EM_electron->Draw("SAME");
-
-  TH1F* h_LLR_MIP_PION_muon = new TH1F("LLR_MIP_PION_muon", "", 60, -60, 60);
-  auto v_LLR_MIP_PION_muon = LLR_MIP_PION_muon();
-  FillHistogram(h_LLR_MIP_PION_muon, v_LLR_MIP_PION_muon);
-
-  //h_LLR_MIP_PION_muon->Draw("");
-
-  TH1F* h_LLR_MIP_PION_pion = new TH1F("LLR_MIP_PION_pion", "", 60, -60, 60);
-  auto v_LLR_MIP_PION_pion = LLR_MIP_PION_pion();
-  FillHistogram(h_LLR_MIP_PION_pion, v_LLR_MIP_PION_pion);
-
-  //h_LLR_MIP_PION_pion->Draw("SAME");
-
-  TH1F* h_LLR_EM_HIP_electron = new TH1F("LLR_EM_HIP_electron", "", 60, -60, 60);
-  auto v_LLR_EM_HIP_electron = LLR_EM_HIP_electron();
-  FillHistogram(h_LLR_EM_HIP_electron, v_LLR_EM_HIP_electron);
-
-  //h_LLR_EM_HIP_electron->Draw("");
-
-  TH1F* h_LLR_EM_HIP_proton = new TH1F("LLR_EM_HIP_proton", "", 60, -60, 60);
-  auto v_LLR_EM_HIP_proton = LLR_EM_HIP_proton();
-  FillHistogram(h_LLR_EM_HIP_proton, v_LLR_EM_HIP_proton);
-
-  
-
-  //h_LLR_EM_HIP_proton->Draw("SAME");
-
-  file.Write();
-  file.Close();
 }

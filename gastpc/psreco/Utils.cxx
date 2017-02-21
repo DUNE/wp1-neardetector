@@ -30,3 +30,9 @@ double Utils::Distance(const gastpc::Vector4D& a, const gastpc::Vector4D& b)
 
   return Utils::Distance(a3d, b3d);
 }
+
+
+double Utils::Magnitude(const gastpc::Vector3D& v)
+{
+  return std::sqrt(v.GetX()*v.GetX() + v.GetY()*v.GetY() + v.GetZ()*v.GetZ());
+}
