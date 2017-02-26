@@ -260,8 +260,13 @@ int main(int argc, char** argv)
       if (std::abs(reco_pdg) == 13) found_lepton = true;
     }
 
+    // Process the protons
     for (auto p: protons) {
       pid.Proton(p.first, p.second);
+    }
+
+    for (auto p: other) {
+      std::cout << "Other PDG: " << p.first->GetPDGCode() << std::endl;
     }
 
     ////////////////////////////////////////////////////////

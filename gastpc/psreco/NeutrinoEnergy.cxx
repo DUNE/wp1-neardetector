@@ -51,16 +51,16 @@ NeutrinoEnergy::NeutrinoEnergy(std::vector<std::pair<gastpc::MCParticle*, gastpc
     }
   }
 
-  // Calculate inelasticity
-  reco_y_ = 1. - reco_y_ / reco_energy_;
-
   // Use first element of vector (any would do) to extract the true
   // neutrino energy and inelasticity from genie record
   gastpc::MCGenInfo* mcgi = v[0].first->GetMCGenInfo();
   genie::NtpMCEventRecord* gmcrec = mcgi->GetGeneratorRecord();
   genie::Interaction* interaction = (gmcrec->event)->Summary();
   true_energy_ = (interaction->InitState().ProbeE(genie::kRfLab)) * gastpc::GeV;
-  true_y_ = (interaction->KinePtr()->y());
+
+  // Calculate inelasticity
+  reco_y_ = 1. - reco_y_ / reco_energy_;
+  true_y_ = (interaction->KinePtr()->y(true));
 }
 
 
