@@ -11,6 +11,8 @@
 #include "MCGenInfo.h"
 #include "MCParticle.h"
 #include "RecoParticle.h"
+#include "MCTrack.h"
+#include "MCHit.h"
 #include "InteractionFinder.h"
 #include "MomentumSmearer.h"
 #include "ParticleIdentification.h"
@@ -172,8 +174,7 @@ int main(int argc, char** argv)
   TRandom3* random = new TRandom3(rnd_);
   MomentumSmearer momentum_smearer(random);
   ParticleIdentification pid(random);
-  PiZeroReconstruction pi0reco(random);
-
+  
   TFile ofile(output_file_.c_str(), "RECREATE");
   TTree* tree = DefineOutputTree();
 
@@ -345,6 +346,8 @@ int main(int argc, char** argv)
     }
 
     tree->Fill();
+
+    for (auto p: all) { delete p.second; }
   }
 
   ofile.Write();
