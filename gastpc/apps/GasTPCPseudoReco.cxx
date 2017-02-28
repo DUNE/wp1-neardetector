@@ -281,10 +281,8 @@ int main(int argc, char** argv)
 
         double ecal_threshold = 100. * gastpc::MeV;
         if (energy_ecal > ecal_threshold) {
-          gastpc::RecoParticle* recop = new gastpc::RecoParticle();
-          recop->SetInitialMomentum(energy_ecal, 0., 0.);
-          recop->SetPDGCode(111);
-          p.second = recop;
+          p.second->SetInitialMomentum(energy_ecal, 0., 0.);
+          p.second->SetPDGCode(111);
         }
       }
     }
@@ -298,7 +296,6 @@ int main(int argc, char** argv)
     ////////////////////////////////////////////////////////
 
     // OUTPUT DST
-
 
     genie::NtpMCEventRecord* gmcrec = mcgi->GetGeneratorRecord();
     genie::NtpMCEventRecord* gmcrec_copy = new genie::NtpMCEventRecord();

@@ -32,7 +32,7 @@ ParticleIdentification::~ParticleIdentification()
 
 
 int ParticleIdentification::Electron(gastpc::MCParticle* mcp,
-                                      gastpc::RecoParticle* recop)
+                                     gastpc::RecoParticle* recop)
 {
   if (!mcp || !recop) return 0;
 
