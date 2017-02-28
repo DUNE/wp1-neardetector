@@ -9,10 +9,13 @@
 #ifndef MOMENTUM_SMEARER_H
 #define MOMENTUM_SMEARER_H
 
+#include <utility>
+
 namespace gastpc { class MCParticle; }
 namespace gastpc { class RecoParticle; }
 namespace gastpc { class MCTrack; }
 namespace gastpc { class Vector3D; }
+
 class TRandom3;
 
 
@@ -26,11 +29,10 @@ public:
   /// Destructor
   ~MomentumSmearer();
 
-  gastpc::RecoParticle* ProcessParticle(gastpc::MCParticle*);
+  void ProcessParticle(std::pair<gastpc::MCParticle*, gastpc::RecoParticle*>&);
 
 private:
-  gastpc::RecoParticle* ProcessTrack(gastpc::MCTrack*);
-  double MomentumMag(const gastpc::Vector3D&);
+  void ProcessTrack(gastpc::MCTrack*, gastpc::RecoParticle*);
   double SmearPt(double, double);
   double SmearAngle(double, double, double);
 

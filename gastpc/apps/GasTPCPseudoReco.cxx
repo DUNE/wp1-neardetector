@@ -174,7 +174,7 @@ int main(int argc, char** argv)
   TRandom3* random = new TRandom3(rnd_);
   MomentumSmearer momentum_smearer(random);
   ParticleIdentification pid(random);
-  
+
   TFile ofile(output_file_.c_str(), "RECREATE");
   TTree* tree = DefineOutputTree();
 
@@ -208,11 +208,12 @@ int main(int argc, char** argv)
 
     for (gastpc::MCParticle* mcp: mcgi->GetMCParticles()) {
 
-      // Smear momentum of mc particles
-      gastpc::RecoParticle* recop = momentum_smearer.ProcessParticle(mcp);
-
+      gastpc::RecoParticle* recop = new gastpc::RecoParticle();
       auto p = std::make_pair(mcp, recop);
       all.push_back(p);
+
+      // Smear momentum of mc particles
+      momentum_smearer.ProcessParticle(p);
 
       // We classify the particles according to their pdg code
       // for simpler classification in next step
@@ -227,15 +228,12 @@ int main(int argc, char** argv)
         muon.second = recop;
       }
       else if (pdg == 211) {
-        auto p = std::make_pair(mcp, recop);
         pions.push_back(p);
       }
       else if (pdg == 2212) {
-        auto p = std::make_pair(mcp, recop);
         protons.push_back(p);
       }
       else {
-        auto p = std::make_pair(mcp, recop);
         other.push_back(p);
       }
     }
@@ -286,6 +284,7 @@ int main(int argc, char** argv)
           gastpc::RecoParticle* recop = new gastpc::RecoParticle();
           recop->SetInitialMomentum(energy_ecal, 0., 0.);
           recop->SetPDGCode(111);
+          p.second = recop;
         }
       }
     }

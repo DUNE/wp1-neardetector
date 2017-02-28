@@ -27,33 +27,37 @@ MomentumSmearer::MomentumSmearer(TRandom3* rnd)
 }
 
 
-gastpc::RecoParticle* MomentumSmearer::ProcessParticle(gastpc::MCParticle* mcp)
-{
-  // We will only consider muons, electrons, pions and protons
-  int pdg = std::abs(mcp->GetPDGCode());
-  if ((pdg != 11) && (pdg != 13) && (pdg != 211) && (pdg != 2212)) return 0;
-
-  // We will consider only particles that have left a track in the TPC
-  gastpc::MCTrack* track = 0;
-  for (gastpc::MCTrack* mct: mcp->GetMCTracks()) {
-    if (mct->GetLabel() == "TPC") {
-      track = mct;
-      break;
-    }
-  }
-  if (!track) return 0;
-
-  // Smear momentum and be done
-  return ProcessTrack(track);
-}
-
-
 MomentumSmearer::~MomentumSmearer()
 {
 }
 
 
-gastpc::RecoParticle* MomentumSmearer::ProcessTrack(gastpc::MCTrack* track)
+void MomentumSmearer::ProcessParticle(std::pair<gastpc::MCParticle*,
+                                                gastpc::RecoParticle*>& part)
+{
+  // We will only consider muons, electrons, pions and protons
+  int pdg = std::abs((part.first)->GetPDGCode());
+  if ((pdg != 11) && (pdg != 13) && (pdg != 211) && (pdg != 2212)) return;
+
+  // We will consider only particles that have left a track in the TPC
+  gastpc::MCTrack* track = 0;
+  for (gastpc::MCTrack* mct: (part.first)->GetMCTracks()) {
+    if (mct->GetLabel() == "TPC") {
+      track = mct;
+      break;
+    }
+  }
+  if (!track) return;
+
+  // Smear momentum and be done
+  this->ProcessTrack(track, part.second);
+}
+
+
+
+
+void MomentumSmearer::ProcessTrack(gastpc::MCTrack* track,
+                                   gastpc::RecoParticle* reco_particle)
 {
   gastpc::Vector4D min = track->GetMCParticle()->GetInitialXYZT();;
   gastpc::Vector4D max = track->GetMCParticle()->GetInitialXYZT();;
@@ -94,20 +98,10 @@ gastpc::RecoParticle* MomentumSmearer::ProcessTrack(gastpc::MCTrack* track)
   momentum_reco.SetY(momentum.Y() * p_reco / p_mag);
   momentum_reco.SetZ(momentum.Z() * p_reco / p_mag);
 
-  gastpc::RecoParticle* reco_particle = new gastpc::RecoParticle();
   reco_particle->SetInitialMomentum(momentum_reco.GetX(),
-                                   momentum_reco.GetY(),
-                                   momentum_reco.GetZ());
-
-  return reco_particle;
+                                    momentum_reco.GetY(),
+                                    momentum_reco.GetZ());
 }
-
-
-double MomentumSmearer::MomentumMag(const gastpc::Vector3D& p)
-{
-  return std::sqrt(p.GetX()*p.GetX() + p.GetY()*p.GetY() + p.GetZ()*p.GetZ());
-}
-
 
 
 double MomentumSmearer::SmearPt(double Pt, double length)
