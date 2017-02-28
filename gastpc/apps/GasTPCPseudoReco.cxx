@@ -172,6 +172,7 @@ int main(int argc, char** argv)
   TRandom3* random = new TRandom3(rnd_);
   MomentumSmearer momentum_smearer(random);
   ParticleIdentification pid(random);
+  PiZeroReconstruction pi0reco(random);
 
   TFile ofile(output_file_.c_str(), "RECREATE");
   TTree* tree = DefineOutputTree();
@@ -266,7 +267,26 @@ int main(int argc, char** argv)
     }
 
     for (auto p: other) {
-      std::cout << "Other PDG: " << p.first->GetPDGCode() << std::endl;
+      if (p.first->GetPDGCode() == 111) {
+
+        int mcid = p.first->GetMCID();
+        double energy_ecal = 0.;
+        for (gastpc::MCTrack* mct: evtrec.GetMCTracks()) {
+          std::string label = mct->GetLabel();
+          int ancestor = mct->GetMCParticle()->GetAncestor()->GetMCID();
+          if ((label != "TPC") && (ancestor == mcid)) {
+            for (gastpc::MCHit* mch: mct->GetMCHits())
+              energy_ecal += mch->GetAmplitude();
+          }
+        }
+
+        double ecal_threshold = 100. * gastpc::MeV;
+        if (energy_ecal > ecal_threshold) {
+          gastpc::RecoParticle* recop = new gastpc::RecoParticle();
+          recop->SetInitialMomentum(energy_ecal, 0., 0.);
+          recop->SetPDGCode(111);
+        }
+      }
     }
 
     ////////////////////////////////////////////////////////

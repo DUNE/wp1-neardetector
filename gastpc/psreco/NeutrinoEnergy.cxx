@@ -49,6 +49,9 @@ NeutrinoEnergy::NeutrinoEnergy(std::vector<std::pair<gastpc::MCParticle*, gastpc
     else if (reco_pdg == 2212) {
       reco_energy_ += momentum;
     }
+    else if (reco_pdg == 111) {
+      reco_energy_ += momentum;
+    }
   }
 
   // Use first element of vector (any would do) to extract the true
