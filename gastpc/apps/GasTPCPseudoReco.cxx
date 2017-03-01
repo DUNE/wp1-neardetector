@@ -329,16 +329,18 @@ int main(int argc, char** argv)
       dst::Momentum[track_num][1] = p.first->GetInitialMomentum().GetY();
       dst::Momentum[track_num][2] = p.first->GetInitialMomentum().GetZ();
 
-      if (p.second->GetPDGCode() != 0) {
-        dst::RecoTrack[track_num] = 0;
-      }
-      else {
+      if (p.second->GetPDGCode() != 0) { // Reconstructed particle
         dst::RecoTrack[track_num] = 1;
         dst::Pdg_reco[track_num] = p.second->GetPDGCode();
         dst::Momentum_reco[track_num][0] = p.second->GetInitialMomentum().GetX();
         dst::Momentum_reco[track_num][1] = p.second->GetInitialMomentum().GetY();
         dst::Momentum_reco[track_num][2] = p.second->GetInitialMomentum().GetZ();
       }
+      else {
+        dst::RecoTrack[track_num] = 0;
+      }
+
+      ++track_num;
     }
 
     tree->Fill();
