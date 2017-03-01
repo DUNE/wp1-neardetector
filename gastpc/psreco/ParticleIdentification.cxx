@@ -32,7 +32,7 @@ ParticleIdentification::~ParticleIdentification()
 
 
 int ParticleIdentification::Electron(gastpc::MCParticle* mcp,
-                                      gastpc::RecoParticle* recop)
+                                     gastpc::RecoParticle* recop)
 {
   if (!mcp || !recop) return 0;
 
@@ -63,7 +63,7 @@ int ParticleIdentification::Electron(gastpc::MCParticle* mcp,
 
 
 int ParticleIdentification::Muon(gastpc::MCParticle* mcp,
-                                  gastpc::RecoParticle* recop)
+                                 gastpc::RecoParticle* recop)
 {
   if (!mcp || !recop) return 0;
 
@@ -115,10 +115,10 @@ int ParticleIdentification::Pion(gastpc::MCParticle* mcp,
 
 
 int ParticleIdentification::Proton(gastpc::MCParticle* mcp,
-                                    gastpc::RecoParticle* recop)
+                                   gastpc::RecoParticle* recop)
 {
   if (!mcp || !recop) return 0;
-  
+
   int pdg = mcp->GetPDGCode();
 
   // dE/dx measurement in TPC allows the identification of protons

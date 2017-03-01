@@ -299,7 +299,6 @@ int main(int argc, char** argv)
 
     // OUTPUT DST
 
-
     genie::NtpMCEventRecord* gmcrec = mcgi->GetGeneratorRecord();
     genie::NtpMCEventRecord* gmcrec_copy = new genie::NtpMCEventRecord();
     gmcrec_copy->Copy(*gmcrec);
@@ -332,7 +331,7 @@ int main(int argc, char** argv)
       dst::Momentum[track_num][1] = p.first->GetInitialMomentum().GetY();
       dst::Momentum[track_num][2] = p.first->GetInitialMomentum().GetZ();
 
-      if (!p.second) {
+      if (p.second->GetPDGCode != 0) {
         dst::RecoTrack[track_num] = 0;
       }
       else {
